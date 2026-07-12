@@ -77,6 +77,10 @@ export function OrderModal({
         customerAddress: address.trim(),
         items: items.map((item) => ({
           productId: item.slug ?? item.id,
+          productName: item.nameBn || item.name,
+          productSlug: item.slug ?? item.id,
+          productImage: item.image,
+          unitPrice: item.price,
           quantity: item.quantity,
         })),
       }).unwrap();
@@ -104,7 +108,7 @@ export function OrderModal({
       router.push("/dashboard");
       onClose();
     } catch (error) {
-      const message =
+      const apiError =
         error &&
         typeof error === "object" &&
         "data" in error &&
@@ -112,10 +116,14 @@ export function OrderModal({
         typeof error.data === "object" &&
         "error" in error.data &&
         error.data.error &&
-        typeof error.data.error === "object" &&
-        "message" in error.data.error
-          ? String(error.data.error.message)
-          : "অর্ডার সম্পন্ন করা যায়নি। আবার চেষ্টা করুন।";
+        typeof error.data.error === "object"
+          ? (error.data.error as { message?: string; code?: string })
+          : null;
+
+      const message =
+        apiError?.code === "ORDERS_TABLE_MISSING"
+          ? "অর্ডার টেবিল সেটআপ হয়নি। Supabase SQL Editor-এ 010_orders.sql run করুন, তারপর আবার চেষ্টা করুন।"
+          : apiError?.message ?? "অর্ডার সম্পন্ন করা যায়নি। আবার চেষ্টা করুন।";
       await showValidationError(message);
     }
   };
@@ -129,7 +137,7 @@ export function OrderModal({
         aria-label="Close modal"
       />
 
-      <div className="relative w-full max-w-lg animate-[fadeIn_0.2s_ease-out] rounded-2xl bg-white shadow-2xl">
+      <div className="relative max-h-[92vh] w-full max-w-3xl animate-[fadeIn_0.2s_ease-out] overflow-hidden rounded-2xl bg-white shadow-2xl">
         <div className="rounded-t-2xl bg-gradient-to-r from-brand-green to-brand-green-light px-6 py-5 text-white">
           <h2 className="text-xl font-bold">অর্ডার সম্পূর্ণ করুন</h2>
           <p className="mt-1 text-sm text-white/80">
@@ -137,61 +145,63 @@ export function OrderModal({
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 p-6">
-          <div>
-            <label htmlFor="order-name" className="mb-1.5 block text-sm font-semibold text-gray-700">
-              নাম *
-            </label>
-            <input
-              id="order-name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="আপনার পূর্ণ নাম"
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="max-h-[calc(92vh-96px)] space-y-4 overflow-y-auto p-5 sm:p-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="order-name" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                নাম *
+              </label>
+              <input
+                id="order-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="আপনার পূর্ণ নাম"
+                className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="order-phone" className="mb-1.5 block text-sm font-semibold text-gray-700">
-              ফোন *
-            </label>
-            <input
-              id="order-phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="01XXXXXXXXX"
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
-            />
-          </div>
+            <div>
+              <label htmlFor="order-phone" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                ফোন *
+              </label>
+              <input
+                id="order-phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="01XXXXXXXXX"
+                className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="order-email" className="mb-1.5 block text-sm font-semibold text-gray-700">
-              ইমেইল *
-            </label>
-            <input
-              id="order-email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@email.com"
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
-            />
-          </div>
+            <div>
+              <label htmlFor="order-email" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                ইমেইল *
+              </label>
+              <input
+                id="order-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@email.com"
+                className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="order-address" className="mb-1.5 block text-sm font-semibold text-gray-700">
-              ঠিকানা *
-            </label>
-            <textarea
-              id="order-address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="বাড়ি/রোড, এলাকা, জেলা"
-              rows={3}
-              className="w-full resize-none rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
-            />
+            <div>
+              <label htmlFor="order-address" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                ঠিকানা *
+              </label>
+              <textarea
+                id="order-address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="বাড়ি/রোড, এলাকা, জেলা"
+                rows={3}
+                className="w-full resize-none rounded-xl border border-brand-border px-4 py-3 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              />
+            </div>
           </div>
 
           <div className="rounded-xl bg-brand-cream px-4 py-3 text-sm text-gray-600">

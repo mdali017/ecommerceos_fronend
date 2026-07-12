@@ -40,7 +40,8 @@ function buildQueryString(query: PublicProductsQuery = {}): string {
 }
 
 export async function fetchPublicProducts(
-  query: PublicProductsQuery = {}
+  query: PublicProductsQuery = {},
+  fetchInit?: RequestInit
 ): Promise<PaginatedProducts> {
   const empty: PaginatedProducts = {
     products: [],
@@ -50,7 +51,7 @@ export async function fetchPublicProducts(
   try {
     const response = await fetch(
       `${API_BASE_URL}/products/public${buildQueryString(query)}`,
-      { next: { revalidate: 60 } }
+      fetchInit ?? { next: { revalidate: 60 } }
     );
 
     if (!response.ok) return empty;
@@ -64,6 +65,24 @@ export async function fetchPublicProducts(
   } catch {
     return empty;
   }
+}
+
+export async function fetchAllPublicProducts(
+  fetchInit?: RequestInit,
+  pageSize = 100
+): Promise<Product[]> {
+  const allProducts: Product[] = [];
+  let page = 1;
+  let totalPages = 1;
+
+  while (page <= totalPages && page <= 5) {
+    const result = await fetchPublicProducts({ page, limit: pageSize }, fetchInit);
+    allProducts.push(...result.products);
+    totalPages = result.pagination.totalPages || 1;
+    page += 1;
+  }
+
+  return allProducts;
 }
 
 export async function fetchPublicProductBySlug(slug: string): Promise<Product | null> {

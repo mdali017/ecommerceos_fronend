@@ -60,7 +60,14 @@ export interface CreateOrderInput {
   customerAddress: string;
   paymentMethod?: "cod";
   notes?: string;
-  items: { productId: string; quantity: number }[];
+  items: {
+    productId: string;
+    productName?: string;
+    productSlug?: string;
+    productImage?: string;
+    unitPrice?: number;
+    quantity: number;
+  }[];
 }
 
 export const orderApi = baseApi.injectEndpoints({

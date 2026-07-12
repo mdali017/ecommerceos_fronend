@@ -7,11 +7,13 @@ export function AdminFormModal({
   title,
   onClose,
   children,
+  size = "md",
 }: {
   open: boolean;
   title: string;
   onClose: () => void;
   children: React.ReactNode;
+  size?: "md" | "lg" | "xl";
 }) {
   useEffect(() => {
     if (!open) return;
@@ -31,16 +33,21 @@ export function AdminFormModal({
 
   if (!open) return null;
 
+  const sizeClass =
+    size === "xl" ? "max-w-5xl" : size === "lg" ? "max-w-4xl" : "max-w-xl";
+
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
       <button
         type="button"
-        className="absolute inset-0 bg-black/40"
+        className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
         onClick={onClose}
         aria-label="Close modal"
       />
-      <div className="relative z-10 max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl bg-white shadow-xl">
-        <div className="sticky top-0 flex items-center justify-between border-b border-brand-border bg-white px-5 py-4">
+      <div
+        className={`relative z-10 max-h-[92vh] w-full ${sizeClass} overflow-hidden rounded-2xl bg-white shadow-2xl`}
+      >
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-brand-border bg-white px-5 py-4 sm:px-6">
           <h3 className="text-lg font-bold text-gray-900">{title}</h3>
           <button
             type="button"
@@ -51,7 +58,7 @@ export function AdminFormModal({
             ✕
           </button>
         </div>
-        <div className="px-5 py-5">{children}</div>
+        <div className="max-h-[calc(92vh-72px)] overflow-y-auto px-5 py-5 sm:px-6">{children}</div>
       </div>
     </div>
   );

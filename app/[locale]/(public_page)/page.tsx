@@ -1,17 +1,17 @@
 import { HeroSection } from "@/components/home/HeroSection";
 import { CategoryIcons } from "@/components/home/CategoryIcons";
-import { TopSellingSection } from "@/components/home/TopSellingSection";
 import { BrandStrip } from "@/components/home/BrandStrip";
-import { ProductSection } from "@/components/home/ProductSection";
-import { FlashSaleSection } from "@/components/home/FlashSaleSection";
 import { PromoBanner } from "@/components/home/PromoBanner";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { HomeProductSectionRenderer } from "@/components/home/HomeProductSectionRenderer";
 import { fetchCategories } from "@/lib/api/categories.server";
 import { getHomepageCmsContent } from "@/lib/homepage-cms.server";
-import { getHomepageProducts } from "@/lib/homepage-products";
+import {
+  getHomepageProductSections,
+  groupHomepageProductSections,
+} from "@/lib/homepage-products";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { localizeHref } from "@/lib/i18n/locale-path";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -43,45 +43,55 @@ export default async function Home({
   const locale = localeParam as Locale;
   const dictionary = await getDictionary(locale);
 
-  const [{ topSelling, mango, honey, spice, flashSale }, categories, cms] = await Promise.all([
-    getHomepageProducts(),
+  const [productSections, categories, cms] = await Promise.all([
+    getHomepageProductSections(locale, dictionary),
     fetchCategories(),
     getHomepageCmsContent(locale, dictionary),
   ]);
+
+  const { beforeBrand, beforePromo, afterPromo } =
+    groupHomepageProductSections(productSections);
 
   return (
     <>
       <HeroSection slides={cms.heroSlides} seasonal={cms.seasonalBanner} />
       <CategoryIcons categories={categories} locale={locale} />
-      <TopSellingSection products={topSelling} title={dictionary.home.topSelling} />
+
+      {beforeBrand.map((section) => (
+        <HomeProductSectionRenderer
+          key={section.id}
+          section={section}
+          locale={locale}
+          dictionary={dictionary}
+        />
+      ))}
+
       <BrandStrip title={dictionary.home.brands} brands={cms.brandStripItems} />
-      {mango.length > 0 && (
-        <ProductSection
-          title={dictionary.home.freshMango}
-          products={mango}
-          viewAllHref={localizeHref("/category/am", locale)}
+
+      {beforePromo.map((section) => (
+        <HomeProductSectionRenderer
+          key={section.id}
+          section={section}
+          locale={locale}
+          dictionary={dictionary}
         />
-      )}
-      <FlashSaleSection products={flashSale} labels={dictionary.home} />
-      {honey.length > 0 && (
-        <ProductSection
-          title={dictionary.home.pureHoney}
-          products={honey}
-          viewAllHref={localizeHref("/category/modhu", locale)}
-        />
-      )}
+      ))}
+
       <PromoBanner
         title={cms.promoBanner.title}
         subtitle={cms.promoBanner.subtitle}
         image={cms.promoBanner.image}
       />
-      {spice.length > 0 && (
-        <ProductSection
-          title={dictionary.home.spiceCollection}
-          products={spice}
-          viewAllHref={localizeHref("/category/moshla", locale)}
+
+      {afterPromo.map((section) => (
+        <HomeProductSectionRenderer
+          key={section.id}
+          section={section}
+          locale={locale}
+          dictionary={dictionary}
         />
-      )}
+      ))}
+
       <TestimonialsSection
         title={dictionary.home.testimonials}
         testimonials={cms.testimonials}

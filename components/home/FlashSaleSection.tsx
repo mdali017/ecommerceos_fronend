@@ -44,6 +44,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 export function FlashSaleSection({
   products,
   labels,
+  title,
 }: {
   products: Product[];
   labels: {
@@ -53,6 +54,7 @@ export function FlashSaleSection({
     minutes: string;
     seconds: string;
   };
+  title?: string;
 }) {
   const countdown = useCountdown(5);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -71,7 +73,9 @@ export function FlashSaleSection({
     <section className="bg-brand-cream py-6 sm:py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-lg font-bold text-gray-900 sm:text-xl">{labels.flashSale}</h2>
+          <h2 className="text-lg font-bold text-gray-900 sm:text-xl">
+            {title ?? labels.flashSale}
+          </h2>
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="text-sm text-gray-600">{labels.endingIn}</span>
             <div className="flex gap-2">

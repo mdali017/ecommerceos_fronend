@@ -241,6 +241,16 @@ export const homepageSections = [
     color: "bg-teal-50 text-teal-600",
   },
   {
+    id: "product-sections",
+    title: "Product Sections",
+    description: "Homepage product rows (category, best sell, flash sale)",
+    href: "/admin/homepage/product-sections",
+    icon: "🛍️",
+    count: 5,
+    activeCount: 5,
+    color: "bg-rose-50 text-rose-600",
+  },
+  {
     id: "testimonials",
     title: "Testimonials",
     description: "Customer reviews section",

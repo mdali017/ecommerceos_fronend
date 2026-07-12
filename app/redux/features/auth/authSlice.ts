@@ -24,6 +24,7 @@ export interface CustomerSession {
 interface AuthState {
   isCustomerLoggedIn: boolean;
   isDashboardUnlocked: boolean;
+  pendingCheckoutActivation: boolean;
   loginMethod: "phone" | "email";
   customer: CustomerInfo | null;
   lastOrder: LastOrder | null;
@@ -34,6 +35,7 @@ interface AuthState {
 const initialState: AuthState = {
   isCustomerLoggedIn: false,
   isDashboardUnlocked: false,
+  pendingCheckoutActivation: false,
   loginMethod: "phone",
   customer: null,
   lastOrder: null,
@@ -54,6 +56,7 @@ const authSlice = createSlice({
     ) => {
       state.customer = action.payload.customer;
       state.lastOrder = action.payload.order;
+      state.pendingCheckoutActivation = true;
       state.isDashboardUnlocked = false;
     },
     unlockDashboard: (state) => {
@@ -62,6 +65,7 @@ const authSlice = createSlice({
     setCustomerSession: (state, action: PayloadAction<CustomerSession>) => {
       state.isCustomerLoggedIn = true;
       state.isDashboardUnlocked = true;
+      state.pendingCheckoutActivation = false;
       state.customer = action.payload.customer;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;

@@ -26,6 +26,19 @@ export function registerCustomer(input: {
   });
 }
 
+export function activateCheckoutCustomer(input: {
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  password: string;
+}) {
+  return apiRequest<CustomerAuthData>("/auth/customer/checkout-activate", {
+    method: "POST",
+    body: input,
+  });
+}
+
 export function loginAdmin(input: { email: string; password: string }) {
   return apiRequest<AdminAuthData>("/auth/admin/login", {
     method: "POST",
