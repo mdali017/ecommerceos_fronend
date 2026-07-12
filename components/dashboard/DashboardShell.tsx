@@ -5,6 +5,7 @@ import { useAppSelector } from "@/app/redux/hooks";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { UnlockModal } from "./UnlockModal";
+import { CustomerSessionHydrator } from "./CustomerSessionHydrator";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -13,6 +14,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-brand-gray/40">
+      <CustomerSessionHydrator />
       <DashboardSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

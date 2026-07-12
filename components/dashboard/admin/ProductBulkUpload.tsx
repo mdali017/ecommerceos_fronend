@@ -4,8 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import {
   type BulkProductRow,
-  getSampleCsvContent,
+  downloadProductBulkTemplate,
   mapRawRowsToBulkProducts,
+  prepareBulkRowForApi,
 } from "@/lib/product-bulk-upload";
 import {
   BulkUploadPreviewTable,
@@ -140,13 +141,7 @@ export function ProductBulkUploadModal({ isOpen, onClose, onSuccess }: ProductBu
   };
 
   const handleDownloadSample = () => {
-    const blob = new Blob([getSampleCsvContent()], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "product-bulk-upload-sample.csv";
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadProductBulkTemplate();
   };
 
   const handleChangeFile = () => {
@@ -211,10 +206,10 @@ export function ProductBulkUploadModal({ isOpen, onClose, onSuccess }: ProductBu
             ...uploadedUrls,
           ].filter((url, i, arr) => arr.indexOf(url) === i);
 
-          return {
+          return prepareBulkRowForApi({
             ...row,
             imageUrls,
-          };
+          });
         })
       );
 
@@ -293,7 +288,7 @@ export function ProductBulkUploadModal({ isOpen, onClose, onSuccess }: ProductBu
               onClick={handleDownloadSample}
               className="text-xs font-semibold text-brand-green hover:text-brand-orange"
             >
-              Sample CSV
+              Sample XLSX
             </button>
           )}
         </div>

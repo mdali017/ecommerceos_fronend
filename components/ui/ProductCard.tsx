@@ -5,6 +5,7 @@ import Link from "next/link";
 import { addToCart } from "@/app/redux/features/cart/cartSlice";
 import { useAppDispatch } from "@/app/redux/hooks";
 import { useLocale } from "@/components/providers/LocaleProvider";
+import { WishlistButton } from "@/components/wishlist/WishlistButton";
 import type { Product } from "@/lib/data";
 
 const badgeStyles: Record<string, string> = {
@@ -35,7 +36,13 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="group flex min-w-[160px] max-w-[200px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-brand-border bg-white transition-shadow hover:shadow-md sm:min-w-[180px]">
+    <div className="group relative flex min-w-[160px] max-w-[200px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-brand-border bg-white transition-shadow hover:shadow-md sm:min-w-[180px]">
+      <div className="absolute right-2 top-2 z-20">
+        <WishlistButton
+          productId={product.slug ?? product.id}
+          className="bg-white/90 shadow-sm"
+        />
+      </div>
       <Link
         href={detailsHref}
         className="relative block aspect-square overflow-hidden bg-brand-gray"

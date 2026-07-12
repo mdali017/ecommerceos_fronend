@@ -1,5 +1,5 @@
 import { apiRequest, apiUpload } from "./client";
-import type { BulkProductRow } from "@/lib/product-bulk-upload";
+import type { BulkProductApiRow } from "@/lib/product-bulk-upload";
 
 export interface Product {
   id: string;
@@ -53,10 +53,53 @@ export function listProducts(token: string) {
   return apiRequest<Product[]>("/products", { token });
 }
 
-export function bulkUploadProducts(
-  products: (BulkProductRow & { imageUrls?: string[] })[],
-  token: string
-) {
+export type ProductUpsertInput = {
+  sku: string;
+  productName: string;
+  genericName?: string;
+  brand?: string;
+  category?: string;
+  subcategory?: string;
+  description?: string;
+  unit?: string;
+  packSize?: string;
+  purchasePrice?: number | string;
+  costPrice?: number | string;
+  sellingPrice?: number | string;
+  offerPrice?: number | string;
+  stockQty?: number | string;
+  minStock?: number | string;
+  imageUrl?: string;
+  status?: string;
+  featured?: string;
+  tags?: string;
+  notes?: string;
+};
+
+export function createProduct(input: ProductUpsertInput, token: string) {
+  return apiRequest<Product>("/products", {
+    method: "POST",
+    token,
+    body: input,
+  });
+}
+
+export function updateProduct(id: string, input: Partial<ProductUpsertInput>, token: string) {
+  return apiRequest<Product>(`/products/${id}`, {
+    method: "PUT",
+    token,
+    body: input,
+  });
+}
+
+export function deleteProduct(id: string, token: string) {
+  return apiRequest<null>(`/products/${id}`, {
+    method: "DELETE",
+    token,
+  });
+}
+
+export function bulkUploadProducts(products: BulkProductApiRow[], token: string) {
   return apiRequest<BulkUploadResult>("/products/bulk", {
     method: "POST",
     token,

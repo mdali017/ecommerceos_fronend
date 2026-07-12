@@ -70,6 +70,13 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
+    updateCustomerProfile: (state, action: PayloadAction<CustomerInfo>) => {
+      state.customer = action.payload;
+    },
+    updateCustomerTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
     customerLogout: (state) => {
       state.isCustomerLoggedIn = false;
       state.isDashboardUnlocked = false;
@@ -89,6 +96,8 @@ export const {
   completeOrder,
   unlockDashboard,
   setCustomerSession,
+  updateCustomerProfile,
+  updateCustomerTokens,
   customerLogout,
   logoutDashboard,
 } = authSlice.actions;

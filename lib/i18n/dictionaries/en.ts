@@ -67,6 +67,10 @@ const en: Dictionary = {
     relatedProducts: "Related Products",
     seeMore: "See More",
     checkout: "Checkout",
+    searchResults: "Search Results",
+    searchResultsFor: "Results for:",
+    searchNoResults: "No products found",
+    searchHint: "Try searching with different keywords.",
   },
   badges: {
     new: "New",

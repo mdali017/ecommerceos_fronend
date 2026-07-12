@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+
 export interface BulkProductRow {
   sku: string;
   barcode: string;
@@ -30,18 +32,23 @@ export interface BulkProductRow {
   imageUrl: string;
   status: string;
   featured: string;
+  bestSeller: string;
   tags: string;
   notes: string;
 }
+
+export type BulkProductApiRow = Omit<BulkProductRow, "bestSeller"> & {
+  imageUrls?: string[];
+};
 
 export const BULK_UPLOAD_COLUMNS: { key: keyof BulkProductRow; label: string }[] = [
   { key: "productName", label: "Product Name" },
   { key: "sku", label: "SKU" },
   { key: "barcode", label: "Barcode" },
-  { key: "genericName", label: "Generic Name" },
+  { key: "genericName", label: "Generic Name (BN)" },
   { key: "brand", label: "Brand" },
   { key: "category", label: "Category" },
-  { key: "subcategory", label: "Subcategory" },
+  { key: "subcategory", label: "Subcategory (BN)" },
   { key: "description", label: "Description" },
   { key: "unit", label: "Unit" },
   { key: "packSize", label: "Pack Size" },
@@ -66,6 +73,7 @@ export const BULK_UPLOAD_COLUMNS: { key: keyof BulkProductRow; label: string }[]
   { key: "imageUrl", label: "Image URL" },
   { key: "status", label: "Status" },
   { key: "featured", label: "Featured" },
+  { key: "bestSeller", label: "Best Seller" },
   { key: "tags", label: "Tags" },
   { key: "notes", label: "Notes" },
 ];
@@ -75,9 +83,11 @@ const HEADER_ALIASES: Record<string, keyof BulkProductRow> = {
   barcode: "barcode",
   "product name": "productName",
   "generic name": "genericName",
+  "generic name (bn)": "genericName",
   brand: "brand",
   category: "category",
   subcategory: "subcategory",
+  "subcategory (bn)": "subcategory",
   description: "description",
   unit: "unit",
   "pack size": "packSize",
@@ -110,6 +120,8 @@ const HEADER_ALIASES: Record<string, keyof BulkProductRow> = {
   image: "imageUrl",
   status: "status",
   featured: "featured",
+  "best seller": "bestSeller",
+  bestseller: "bestSeller",
   tags: "tags",
   notes: "notes",
 };
@@ -152,6 +164,7 @@ function emptyRow(): BulkProductRow {
     imageUrl: "",
     status: "",
     featured: "",
+    bestSeller: "",
     tags: "",
     notes: "",
   };
@@ -161,6 +174,10 @@ function cellToString(value: unknown): string {
   if (value === null || value === undefined) return "";
   if (typeof value === "number" && Number.isFinite(value)) return String(value);
   return String(value).trim();
+}
+
+function parseYesNo(value: string): boolean {
+  return ["yes", "true", "1", "y"].includes(value.trim().toLowerCase());
 }
 
 export function mapRawRowsToBulkProducts(rawRows: Record<string, unknown>[]): BulkProductRow[] {
@@ -184,42 +201,159 @@ export function mapRawRowsToBulkProducts(rawRows: Record<string, unknown>[]): Bu
     .filter((row) => Object.values(row).some((value) => value.length > 0));
 }
 
+export function prepareBulkRowForApi(
+  row: BulkProductRow & { imageUrls?: string[] }
+): BulkProductApiRow {
+  const isBestSeller = parseYesNo(row.bestSeller);
+  let tags = row.tags.trim();
+
+  if (isBestSeller && !tags.toLowerCase().includes("bestseller")) {
+    tags = tags ? `${tags},bestseller` : "bestseller";
+  }
+
+  const featured =
+    isBestSeller || parseYesNo(row.featured) ? "yes" : row.featured.trim();
+
+  const { bestSeller: _bestSeller, ...rest } = row;
+
+  return {
+    ...rest,
+    tags,
+    featured,
+  };
+}
+
+function rowToValues(row: BulkProductRow): string[] {
+  return BULK_UPLOAD_COLUMNS.map((column) => row[column.key]);
+}
+
+function getSampleRows(): BulkProductRow[] {
+  return [
+    {
+      ...emptyRow(),
+      productName: "Gawa Ghee 1kg",
+      sku: "KF-GHEE-001",
+      barcode: "8801234567890",
+      genericName: "দেশি ঘি ১ কেজি",
+      brand: "Khaas Food",
+      category: "Ghee",
+      subcategory: "ঘি",
+      description: "Traditional cow ghee",
+      unit: "kg",
+      packSize: "1",
+      purchasePrice: "1500",
+      costPrice: "1600",
+      sellingPrice: "1930",
+      offerPrice: "1850",
+      taxPercent: "5",
+      discountPercent: "4",
+      stockQty: "45",
+      minStock: "10",
+      maxStock: "200",
+      batchNo: "B2026-01",
+      expiryDate: "2027-01-15",
+      manufactureDate: "2026-01-01",
+      supplier: "Local Supplier",
+      manufacturer: "Khaas Food",
+      weight: "1kg",
+      imageUrl: "https://example.com/ghee.jpg",
+      status: "active",
+      featured: "yes",
+      bestSeller: "yes",
+      tags: "ghee,dairy",
+      notes: "Homepage top seller",
+    },
+    {
+      ...emptyRow(),
+      productName: "Pure Mustard Honey",
+      sku: "KF-HONEY-001",
+      barcode: "8801234567891",
+      genericName: "খাঁটি সরিষার মধু",
+      brand: "Khaas Food",
+      category: "Honey",
+      subcategory: "মধু",
+      description: "Pure mustard flower honey",
+      unit: "jar",
+      packSize: "500g",
+      purchasePrice: "650",
+      costPrice: "700",
+      sellingPrice: "850",
+      offerPrice: "799",
+      taxPercent: "5",
+      discountPercent: "6",
+      stockQty: "120",
+      minStock: "15",
+      maxStock: "300",
+      batchNo: "B2026-02",
+      expiryDate: "2027-06-01",
+      manufactureDate: "2026-01-15",
+      supplier: "Local Supplier",
+      manufacturer: "Khaas Food",
+      weight: "500g",
+      imageUrl: "https://example.com/honey.jpg",
+      status: "active",
+      featured: "yes",
+      bestSeller: "yes",
+      tags: "honey,natural",
+      notes: "",
+    },
+    {
+      ...emptyRow(),
+      productName: "Turmeric Powder",
+      sku: "KF-SPICE-001",
+      barcode: "8801234567892",
+      genericName: "হলুদ গুঁড়া",
+      brand: "Khaas Food",
+      category: "Spices",
+      subcategory: "মশলা",
+      description: "Fresh ground turmeric powder",
+      unit: "pack",
+      packSize: "200g",
+      purchasePrice: "120",
+      costPrice: "130",
+      sellingPrice: "180",
+      offerPrice: "165",
+      taxPercent: "5",
+      discountPercent: "8",
+      stockQty: "80",
+      minStock: "10",
+      maxStock: "500",
+      batchNo: "B2026-03",
+      expiryDate: "2027-03-01",
+      manufactureDate: "2026-02-01",
+      supplier: "Local Supplier",
+      manufacturer: "Khaas Food",
+      weight: "200g",
+      imageUrl: "https://example.com/turmeric.jpg",
+      status: "active",
+      featured: "no",
+      bestSeller: "no",
+      tags: "spice,turmeric",
+      notes: "",
+    },
+  ];
+}
+
+function escapeCsvCell(value: string): string {
+  if (/[",\n]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+}
+
 export function getSampleCsvContent(): string {
   const headers = BULK_UPLOAD_COLUMNS.map((col) => col.label).join(",");
-  const sample = [
-    "Gawa Ghee 1kg",
-    "KF-GHEE-001",
-    "8801234567890",
-    "Ghee",
-    "Khaas Food",
-    "Ghee",
-    "Dairy",
-    "Traditional cow ghee",
-    "kg",
-    "1",
-    "1500",
-    "1600",
-    "1930",
-    "1850",
-    "5",
-    "4",
-    "45",
-    "10",
-    "200",
-    "B2026-01",
-    "2027-01-15",
-    "2026-01-01",
-    "Local Supplier",
-    "Khaas Food",
-    "1kg",
-    "",
-    "",
-    "",
-    "https://example.com/ghee.jpg",
-    "active",
-    "yes",
-    "ghee,dairy",
-    "Best seller",
-  ].join(",");
-  return `${headers}\n${sample}`;
+  const rows = getSampleRows().map((row) =>
+    rowToValues(row).map(escapeCsvCell).join(",")
+  );
+  return [headers, ...rows].join("\n");
+}
+
+export function downloadProductBulkTemplate() {
+  const headers = BULK_UPLOAD_COLUMNS.map((column) => column.label);
+  const rows = getSampleRows().map(rowToValues);
+  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+  XLSX.writeFile(workbook, "product-bulk-upload-template.xlsx");
 }

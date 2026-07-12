@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useAdminToken } from "@/lib/hooks/useAdminToken";
 import { listProducts, type Product } from "@/lib/api/products";
 import { ProductBulkUploadButton } from "@/components/dashboard/admin/ProductBulkUpload";
+import { ProductFormModal } from "@/components/dashboard/admin/forms/ProductFormModal";
+import { downloadProductBulkTemplate } from "@/lib/product-bulk-upload";
+import { deleteProduct } from "@/lib/api/products";
+import Swal from "sweetalert2";
 
 const statusLabels: Record<string, { label: string; className: string }> = {
   active: { label: "Active", className: "bg-green-100 text-green-700" },
@@ -21,6 +25,8 @@ export function AdminProductList() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const fetchProducts = useCallback(async () => {
     const accessToken = await getValidAccessToken();
@@ -46,20 +52,73 @@ export function AdminProductList() {
     void fetchProducts();
   }, [fetchProducts]);
 
+  const openCreate = () => {
+    setEditingProduct(null);
+    setFormOpen(true);
+  };
+
+  const openEdit = (product: Product) => {
+    setEditingProduct(product);
+    setFormOpen(true);
+  };
+
+  const handleDelete = async (product: Product) => {
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "Delete product?",
+      text: `${product.productName} (${product.sku})`,
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Delete",
+    });
+
+    if (!result.isConfirmed) return;
+
+    const accessToken = await getValidAccessToken();
+    if (!accessToken) return;
+
+    try {
+      await deleteProduct(product.id, accessToken);
+      await fetchProducts();
+    } catch {
+      await Swal.fire({
+        icon: "error",
+        title: "Delete failed",
+        confirmButtonColor: "#f58220",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-gray-900">Product Management</h2>
         <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={downloadProductBulkTemplate}
+            className="rounded-xl border border-brand-border bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:border-brand-green hover:text-brand-green"
+          >
+            Download Template
+          </button>
           <ProductBulkUploadButton onSuccess={fetchProducts} />
           <button
             type="button"
+            onClick={openCreate}
             className="rounded-xl bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-orange-dark"
           >
             + Add Product
           </button>
         </div>
       </div>
+
+      <ProductFormModal
+        open={formOpen}
+        initial={editingProduct}
+        onClose={() => setFormOpen(false)}
+        onSuccess={fetchProducts}
+      />
 
       <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
         {loading ? (
@@ -117,12 +176,22 @@ export function AdminProductList() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <button
-                          type="button"
-                          className="text-sm font-semibold text-brand-green hover:text-brand-orange"
-                        >
-                          Edit
-                        </button>
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => openEdit(product)}
+                            className="text-sm font-semibold text-brand-green hover:text-brand-orange"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void handleDelete(product)}
+                            className="text-sm font-semibold text-red-600 hover:text-red-700"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

@@ -23,17 +23,31 @@ export async function apiRequest<T>(
 ): Promise<T> {
   const { body, token, headers, ...rest } = options;
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...rest,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...headers,
-    },
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...rest,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...headers,
+      },
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new ApiError(
+      "Cannot connect to API server. Start the backend with: cd ecommerceos_backend && npm run dev",
+      0,
+      "NETWORK_ERROR"
+    );
+  }
 
-  const json = (await response.json()) as ApiSuccessResponse<T> | ApiErrorResponse;
+  let json: ApiSuccessResponse<T> | ApiErrorResponse;
+  try {
+    json = (await response.json()) as ApiSuccessResponse<T> | ApiErrorResponse;
+  } catch {
+    throw new ApiError("Invalid response from API server.", response.status);
+  }
 
   if (!response.ok || !json.success) {
     const message =

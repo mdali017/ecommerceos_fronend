@@ -14,6 +14,8 @@ interface OrderModalProps {
   total: number;
   itemCount: number;
   items: CartItem[];
+  couponCode?: string;
+  shippingZoneId?: string;
 }
 
 export function OrderModal({
@@ -22,6 +24,8 @@ export function OrderModal({
   total,
   itemCount,
   items,
+  couponCode,
+  shippingZoneId,
 }: OrderModalProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -75,6 +79,8 @@ export function OrderModal({
         customerPhone: phone.trim(),
         customerEmail: email.trim(),
         customerAddress: address.trim(),
+        couponCode: couponCode?.trim() || undefined,
+        shippingZoneId: shippingZoneId?.trim() || undefined,
         items: items.map((item) => ({
           productId: item.slug ?? item.id,
           productName: item.nameBn || item.name,

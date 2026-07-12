@@ -12,8 +12,12 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: "📊" },
   { href: "/admin/products", label: "Products", icon: "📦" },
   { href: "/admin/orders", label: "Orders", icon: "🧾" },
+  { href: "/admin/shipping", label: "Shipping", icon: "🚚" },
+  { href: "/admin/returns", label: "Returns", icon: "↩️" },
   { href: "/admin/campaigns", label: "Campaign", icon: "📣" },
   { href: "/admin/customers", label: "Customers", icon: "👥" },
+  { href: "/admin/coupons", label: "Coupons", icon: "🎟️" },
+  { href: "/admin/reviews", label: "Reviews", icon: "⭐" },
   { href: "/admin/homepage", label: "Homepage", icon: "🏠" },
 ];
 

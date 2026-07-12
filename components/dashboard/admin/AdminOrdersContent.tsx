@@ -5,8 +5,14 @@ import {
   useListAllOrdersQuery,
   useUpdateOrderStatusMutation,
   type OrderStatus,
+  type PaymentStatus,
 } from "@/app/redux/services/orderApi";
 import { statusLabels } from "@/lib/admin-data";
+
+const paymentLabels: Record<PaymentStatus, { label: string; className: string }> = {
+  pending: { label: "Pending", className: "bg-yellow-100 text-yellow-700" },
+  paid: { label: "Paid", className: "bg-green-100 text-green-700" },
+};
 
 const filters = [
   { label: "All", value: undefined },
@@ -23,6 +29,7 @@ const statusOptions: OrderStatus[] = [
   "delivered",
   "completed",
   "cancelled",
+  "returned",
 ];
 
 function formatPrice(price: number) {
@@ -96,6 +103,7 @@ export function AdminOrdersContent() {
                 <th className="px-6 py-3">Customer</th>
                 <th className="px-6 py-3">Total</th>
                 <th className="px-6 py-3">Status</th>
+                <th className="px-6 py-3">Payment</th>
                 <th className="px-6 py-3">Date</th>
                 <th className="px-6 py-3">Action</th>
               </tr>
@@ -103,27 +111,28 @@ export function AdminOrdersContent() {
             <tbody>
               {isLoading && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500">
                     Loading orders...
                   </td>
                 </tr>
               )}
               {isError && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-red-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-red-500">
                     Failed to load orders. Run setup:orders on the backend.
                   </td>
                 </tr>
               )}
               {!isLoading && !isError && filteredOrders.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500">
                     No orders found.
                   </td>
                 </tr>
               )}
               {filteredOrders.map((order) => {
                 const status = statusLabels[order.status] ?? statusLabels.pending;
+                const payment = paymentLabels[order.paymentStatus] ?? paymentLabels.pending;
                 return (
                   <tr
                     key={order.id}
@@ -144,6 +153,13 @@ export function AdminOrdersContent() {
                         className={`rounded-full px-2.5 py-1 text-xs font-semibold ${status.className}`}
                       >
                         {status.label}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold ${payment.className}`}
+                      >
+                        {payment.label}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-500">

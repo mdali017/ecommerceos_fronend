@@ -91,9 +91,11 @@ export const formTextareaClass =
 export function FormActions({
   onCancel,
   submitLabel,
+  submitting = false,
 }: {
   onCancel: () => void;
   submitLabel: string;
+  submitting?: boolean;
 }) {
   return (
     <div className="flex items-center justify-end gap-3 border-t border-brand-border pt-5">
@@ -106,7 +108,8 @@ export function FormActions({
       </button>
       <button
         type="submit"
-        className="rounded-xl bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark"
+        disabled={submitting}
+        className="rounded-xl bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:opacity-60"
       >
         {submitLabel}
       </button>

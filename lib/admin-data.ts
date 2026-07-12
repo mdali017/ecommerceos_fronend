@@ -38,6 +38,7 @@ export const statusLabels: Record<string, { label: string; className: string }> 
   delivered: { label: "Delivered", className: "bg-green-100 text-green-700" },
   completed: { label: "Completed", className: "bg-green-100 text-green-700" },
   cancelled: { label: "Cancelled", className: "bg-red-100 text-red-600" },
+  returned: { label: "Returned", className: "bg-orange-100 text-brand-orange" },
   active: { label: "Active", className: "bg-green-100 text-green-700" },
   low_stock: { label: "Low Stock", className: "bg-orange-100 text-brand-orange" },
   out_of_stock: { label: "Out of Stock", className: "bg-red-100 text-red-600" },

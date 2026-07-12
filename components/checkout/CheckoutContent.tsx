@@ -11,6 +11,12 @@ import {
 } from "@/app/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { OrderModal } from "@/components/checkout/OrderModal";
+import {
+  CouponInput,
+  calculateCheckoutTotals,
+  type AppliedCoupon,
+} from "@/components/checkout/CouponInput";
+import { useListShippingZonesQuery, type ShippingZone } from "@/app/redux/services/shippingApi";
 
 function formatPrice(price: number) {
   return `৳${price.toLocaleString("bn-BD")}`;
@@ -20,14 +26,28 @@ export function CheckoutContent() {
   const dispatch = useAppDispatch();
   const items = useAppSelector((state) => state.cart.items as CartItem[]);
   const [orderModalOpen, setOrderModalOpen] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
+  const [selectedZoneId, setSelectedZoneId] = useState("");
+  const { data: shippingZones = [] } = useListShippingZonesQuery();
+
+  const activeZone: ShippingZone | undefined =
+    shippingZones.find((zone) => zone.id === selectedZoneId) ?? shippingZones[0];
 
   const subtotal = items.reduce(
     (sum: number, item: CartItem) => sum + item.price * item.quantity,
     0
   );
-  const deliveryCharge = items.length === 0 || subtotal >= 2000 ? 0 : 80;
-  const discount = subtotal >= 3000 ? 150 : 0;
-  const total = Math.max(0, subtotal + deliveryCharge - discount);
+  const { deliveryCharge, discount, total } = calculateCheckoutTotals(
+    subtotal,
+    items.length,
+    appliedCoupon,
+    activeZone
+      ? {
+          deliveryFee: activeZone.deliveryFee,
+          freeDeliveryThreshold: activeZone.freeDeliveryThreshold,
+        }
+      : undefined
+  );
   const itemCount = items.reduce(
     (count: number, item: CartItem) => count + item.quantity,
     0
@@ -181,6 +201,38 @@ export function CheckoutContent() {
 
           <aside className="h-fit rounded-2xl border border-brand-border bg-white p-5 shadow-sm lg:sticky lg:top-28">
             <h2 className="text-lg font-bold text-gray-900">অর্ডার সামারি</h2>
+
+            <div className="mt-4">
+              {shippingZones.length > 0 ? (
+                <div className="mb-4 space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">ডেলিভারি এলাকা</label>
+                  <select
+                    value={activeZone?.id ?? ""}
+                    onChange={(e) => setSelectedZoneId(e.target.value)}
+                    className="w-full rounded-xl border border-brand-border px-4 py-2.5 text-sm outline-none focus:border-brand-orange"
+                  >
+                    {shippingZones.map((zone) => (
+                      <option key={zone.id} value={zone.id}>
+                        {zone.nameBn || zone.name} — ৳{zone.deliveryFee}
+                        {subtotal >= zone.freeDeliveryThreshold ? " (Free)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                  {activeZone ? (
+                    <p className="text-xs text-gray-500">
+                      Estimated delivery: {activeZone.estimatedDaysMin}-{activeZone.estimatedDaysMax} দিন
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
+              <CouponInput
+                subtotal={subtotal}
+                appliedCoupon={appliedCoupon}
+                onApply={setAppliedCoupon}
+                onRemove={() => setAppliedCoupon(null)}
+              />
+            </div>
+
             <div className="mt-5 space-y-3 text-sm">
               <div className="flex justify-between text-gray-600">
                 <span>Subtotal</span>
@@ -214,9 +266,9 @@ export function CheckoutContent() {
             </div>
 
             <div className="mt-5 rounded-xl bg-brand-cream p-4 text-sm text-gray-600">
-              {subtotal >= 2000
-                ? "আপনি free delivery পাচ্ছেন।"
-                : `${formatPrice(2000 - subtotal)} আরও কিনলে free delivery পাবেন।`}
+              {activeZone && subtotal < activeZone.freeDeliveryThreshold
+                ? `${formatPrice(activeZone.freeDeliveryThreshold - subtotal)} আরও কিনলে free delivery পাবেন।`
+                : "আপনি free delivery পাচ্ছেন।"}
             </div>
 
             <button
@@ -242,6 +294,8 @@ export function CheckoutContent() {
         total={total}
         itemCount={itemCount}
         items={items}
+        couponCode={appliedCoupon?.code}
+        shippingZoneId={activeZone?.id}
       />
     </section>
   );

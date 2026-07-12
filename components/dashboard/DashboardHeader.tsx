@@ -4,6 +4,7 @@ import Link from "next/link";
 import { customerLogout, logoutDashboard } from "@/app/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { logout as logoutApi } from "@/lib/api/auth";
+import { useGetUnreadCountQuery } from "@/app/redux/services/notificationApi";
 import { CartCountBadge } from "@/components/cart/CartCountBadge";
 import { CartIcon } from "@/components/ui/Icons";
 
@@ -17,6 +18,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   const isLoggedIn = useAppSelector((state) => state.auth.isCustomerLoggedIn);
   const isUnlocked = useAppSelector((state) => state.auth.isDashboardUnlocked);
   const refreshToken = useAppSelector((state) => state.auth.refreshToken);
+  const { data: unreadData } = useGetUnreadCountQuery(undefined, { skip: !isLoggedIn });
 
   const handleCustomerLogout = () => {
     if (refreshToken) {
@@ -82,6 +84,20 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           <CartIcon />
           <CartCountBadge />
         </Link>
+        {isLoggedIn && (
+          <Link
+            href="/dashboard/notifications"
+            className="relative rounded-lg p-2 text-gray-600 transition-colors hover:bg-brand-gray hover:text-brand-orange"
+            aria-label="Notifications"
+          >
+            <span className="text-lg">🔔</span>
+            {(unreadData?.count ?? 0) > 0 && (
+              <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-orange px-1 text-[10px] font-bold text-white">
+                {unreadData!.count > 9 ? "9+" : unreadData!.count}
+              </span>
+            )}
+          </Link>
+        )}
         <Link
           href="/"
           className="rounded-lg bg-brand-orange px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-orange-dark sm:px-4 sm:text-sm"

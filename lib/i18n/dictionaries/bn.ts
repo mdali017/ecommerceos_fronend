@@ -67,6 +67,10 @@ const bn: Dictionary = {
     relatedProducts: "সম্পর্কিত পণ্য",
     seeMore: "আরও দেখুন",
     checkout: "চেকআউট",
+    searchResults: "সার্চ ফলাফল",
+    searchResultsFor: "খোঁজা হয়েছে:",
+    searchNoResults: "কোনো পণ্য পাওয়া যায়নি",
+    searchHint: "অন্য কিছু লিখে আবার চেষ্টা করুন।",
   },
   badges: {
     new: "নতুন",

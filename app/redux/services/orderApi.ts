@@ -8,7 +8,10 @@ export type OrderStatus =
   | "shipped"
   | "delivered"
   | "completed"
-  | "cancelled";
+  | "cancelled"
+  | "returned";
+
+export type PaymentStatus = "pending" | "paid";
 
 export interface OrderItem {
   id: string;
@@ -31,11 +34,16 @@ export interface Order {
   customerAddress: string;
   status: OrderStatus;
   paymentMethod: string;
+  paymentStatus: PaymentStatus;
   subtotal: number;
   deliveryCharge: number;
   discount: number;
   total: number;
   notes: string;
+  shippingZoneId: string | null;
+  courierName: string | null;
+  trackingNumber: string | null;
+  estimatedDelivery: string | null;
   itemCount: number;
   items: OrderItem[];
   createdAt: string;
@@ -48,6 +56,7 @@ export interface OrderSummary {
   customerName: string;
   customerPhone: string;
   status: OrderStatus;
+  paymentStatus: PaymentStatus;
   total: number;
   itemCount: number;
   createdAt: string;
@@ -60,6 +69,8 @@ export interface CreateOrderInput {
   customerAddress: string;
   paymentMethod?: "cod";
   notes?: string;
+  couponCode?: string;
+  shippingZoneId?: string;
   items: {
     productId: string;
     productName?: string;
@@ -79,7 +90,7 @@ export const orderApi = baseApi.injectEndpoints({
         body,
       }),
       transformResponse: (response: ApiSuccessResponse<Order>) => response.data,
-      invalidatesTags: [{ type: "Order", id: "LIST" }],
+      invalidatesTags: [{ type: "Order", id: "LIST" }, { type: "Notification", id: "LIST" }, { type: "Notification", id: "COUNT" }],
     }),
     listMyOrders: builder.query<OrderSummary[], void>({
       query: () => "/orders/me",
@@ -113,6 +124,22 @@ export const orderApi = baseApi.injectEndpoints({
         { type: "Order", id: "MY_LIST" },
       ],
     }),
+    updateOrderShipping: builder.mutation<
+      Order,
+      { id: string; courierName?: string; trackingNumber?: string; estimatedDelivery?: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/orders/${id}/shipping`,
+        method: "PATCH",
+        body,
+      }),
+      transformResponse: (response: ApiSuccessResponse<Order>) => response.data,
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Order", id },
+        { type: "Order", id: "LIST" },
+        { type: "Order", id: "MY_LIST" },
+      ],
+    }),
   }),
 });
 
@@ -122,4 +149,5 @@ export const {
   useListAllOrdersQuery,
   useGetOrderQuery,
   useUpdateOrderStatusMutation,
+  useUpdateOrderShippingMutation,
 } = orderApi;

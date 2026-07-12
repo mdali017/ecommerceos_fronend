@@ -6,6 +6,7 @@ import {
   type FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import { adminLogout, updateAdminTokens } from "../features/admin/adminSlice";
+import { logoutDashboard, updateCustomerTokens } from "../features/auth/authSlice";
 import type { RootState } from "../store";
 import { API_BASE_URL } from "@/lib/api/config";
 import type { ApiSuccessResponse, AuthTokens } from "@/lib/api/types";
@@ -33,7 +34,12 @@ const baseQueryWithRefresh: BaseQueryFn<
 
   if (result.error?.status === 401) {
     const state = api.getState() as RootState;
-    const refreshToken = state.admin.refreshToken;
+    const isCustomerSession = Boolean(
+      state.auth.isCustomerLoggedIn && state.auth.refreshToken
+    );
+    const refreshToken = isCustomerSession
+      ? state.auth.refreshToken
+      : state.admin.refreshToken;
 
     if (!refreshToken) return result;
 
@@ -52,8 +58,14 @@ const baseQueryWithRefresh: BaseQueryFn<
       | undefined;
 
     if (refreshData?.success) {
-      api.dispatch(updateAdminTokens(refreshData.data.tokens));
+      if (isCustomerSession) {
+        api.dispatch(updateCustomerTokens(refreshData.data.tokens));
+      } else {
+        api.dispatch(updateAdminTokens(refreshData.data.tokens));
+      }
       result = await rawBaseQuery(args, api, extraOptions);
+    } else if (isCustomerSession) {
+      api.dispatch(logoutDashboard());
     } else {
       api.dispatch(adminLogout());
     }
@@ -65,7 +77,7 @@ const baseQueryWithRefresh: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefresh,
-  tagTypes: ["Category", "HeroSlide", "SeasonalBanner", "HomepageBrand", "PromoBanner", "Testimonial", "Auth", "Order", "HomepageProductSection"],
+  tagTypes: ["Category", "HeroSlide", "SeasonalBanner", "HomepageBrand", "PromoBanner", "Testimonial", "Auth", "Order", "HomepageProductSection", "Admin", "Product", "Review", "Coupon", "Wishlist", "Notification", "Shipping", "Return"],
   endpoints: () => ({}),
 });
 

@@ -27,11 +27,11 @@ export async function showOrderSuccess(orderId: string, total: number) {
   });
 }
 
-export async function showUnlockSuccess() {
+export async function showUnlockSuccess(message?: string) {
   return brandSwal.fire({
     icon: "success",
     title: "স্বাগতম!",
-    text: "আপনার ড্যাশবোর্ড এখন unlocked।",
+    text: message ?? "আপনার ড্যাশবোর্ড এখন unlocked।",
     confirmButtonText: "ঠিক আছে",
     timer: 2500,
     timerProgressBar: true,

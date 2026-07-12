@@ -10,8 +10,14 @@ const hindSiliguri = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  title: "Khaas Food",
+  title: {
+    default: "Khaas Food — Pure & Natural Products",
+    template: "%s | Khaas Food",
+  },
   description: "Pure and natural food products delivered to your doorstep.",
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
 };
 
 export default function RootLayout({

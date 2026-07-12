@@ -80,6 +80,10 @@ export interface Dictionary {
     relatedProducts: string;
     seeMore: string;
     checkout: string;
+    searchResults: string;
+    searchResultsFor: string;
+    searchNoResults: string;
+    searchHint: string;
   };
   badges: {
     new: string;
