@@ -6,26 +6,32 @@ import { useEffect, useState } from "react";
 import { adminLogout } from "@/app/redux/features/admin/adminSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { logout as logoutApi } from "@/lib/api/auth";
+import {
+  adminNavItems,
+  isAdminGroupActive,
+  isAdminNavActive,
+  type AdminNavGroup,
+} from "@/lib/admin-nav";
 import { AdminLogin } from "./AdminLogin";
 
-const navItems = [
-  { href: "/admin", label: "Dashboard", icon: "📊" },
-  { href: "/admin/products", label: "Products", icon: "📦" },
-  { href: "/admin/orders", label: "Orders", icon: "🧾" },
-  { href: "/admin/shipping", label: "Shipping", icon: "🚚" },
-  { href: "/admin/returns", label: "Returns", icon: "↩️" },
-  { href: "/admin/campaigns", label: "Campaign", icon: "📣" },
-  { href: "/admin/customers", label: "Customers", icon: "👥" },
-  { href: "/admin/coupons", label: "Coupons", icon: "🎟️" },
-  { href: "/admin/reviews", label: "Reviews", icon: "⭐" },
-  { href: "/admin/homepage", label: "Homepage", icon: "🏠" },
-];
+function getInitiallyExpandedGroups(pathname: string) {
+  const expanded = new Set<string>();
+  for (const item of adminNavItems) {
+    if (item.type === "group" && isAdminGroupActive(item, pathname)) {
+      expanded.add(item.id);
+    }
+  }
+  return expanded;
+}
 
 export function AdminDashboardShell({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() =>
+    getInitiallyExpandedGroups(pathname)
+  );
   const isAuthenticated = useAppSelector((state) => state.admin.isAuthenticated);
   const accessToken = useAppSelector((state) => state.admin.accessToken);
   const adminName = useAppSelector((state) => state.admin.adminName);
@@ -37,6 +43,10 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
     }
   }, [isAuthenticated, accessToken, dispatch]);
 
+  useEffect(() => {
+    setExpandedGroups(getInitiallyExpandedGroups(pathname));
+  }, [pathname]);
+
   if (!isAuthenticated || !accessToken) {
     return <AdminLogin />;
   }
@@ -47,6 +57,41 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
     }
     dispatch(adminLogout());
     router.push("/admin");
+  };
+
+  const collapseAllGroups = () => setExpandedGroups(new Set());
+
+  const expandOnlyGroup = (groupId: string) => setExpandedGroups(new Set([groupId]));
+
+  const handleGroupNavigate = (group: AdminNavGroup) => {
+    const firstChild = group.children[0];
+    if (!firstChild) return;
+
+    expandOnlyGroup(group.id);
+
+    if (!isAdminNavActive(firstChild.href, pathname)) {
+      router.push(firstChild.href);
+      setSidebarOpen(false);
+    }
+  };
+
+  const toggleGroup = (group: AdminNavGroup) => {
+    setExpandedGroups((prev) => {
+      if (prev.has(group.id)) {
+        return new Set();
+      }
+      return new Set([group.id]);
+    });
+  };
+
+  const handleNavLinkClick = () => {
+    collapseAllGroups();
+    setSidebarOpen(false);
+  };
+
+  const handleChildLinkClick = (groupId: string) => {
+    expandOnlyGroup(groupId);
+    setSidebarOpen(false);
   };
 
   return (
@@ -77,27 +122,102 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
           </div>
         </div>
 
-        <nav className="flex-1 space-y-1 px-3 py-4">
-          {navItems.map((item) => {
-            const isActive =
-              item.href === "/admin"
-                ? pathname === "/admin"
-                : pathname.startsWith(item.href);
+        <nav className="scrollbar-hide min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
+          {adminNavItems.map((item) => {
+            if (item.type === "link") {
+              const isActive = isAdminNavActive(item.href, pathname);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={handleNavLinkClick}
+                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-brand-orange text-white"
+                      : "text-white/80 hover:bg-white/10"
+                  }`}
+                >
+                  <span>{item.icon}</span>
+                  {item.label}
+                </Link>
+              );
+            }
+
+            const isGroupActive = isAdminGroupActive(item, pathname);
+            const isExpanded = expandedGroups.has(item.id);
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-brand-orange text-white"
-                    : "text-white/80 hover:bg-white/10"
-                }`}
-              >
-                <span>{item.icon}</span>
-                {item.label}
-              </Link>
+              <div key={item.id}>
+                <div
+                  className={`flex w-full items-center rounded-xl transition-colors ${
+                    isGroupActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/80 hover:bg-white/10"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => handleGroupNavigate(item)}
+                    className="flex flex-1 items-center gap-3 px-4 py-3 text-sm font-medium"
+                  >
+                    <span>{item.icon}</span>
+                    <span className="text-left">{item.label}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleGroup(item)}
+                    aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.label}`}
+                    className="px-3 py-3 text-white/50 transition-colors hover:text-white"
+                  >
+                    <span
+                      className={`inline-block text-[10px] transition-transform duration-300 ease-out ${
+                        isExpanded ? "rotate-180" : ""
+                      }`}
+                    >
+                      ▼
+                    </span>
+                  </button>
+                </div>
+
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+                    isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                  aria-hidden={!isExpanded}
+                >
+                  <div className={`overflow-hidden ${isExpanded ? "" : "pointer-events-none"}`}>
+                    <div className="ml-4 mt-1 space-y-1 border-l border-white/10 pl-2 pb-1">
+                      {item.children.map((child, index) => {
+                        const isActive = isAdminNavActive(child.href, pathname);
+
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => handleChildLinkClick(item.id)}
+                            style={{
+                              transitionDelay: isExpanded ? `${index * 40}ms` : "0ms",
+                            }}
+                            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-300 ease-out ${
+                              isExpanded
+                                ? "translate-x-0 opacity-100"
+                                : "-translate-x-2 opacity-0"
+                            } ${
+                              isActive
+                                ? "bg-brand-orange text-white"
+                                : "text-white/70 hover:bg-white/10 hover:text-white"
+                            }`}
+                          >
+                            <span className="text-base">{child.icon}</span>
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
             );
           })}
         </nav>
