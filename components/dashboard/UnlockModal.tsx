@@ -8,12 +8,15 @@ import {
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { activateCheckoutCustomer, loginCustomer } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
+import { useLocale } from "@/components/providers/LocaleProvider";
 import { showUnlockError, showUnlockSuccess } from "@/lib/swal";
 
 type UnlockMode = "activate" | "login";
 
 export function UnlockModal() {
   const dispatch = useAppDispatch();
+  const { dictionary } = useLocale();
+  const t = dictionary.dashboard;
   const loginMethod = useAppSelector((state) => state.auth.loginMethod);
   const customer = useAppSelector((state) => state.auth.customer);
   const pendingCheckoutActivation = useAppSelector(
@@ -49,17 +52,17 @@ export function UnlockModal() {
     e.preventDefault();
 
     if (!customer) {
-      await showUnlockError("অর্ডারের তথ্য পাওয়া যায়নি।");
+      await showUnlockError(t.orderInfoNotFound);
       return;
     }
 
     if (!password.trim() || password.trim().length < 4) {
-      await showUnlockError("পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে।");
+      await showUnlockError(t.passwordTooShort);
       return;
     }
 
     if (password !== confirmPassword) {
-      await showUnlockError("পাসওয়ার্ড মিলছে না।");
+      await showUnlockError(t.passwordNotMatch);
       return;
     }
 
@@ -93,7 +96,7 @@ export function UnlockModal() {
       const message =
         error instanceof ApiError
           ? error.message
-          : "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।";
+          : t.accountCreateFailed;
       await showUnlockError(message);
     } finally {
       setSubmitting(false);
@@ -104,7 +107,7 @@ export function UnlockModal() {
     e.preventDefault();
 
     if (!identifier.trim() || !password.trim()) {
-      await showUnlockError("ফোন/ইমেইল এবং পাসওয়ার্ড দিন।");
+      await showUnlockError(t.loginCredentialsRequired);
       return;
     }
 
@@ -136,7 +139,7 @@ export function UnlockModal() {
       const message =
         error instanceof ApiError
           ? error.message
-          : "ভুল তথ্য। আবার চেষ্টা করুন।";
+          : t.loginFailed;
       await showUnlockError(message);
     } finally {
       setSubmitting(false);
@@ -152,13 +155,9 @@ export function UnlockModal() {
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-cream text-2xl">
             🔐
           </div>
-          <h2 className="mt-4 text-xl font-bold text-gray-900">
-            ড্যাশবোর্ড আনলক করুন
-          </h2>
+          <h2 className="mt-4 text-xl font-bold text-gray-900">{t.unlockTitle}</h2>
           <p className="mt-2 text-sm text-gray-500">
-            {mode === "activate"
-              ? "অর্ডারের তথ্য দিয়ে পাসওয়ার্ড সেট করুন"
-              : "অর্ডার দেখতে লগইন করুন"}
+            {mode === "activate" ? t.unlockActivateSubtitle : t.unlockLoginSubtitle}
           </p>
         </div>
 
@@ -173,26 +172,26 @@ export function UnlockModal() {
 
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                পাসওয়ার্ড সেট করুন
+                {t.setPassword}
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="কমপক্ষে ৪ অক্ষর"
+                placeholder={t.passwordMinPlaceholder}
                 className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
               />
             </div>
 
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                পাসওয়ার্ড নিশ্চিত করুন
+                {t.confirmPassword}
               </label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="পাসওয়ার্ড আবার লিখুন"
+                placeholder={t.confirmPasswordPlaceholder}
                 className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
               />
             </div>
@@ -202,7 +201,7 @@ export function UnlockModal() {
               disabled={submitting}
               className="w-full rounded-xl bg-brand-green py-3.5 text-sm font-bold text-white transition-colors hover:bg-brand-green-light disabled:opacity-60"
             >
-              {submitting ? "সংরক্ষণ হচ্ছে..." : "পাসওয়ার্ড সেট করুন"}
+              {submitting ? t.savingPassword : t.setPassword}
             </button>
 
             <button
@@ -214,7 +213,7 @@ export function UnlockModal() {
               }}
               className="w-full text-sm font-medium text-brand-green hover:underline"
             >
-              ইতিমধ্যে অ্যাকাউন্ট আছে? লগইন করুন
+              {t.haveAccount}
             </button>
           </form>
         ) : (
@@ -232,7 +231,7 @@ export function UnlockModal() {
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                📱 Phone
+                📱 {t.phone}
               </button>
               <button
                 type="button"
@@ -246,14 +245,14 @@ export function UnlockModal() {
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                ✉️ Email
+                ✉️ {t.email}
               </button>
             </div>
 
             <form onSubmit={(e) => void handleLogin(e)} className="space-y-4">
               <div>
                 <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                  {loginMethod === "phone" ? "ফোন নম্বর" : "ইমেইল"}
+                  {loginMethod === "phone" ? t.phone : t.email}
                 </label>
                 <input
                   type={loginMethod === "phone" ? "tel" : "email"}
@@ -270,13 +269,13 @@ export function UnlockModal() {
 
               <div>
                 <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                  পাসওয়ার্ড
+                  {t.passwordLabel}
                 </label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="আপনার পাসওয়ার্ড"
+                  placeholder={t.yourPassword}
                   className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
                 />
               </div>
@@ -286,7 +285,7 @@ export function UnlockModal() {
                 disabled={submitting}
                 className="w-full rounded-xl bg-brand-green py-3.5 text-sm font-bold text-white transition-colors hover:bg-brand-green-light disabled:opacity-60"
               >
-                {submitting ? "যাচাই হচ্ছে..." : "লগইন করুন"}
+                {submitting ? t.verifying : t.login}
               </button>
 
               {pendingCheckoutActivation && customer ? (
@@ -299,7 +298,7 @@ export function UnlockModal() {
                   }}
                   className="w-full text-sm font-medium text-brand-green hover:underline"
                 >
-                  নতুন অর্ডার? পাসওয়ার্ড সেট করুন
+                  {t.newOrderSetPassword}
                 </button>
               ) : null}
             </form>

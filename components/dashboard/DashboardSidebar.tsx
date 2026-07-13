@@ -2,15 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const navItems = [
-  { href: "/dashboard", label: "ড্যাশবোর্ড", icon: "📊" },
-  { href: "/dashboard/orders", label: "আমার অর্ডার", icon: "📦" },
-  { href: "/dashboard/wishlist", label: "Wishlist", icon: "❤️" },
-  { href: "/dashboard/notifications", label: "Notifications", icon: "🔔" },
-  { href: "/dashboard/profile", label: "প্রোফাইল", icon: "👤" },
-  { href: "/", label: "কেনাকাটা", icon: "🛒" },
-];
+import { useLocale } from "@/components/providers/LocaleProvider";
 
 interface DashboardSidebarProps {
   isOpen: boolean;
@@ -24,6 +16,17 @@ export function DashboardSidebar({
   customerName,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const { dictionary } = useLocale();
+  const t = dictionary.dashboard;
+
+  const navItems = [
+    { href: "/dashboard", label: t.nav.dashboard, icon: "📊" },
+    { href: "/dashboard/orders", label: t.nav.orders, icon: "📦" },
+    { href: "/dashboard/wishlist", label: t.nav.wishlist, icon: "❤️" },
+    { href: "/dashboard/notifications", label: t.nav.notifications, icon: "🔔" },
+    { href: "/dashboard/profile", label: t.nav.profile, icon: "👤" },
+    { href: "/", label: t.nav.shop, icon: "🛒" },
+  ];
 
   return (
     <>
@@ -47,7 +50,7 @@ export function DashboardSidebar({
           </div>
           <div>
             <p className="text-sm font-bold leading-tight">Khaas Food</p>
-            <p className="text-xs text-white/60">Customer Panel</p>
+            <p className="text-xs text-white/60">{t.customerPanel}</p>
           </div>
         </div>
 
@@ -83,9 +86,9 @@ export function DashboardSidebar({
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">
-                {customerName ?? "গ্রাহক"}
+                {customerName ?? t.customer}
               </p>
-              <p className="text-xs text-white/60">Customer</p>
+              <p className="text-xs text-white/60">{t.customer}</p>
             </div>
           </div>
         </div>

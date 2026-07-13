@@ -13,22 +13,17 @@ import {
   useCreateReturnRequestMutation,
   useListMyReturnsQuery,
 } from "@/app/redux/services/returnApi";
+import { useLocale } from "@/components/providers/LocaleProvider";
+import { formatDashboardDate } from "@/lib/i18n/product-display";
+import {
+  getPaymentStatusLabels,
+  getStatusLabels,
+} from "@/lib/order-status";
 import Swal from "sweetalert2";
-import { paymentStatusLabelsBn, statusLabelsBn } from "@/lib/order-status";
-
-function formatPrice(price: number) {
-  return `৳${price.toLocaleString("bn-BD")}`;
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("bn-BD", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 function ReturnRequestButton({ orderId, orderStatus }: { orderId: string; orderStatus: string }) {
+  const { dictionary } = useLocale();
+  const t = dictionary.dashboard;
   const [createReturn, { isLoading }] = useCreateReturnRequestMutation();
   const { data: myReturns = [] } = useListMyReturnsQuery();
   const existing = myReturns.find((item) => item.orderId === orderId);
@@ -37,17 +32,17 @@ function ReturnRequestButton({ orderId, orderStatus }: { orderId: string; orderS
   if (existing) {
     return (
       <p className="mt-3 text-xs font-semibold text-brand-orange">
-        Return request: {existing.status}
+        {t.returnStatus} {existing.status}
       </p>
     );
   }
 
   const handleReturn = async () => {
     const result = await Swal.fire({
-      title: "Return request",
+      title: t.returnRequest,
       input: "textarea",
-      inputLabel: "Reason",
-      inputPlaceholder: "Why do you want to return?",
+      inputLabel: t.returnReason,
+      inputPlaceholder: t.returnWhy,
       showCancelButton: true,
       confirmButtonColor: "#f58220",
     });
@@ -55,9 +50,9 @@ function ReturnRequestButton({ orderId, orderStatus }: { orderId: string; orderS
 
     try {
       await createReturn({ orderId, reason: result.value.trim() }).unwrap();
-      await Swal.fire({ icon: "success", title: "Return request submitted", timer: 1500, showConfirmButton: false });
+      await Swal.fire({ icon: "success", title: t.returnSubmitted, timer: 1500, showConfirmButton: false });
     } catch {
-      await Swal.fire({ icon: "error", title: "Return request failed" });
+      await Swal.fire({ icon: "error", title: t.returnFailed });
     }
   };
 
@@ -68,18 +63,20 @@ function ReturnRequestButton({ orderId, orderStatus }: { orderId: string; orderS
       onClick={() => void handleReturn()}
       className="mt-3 rounded-lg border border-brand-orange px-3 py-1.5 text-xs font-semibold text-brand-orange hover:bg-orange-50"
     >
-      Return request
+      {t.returnRequest}
     </button>
   );
 }
 
 function OrderDetail({ orderId }: { orderId: string }) {
+  const { dictionary, locale, formatPrice } = useLocale();
+  const t = dictionary.dashboard;
   const { data: order, isLoading, isError } = useGetOrderQuery(orderId);
 
   if (isLoading) {
     return (
       <div className="border-t border-brand-border pt-5 text-sm text-gray-500">
-        বিস্তারিত লোড হচ্ছে...
+        {t.detailsLoading}
       </div>
     );
   }
@@ -87,7 +84,7 @@ function OrderDetail({ orderId }: { orderId: string }) {
   if (isError || !order) {
     return (
       <div className="border-t border-brand-border pt-5 text-sm text-red-600">
-        অর্ডার বিস্তারিত লোড করা যায়নি।
+        {t.detailsLoadError}
       </div>
     );
   }
@@ -123,31 +120,31 @@ function OrderDetail({ orderId }: { orderId: string }) {
 
       <dl className="mt-5 space-y-2 border-t border-brand-border pt-4 text-sm">
         <div className="flex justify-between">
-          <dt className="text-gray-500">সাবটোটাল</dt>
+          <dt className="text-gray-500">{t.subtotal}</dt>
           <dd className="font-semibold">{formatPrice(order.subtotal)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-gray-500">ডেলিভারি চার্জ</dt>
+          <dt className="text-gray-500">{t.deliveryCharge}</dt>
           <dd className="font-semibold">{formatPrice(order.deliveryCharge)}</dd>
         </div>
         {order.discount > 0 ? (
           <div className="flex justify-between text-green-600">
-            <dt>ছাড়</dt>
+            <dt>{t.discount}</dt>
             <dd className="font-semibold">- {formatPrice(order.discount)}</dd>
           </div>
         ) : null}
         <div className="flex justify-between border-t border-brand-border pt-2 text-base">
-          <dt className="font-bold text-gray-900">মোট</dt>
+          <dt className="font-bold text-gray-900">{t.total}</dt>
           <dd className="font-bold text-brand-orange">{formatPrice(order.total)}</dd>
         </div>
       </dl>
 
       <div className="mt-4 rounded-xl bg-brand-gray/40 p-4 text-sm">
-        <p className="font-semibold text-gray-900">ডেলিভারি ঠিকানা</p>
+        <p className="font-semibold text-gray-900">{t.deliveryAddress}</p>
         <p className="mt-1 text-gray-600">{order.customerAddress}</p>
         <p className="mt-2 text-gray-600">{order.customerPhone}</p>
         <p className="mt-2 text-gray-600">
-          পেমেন্ট: ক্যাশ অন ডেলিভারি —{" "}
+          {t.paymentCod}{" "}
           <span
             className={
               order.paymentStatus === "paid"
@@ -155,17 +152,17 @@ function OrderDetail({ orderId }: { orderId: string }) {
                 : "font-semibold text-yellow-600"
             }
           >
-            {order.paymentStatus === "paid" ? "সম্পন্ন" : "বাকি"}
+            {order.paymentStatus === "paid" ? t.paymentPaid : t.paymentPending}
           </span>
         </p>
         {order.trackingNumber ? (
           <p className="mt-2 text-gray-600">
-            Tracking: <span className="font-semibold">{order.trackingNumber}</span>
+            {t.tracking} <span className="font-semibold">{order.trackingNumber}</span>
             {order.courierName ? ` (${order.courierName})` : ""}
           </p>
         ) : null}
         {order.estimatedDelivery ? (
-          <p className="mt-1 text-gray-600">Delivery ETA: {order.estimatedDelivery}</p>
+          <p className="mt-1 text-gray-600">{t.deliveryEta} {order.estimatedDelivery}</p>
         ) : null}
         <ReturnRequestButton orderId={order.id} orderStatus={order.status} />
       </div>
@@ -182,14 +179,18 @@ function OrderCard({
   expanded: boolean;
   onToggle: () => void;
 }) {
-  const status = statusLabelsBn[order.status];
-  const payment = paymentStatusLabelsBn[order.paymentStatus] ?? paymentStatusLabelsBn.pending;
+  const { dictionary, locale, formatPrice } = useLocale();
+  const t = dictionary.dashboard;
+  const statusLabels = getStatusLabels(locale);
+  const paymentLabels = getPaymentStatusLabels(locale);
+  const status = statusLabels[order.status];
+  const payment = paymentLabels[order.paymentStatus] ?? paymentLabels.pending;
 
   return (
     <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-gray-500">অর্ডার আইডি</p>
+          <p className="text-sm text-gray-500">{t.orderId}</p>
           <p className="text-lg font-bold text-gray-900">{order.orderNumber}</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -203,15 +204,15 @@ function OrderCard({
       </div>
       <div className="mt-5 grid grid-cols-1 gap-4 border-t border-brand-border pt-5 sm:grid-cols-3">
         <div>
-          <p className="text-sm text-gray-500">তারিখ</p>
-          <p className="font-semibold">{formatDate(order.createdAt)}</p>
+          <p className="text-sm text-gray-500">{t.date}</p>
+          <p className="font-semibold">{formatDashboardDate(order.createdAt, locale)}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">পণ্য</p>
-          <p className="font-semibold">{order.itemCount} টি</p>
+          <p className="text-sm text-gray-500">{t.products}</p>
+          <p className="font-semibold">{order.itemCount} {t.itemCountSuffix}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">মোট</p>
+          <p className="text-sm text-gray-500">{t.total}</p>
           <p className="font-bold text-brand-orange">{formatPrice(order.total)}</p>
         </div>
       </div>
@@ -221,7 +222,7 @@ function OrderCard({
         onClick={onToggle}
         className="mt-4 text-sm font-semibold text-brand-green hover:underline"
       >
-        {expanded ? "বিস্তারিত লুকান" : "বিস্তারিত দেখুন"}
+        {expanded ? t.hideDetails : t.showDetails}
       </button>
 
       {expanded ? <OrderDetail orderId={order.id} /> : null}
@@ -230,6 +231,9 @@ function OrderCard({
 }
 
 export default function OrdersPage() {
+  const { dictionary, locale, formatPrice } = useLocale();
+  const t = dictionary.dashboard;
+  const statusLabels = getStatusLabels(locale);
   const accessToken = useAppSelector((state) => state.auth.accessToken);
   const lastOrder = useAppSelector((state) => state.auth.lastOrder);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
@@ -242,7 +246,7 @@ export default function OrdersPage() {
   if (accessToken && isLoading) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">অর্ডার লোড হচ্ছে...</p>
+        <p className="text-gray-500">{t.ordersLoading}</p>
       </div>
     );
   }
@@ -250,7 +254,7 @@ export default function OrdersPage() {
   if (hasApiOrders) {
     return (
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-gray-900">আমার অর্ডার</h2>
+        <h2 className="text-xl font-bold text-gray-900">{t.myOrders}</h2>
         {orders.map((order) => (
           <OrderCard
             key={order.id}
@@ -270,38 +274,40 @@ export default function OrdersPage() {
   if (!lastOrder) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">কোনো অর্ডার পাওয়া যায়নি।</p>
+        <p className="text-gray-500">{t.noOrdersFound}</p>
         <Link href="/" className="mt-4 inline-block text-sm font-semibold text-brand-orange">
-          কেনাকাটা করুন →
+          {t.shopNow}
         </Link>
       </div>
     );
   }
 
+  const processingLabel = statusLabels.processing.label;
+
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-900">আমার অর্ডার</h2>
+      <h2 className="text-xl font-bold text-gray-900">{t.myOrders}</h2>
       <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm text-gray-500">অর্ডার আইডি</p>
+            <p className="text-sm text-gray-500">{t.orderId}</p>
             <p className="text-lg font-bold text-gray-900">{lastOrder.orderId}</p>
           </div>
           <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-brand-orange">
-            প্রসেসিং
+            {processingLabel}
           </span>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-4 border-t border-brand-border pt-5 sm:grid-cols-3">
           <div>
-            <p className="text-sm text-gray-500">তারিখ</p>
-            <p className="font-semibold">{formatDate(lastOrder.date)}</p>
+            <p className="text-sm text-gray-500">{t.date}</p>
+            <p className="font-semibold">{formatDashboardDate(lastOrder.date, locale)}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">পণ্য</p>
-            <p className="font-semibold">{lastOrder.itemCount} টি</p>
+            <p className="text-sm text-gray-500">{t.products}</p>
+            <p className="font-semibold">{lastOrder.itemCount} {t.itemCountSuffix}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">মোট</p>
+            <p className="text-sm text-gray-500">{t.total}</p>
             <p className="font-bold text-brand-orange">{formatPrice(lastOrder.total)}</p>
           </div>
         </div>

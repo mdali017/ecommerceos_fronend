@@ -8,11 +8,8 @@ import {
   useRemoveFromWishlistMutation,
 } from "@/app/redux/services/wishlistApi";
 import { useAppDispatch } from "@/app/redux/hooks";
+import { useLocale } from "@/components/providers/LocaleProvider";
 import Swal from "sweetalert2";
-
-function formatPrice(price: number) {
-  return `৳${price.toLocaleString("bn-BD")}`;
-}
 
 function resolvePrice(item: { sellingPrice: number; offerPrice: number }) {
   if (item.offerPrice > 0 && item.offerPrice < item.sellingPrice) return item.offerPrice;
@@ -21,6 +18,8 @@ function resolvePrice(item: { sellingPrice: number; offerPrice: number }) {
 
 export function WishlistContent() {
   const dispatch = useAppDispatch();
+  const { dictionary, formatPrice } = useLocale();
+  const t = dictionary.dashboard;
   const { data: items = [], isLoading, isError, refetch } = useListWishlistQuery();
   const [removeFromWishlist] = useRemoveFromWishlistMutation();
 
@@ -28,7 +27,7 @@ export function WishlistContent() {
     try {
       await removeFromWishlist(productId).unwrap();
     } catch {
-      await Swal.fire({ icon: "error", title: "Wishlist থেকে সরানো যায়নি" });
+      await Swal.fire({ icon: "error", title: t.removeFailed });
     }
   };
 
@@ -47,7 +46,7 @@ export function WishlistContent() {
     await removeFromWishlist(item.slug).unwrap();
     await Swal.fire({
       icon: "success",
-      title: "কার্টে যোগ হয়েছে",
+      title: t.addedToCart,
       timer: 1500,
       showConfirmButton: false,
     });
@@ -56,7 +55,7 @@ export function WishlistContent() {
   if (isLoading) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-gray-500">
-        Wishlist লোড হচ্ছে...
+        {t.wishlistLoading}
       </div>
     );
   }
@@ -64,7 +63,7 @@ export function WishlistContent() {
   if (isError) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-red-600">
-        Wishlist লোড করা যায়নি।
+        {t.wishlistLoadError}
       </div>
     );
   }
@@ -72,24 +71,24 @@ export function WishlistContent() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-900">আমার Wishlist</h2>
+        <h2 className="text-xl font-bold text-gray-900">{t.wishlistTitle}</h2>
         <button
           type="button"
           onClick={() => refetch()}
           className="text-sm font-semibold text-brand-green hover:text-brand-orange"
         >
-          Refresh
+          {t.refresh}
         </button>
       </div>
 
       {items.length === 0 ? (
         <div className="rounded-2xl border border-brand-border bg-white p-8 text-center">
-          <p className="text-gray-500">Wishlist খালি। পছন্দের পণ্যে ❤️ চাপুন।</p>
+          <p className="text-gray-500">{t.wishlistEmpty}</p>
           <Link
             href="/"
             className="mt-4 inline-flex rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white"
           >
-            কেনাকাটা শুরু করুন
+            {t.startShopping}
           </Link>
         </div>
       ) : (
@@ -122,7 +121,7 @@ export function WishlistContent() {
                     {formatPrice(resolvePrice(item))}
                   </p>
                   {!item.inStock && (
-                    <p className="mt-1 text-xs font-semibold text-red-500">Out of stock</p>
+                    <p className="mt-1 text-xs font-semibold text-red-500">{t.outOfStock}</p>
                   )}
                 </div>
               </div>
@@ -133,14 +132,14 @@ export function WishlistContent() {
                   onClick={() => void handleMoveToCart(item)}
                   className="flex-1 rounded-lg bg-brand-orange py-2 text-sm font-semibold text-white disabled:opacity-50"
                 >
-                  কার্টে যোগ করুন
+                  {dictionary.common.addToCart}
                 </button>
                 <button
                   type="button"
                   onClick={() => void handleRemove(item.slug)}
                   className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600"
                 >
-                  সরান
+                  {t.remove}
                 </button>
               </div>
             </article>

@@ -7,11 +7,14 @@ import {
   useUpdatePasswordMutation,
   useUpdateProfileMutation,
 } from "@/app/redux/services/authApi";
+import { useLocale } from "@/components/providers/LocaleProvider";
 import { ApiError } from "@/lib/api/client";
 import { showUnlockError, showUnlockSuccess } from "@/lib/swal";
 
 export default function ProfilePage() {
   const dispatch = useAppDispatch();
+  const { dictionary } = useLocale();
+  const t = dictionary.dashboard;
   const customer = useAppSelector((state) => state.auth.customer);
   const accessToken = useAppSelector((state) => state.auth.accessToken);
   const [name, setName] = useState("");
@@ -38,7 +41,7 @@ export default function ProfilePage() {
   if (!customer) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">প্রোফাইল তথ্য পাওয়া যায়নি।</p>
+        <p className="text-gray-500">{t.profileNotFound}</p>
       </div>
     );
   }
@@ -47,7 +50,7 @@ export default function ProfilePage() {
     e.preventDefault();
 
     if (!accessToken) {
-      await showUnlockError("প্রোফাইল আপডেট করতে লগইন করুন।");
+      await showUnlockError(t.loginToUpdateProfile);
       return;
     }
 
@@ -69,12 +72,12 @@ export default function ProfilePage() {
         })
       );
 
-      await showUnlockSuccess("প্রোফাইল আপডেট হয়েছে।");
+      await showUnlockSuccess(t.profileUpdated);
     } catch (error) {
       const message =
         error instanceof ApiError
           ? error.message
-          : "প্রোফাইল আপডেট করা যায়নি।";
+          : t.profileUpdateFailed;
       await showUnlockError(message);
     }
   };
@@ -83,17 +86,17 @@ export default function ProfilePage() {
     e.preventDefault();
 
     if (!accessToken) {
-      await showUnlockError("পাসওয়ার্ড পরিবর্তন করতে লগইন করুন।");
+      await showUnlockError(t.loginToChangePassword);
       return;
     }
 
     if (newPassword.length < 4) {
-      await showUnlockError("নতুন পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে।");
+      await showUnlockError(t.passwordMinLength);
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      await showUnlockError("নতুন পাসওয়ার্ড মিলছে না।");
+      await showUnlockError(t.passwordMismatch);
       return;
     }
 
@@ -106,19 +109,19 @@ export default function ProfilePage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      await showUnlockSuccess("পাসওয়ার্ড আপডেট হয়েছে।");
+      await showUnlockSuccess(t.passwordUpdated);
     } catch (error) {
       const message =
         error instanceof ApiError
           ? error.message
-          : "পাসওয়ার্ড আপডেট করা যায়নি।";
+          : t.passwordUpdateFailed;
       await showUnlockError(message);
     }
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-gray-900">প্রোফাইল</h2>
+      <h2 className="text-xl font-bold text-gray-900">{t.profileTitle}</h2>
 
       <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
         <div className="flex items-center gap-4 border-b border-brand-border pb-5">
@@ -127,13 +130,13 @@ export default function ProfilePage() {
           </div>
           <div>
             <p className="text-lg font-bold text-gray-900">{customer.name}</p>
-            <p className="text-sm text-gray-500">Khaas Food Customer</p>
+            <p className="text-sm text-gray-500">{t.customerLabel}</p>
           </div>
         </div>
 
         <form onSubmit={(e) => void handleProfileSave(e)} className="mt-5 space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">নাম</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.name}</label>
             <input
               type="text"
               value={name}
@@ -142,7 +145,7 @@ export default function ProfilePage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">ফোন</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.phone}</label>
             <input
               type="tel"
               value={phone}
@@ -151,7 +154,7 @@ export default function ProfilePage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">ইমেইল</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.email}</label>
             <input
               type="email"
               value={email}
@@ -160,7 +163,7 @@ export default function ProfilePage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">ঠিকানা</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.address}</label>
             <textarea
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -173,16 +176,16 @@ export default function ProfilePage() {
             disabled={savingProfile || !accessToken}
             className="rounded-xl bg-brand-green px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-green-light disabled:opacity-60"
           >
-            {savingProfile ? "সংরক্ষণ হচ্ছে..." : "প্রোফাইল সংরক্ষণ"}
+            {savingProfile ? t.saving : t.saveProfile}
           </button>
         </form>
       </div>
 
       <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
-        <h3 className="text-lg font-bold text-gray-900">পাসওয়ার্ড পরিবর্তন</h3>
+        <h3 className="text-lg font-bold text-gray-900">{t.changePassword}</h3>
         <form onSubmit={(e) => void handlePasswordSave(e)} className="mt-5 space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">বর্তমান পাসওয়ার্ড</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.currentPassword}</label>
             <input
               type="password"
               value={currentPassword}
@@ -191,7 +194,7 @@ export default function ProfilePage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">নতুন পাসওয়ার্ড</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.newPassword}</label>
             <input
               type="password"
               value={newPassword}
@@ -200,7 +203,7 @@ export default function ProfilePage() {
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">নতুন পাসওয়ার্ড নিশ্চিত করুন</label>
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.confirmNewPassword}</label>
             <input
               type="password"
               value={confirmPassword}
@@ -213,7 +216,7 @@ export default function ProfilePage() {
             disabled={savingPassword || !accessToken}
             className="rounded-xl bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:opacity-60"
           >
-            {savingPassword ? "আপডেট হচ্ছে..." : "পাসওয়ার্ড আপডেট"}
+            {savingPassword ? t.updating : t.updatePassword}
           </button>
         </form>
       </div>

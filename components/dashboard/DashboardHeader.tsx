@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { logout as logoutApi } from "@/lib/api/auth";
 import { useGetUnreadCountQuery } from "@/app/redux/services/notificationApi";
 import { CartCountBadge } from "@/components/cart/CartCountBadge";
+import { useLocale } from "@/components/providers/LocaleProvider";
+import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
 import { CartIcon } from "@/components/ui/Icons";
 
 interface DashboardHeaderProps {
@@ -14,6 +16,8 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   const dispatch = useAppDispatch();
+  const { dictionary, locale } = useLocale();
+  const t = dictionary.dashboard;
   const customer = useAppSelector((state) => state.auth.customer);
   const isLoggedIn = useAppSelector((state) => state.auth.isCustomerLoggedIn);
   const isUnlocked = useAppSelector((state) => state.auth.isDashboardUnlocked);
@@ -49,22 +53,23 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
         </button>
         <div>
           <h1 className="text-base font-bold text-gray-900 sm:text-lg">
-            {customer ? `স্বাগতম, ${customer.name.split(" ")[0]}!` : "ড্যাশবোর্ড"}
+            {customer
+              ? t.welcome.replace("{name}", customer.name.split(" ")[0])
+              : t.welcomeFallback}
           </h1>
-          <p className="hidden text-xs text-gray-500 sm:block">
-            আপনার অর্ডার ও অ্যাকাউন্ট পরিচালনা করুন
-          </p>
+          <p className="hidden text-xs text-gray-500 sm:block">{t.subtitle}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
+        <LocaleSwitcher currentLocale={locale} />
         {isUnlocked && !isLoggedIn && (
           <button
             type="button"
             onClick={handleLockDashboard}
             className="hidden rounded-lg border border-brand-border px-3 py-2 text-xs font-semibold text-gray-600 transition-colors hover:bg-brand-gray sm:block"
           >
-            🔒 লক করুন
+            {t.lock}
           </button>
         )}
         {isLoggedIn && (
@@ -73,7 +78,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             onClick={handleCustomerLogout}
             className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50 sm:text-sm"
           >
-            লগআউট
+            {t.logout}
           </button>
         )}
         <Link
@@ -102,7 +107,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           href="/"
           className="rounded-lg bg-brand-orange px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-orange-dark sm:px-4 sm:text-sm"
         >
-          শপে যান
+          {t.goToShop}
         </Link>
       </div>
     </header>

@@ -6,18 +6,12 @@ import {
   useMarkAllNotificationsReadMutation,
   useMarkNotificationReadMutation,
 } from "@/app/redux/services/notificationApi";
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleString("bn-BD", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+import { useLocale } from "@/components/providers/LocaleProvider";
+import { formatDashboardDateTime } from "@/lib/i18n/product-display";
 
 export function NotificationsContent() {
+  const { dictionary, locale } = useLocale();
+  const t = dictionary.dashboard;
   const { data: notifications = [], isLoading, isError, refetch } = useListNotificationsQuery();
   const [markRead] = useMarkNotificationReadMutation();
   const [markAllRead] = useMarkAllNotificationsReadMutation();
@@ -43,7 +37,7 @@ export function NotificationsContent() {
   if (isLoading) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-gray-500">
-        Notifications লোড হচ্ছে...
+        {t.notificationsLoading}
       </div>
     );
   }
@@ -51,7 +45,7 @@ export function NotificationsContent() {
   if (isError) {
     return (
       <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-red-600">
-        Notifications লোড করা যায়নি।
+        {t.notificationsLoadError}
       </div>
     );
   }
@@ -60,9 +54,11 @@ export function NotificationsContent() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t.notificationsTitle}</h2>
           {unreadCount > 0 && (
-            <p className="text-sm text-brand-orange">{unreadCount} unread</p>
+            <p className="text-sm text-brand-orange">
+              {t.unread.replace("{count}", String(unreadCount))}
+            </p>
           )}
         </div>
         <div className="flex gap-2">
@@ -71,7 +67,7 @@ export function NotificationsContent() {
             onClick={() => refetch()}
             className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-gray-700"
           >
-            Refresh
+            {t.refresh}
           </button>
           {unreadCount > 0 && (
             <button
@@ -79,7 +75,7 @@ export function NotificationsContent() {
               onClick={() => void handleMarkAllRead()}
               className="rounded-lg bg-brand-green px-4 py-2 text-sm font-semibold text-white"
             >
-              Mark all read
+              {t.markAllRead}
             </button>
           )}
         </div>
@@ -87,7 +83,7 @@ export function NotificationsContent() {
 
       {notifications.length === 0 ? (
         <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-gray-500">
-          কোনো notification নেই।
+          {t.noNotifications}
         </div>
       ) : (
         <div className="space-y-3">
@@ -105,7 +101,7 @@ export function NotificationsContent() {
                     <p className="font-bold text-gray-900">{notification.title}</p>
                     <p className="mt-1 text-sm text-gray-600">{notification.message}</p>
                     <p className="mt-2 text-xs text-gray-400">
-                      {formatDate(notification.createdAt)}
+                      {formatDashboardDateTime(notification.createdAt, locale)}
                     </p>
                   </div>
                   {!notification.isRead && (
@@ -117,7 +113,7 @@ export function NotificationsContent() {
                       }}
                       className="rounded-lg border border-brand-border px-3 py-1 text-xs font-semibold text-gray-700"
                     >
-                      Read
+                      {t.read}
                     </button>
                   )}
                 </div>
