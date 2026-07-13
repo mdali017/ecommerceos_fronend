@@ -38,3 +38,19 @@ export async function showAdminValidationError(message: string) {
     confirmButtonText: "OK",
   });
 }
+
+export async function showPosOrderSuccess(orderId: string, total: number) {
+  return brandSwal.fire({
+    icon: "success",
+    title: "Order Placed!",
+    html: `
+      <p style="color:#6b7280;margin-top:8px">Order created with <strong>Pending</strong> status.</p>
+      <div style="margin-top:16px;padding:12px;background:#fff8f0;border-radius:12px;text-align:left">
+        <p style="font-size:14px;color:#374151"><strong>Order ID:</strong> ${orderId}</p>
+        <p style="font-size:14px;color:#374151;margin-top:4px"><strong>Total:</strong> ৳${total.toLocaleString("en-US")}</p>
+      </div>
+      <p style="color:#6b7280;margin-top:12px;font-size:13px">Mark as Completed from Admin Orders after delivery.</p>
+    `,
+    confirmButtonText: "Continue",
+  });
+}

@@ -17,6 +17,7 @@ export type AdminNavItem = AdminNavLink | AdminNavGroup;
 
 export const adminNavItems: AdminNavItem[] = [
   { type: "link", href: "/admin", label: "Dashboard", icon: "📊" },
+  { type: "link", href: "/admin/pos", label: "POS", icon: "🖥️" },
   { type: "link", href: "/admin/products", label: "Products", icon: "📦" },
   {
     type: "group",
@@ -46,6 +47,7 @@ export const adminNavItems: AdminNavItem[] = [
 
 export function isAdminNavActive(href: string, pathname: string) {
   if (href === "/admin") return pathname === "/admin";
+  if (href === "/admin/pos") return pathname.startsWith("/admin/pos");
   if (href === "/admin/site-config") {
     return (
       pathname.startsWith("/admin/site-config") || pathname.startsWith("/admin/homepage")

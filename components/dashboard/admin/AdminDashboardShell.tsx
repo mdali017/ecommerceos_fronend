@@ -13,6 +13,7 @@ import {
   type AdminNavGroup,
 } from "@/lib/admin-nav";
 import { AdminLogin } from "./AdminLogin";
+import { AdminPosShell } from "./pos/AdminPosShell";
 
 function getInitiallyExpandedGroups(pathname: string) {
   const expanded = new Set<string>();
@@ -49,6 +50,10 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
 
   if (!isAuthenticated || !accessToken) {
     return <AdminLogin />;
+  }
+
+  if (pathname.startsWith("/admin/pos")) {
+    return <AdminPosShell>{children}</AdminPosShell>;
   }
 
   const handleLogout = () => {
