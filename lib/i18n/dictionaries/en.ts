@@ -162,7 +162,7 @@ const en: Dictionary = {
     noOrdersHint: "Complete your first order and it will appear here.",
     startShopping: "Start Shopping",
     lastOrder: "Latest Order",
-    totalSpent: "Total Spent",
+    orderAmount: "Order Amount",
     itemCount: "Items",
     itemCountSuffix: "items",
     orderDate: "Order Date",

@@ -120,7 +120,7 @@ export interface Dictionary {
     noOrdersHint: string;
     startShopping: string;
     lastOrder: string;
-    totalSpent: string;
+    orderAmount: string;
     itemCount: string;
     itemCountSuffix: string;
     orderDate: string;

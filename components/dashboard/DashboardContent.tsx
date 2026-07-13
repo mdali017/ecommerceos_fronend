@@ -76,7 +76,7 @@ export function DashboardContent() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[
           { label: t.lastOrder, value: displayOrder.orderId, icon: "📦", color: "bg-blue-50 text-blue-600" },
-          { label: t.totalSpent, value: formatPrice(displayOrder.total), icon: "💰", color: "bg-orange-50 text-brand-orange" },
+          { label: t.orderAmount, value: formatPrice(displayOrder.total), icon: "💰", color: "bg-orange-50 text-brand-orange" },
           { label: t.itemCount, value: `${displayOrder.itemCount} ${t.itemCountSuffix}`, icon: "🛍️", color: "bg-green-50 text-green-600" },
           { label: t.orderDate, value: formatDashboardDate(displayOrder.date, locale), icon: "📅", color: "bg-purple-50 text-purple-600" },
         ].map((stat) => (

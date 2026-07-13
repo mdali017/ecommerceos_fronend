@@ -162,7 +162,7 @@ const bn: Dictionary = {
     noOrdersHint: "প্রথমে একটি অর্ডার সম্পূর্ণ করুন, তারপর এখানে দেখা যাবে।",
     startShopping: "কেনাকাটা শুরু করুন",
     lastOrder: "সর্বশেষ অর্ডার",
-    totalSpent: "মোট খরচ",
+    orderAmount: "অর্ডারের পরিমাণ",
     itemCount: "পণ্য সংখ্যা",
     itemCountSuffix: "টি",
     orderDate: "অর্ডার তারিখ",
