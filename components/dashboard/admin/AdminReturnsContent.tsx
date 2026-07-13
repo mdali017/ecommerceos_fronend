@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   useListAllReturnsQuery,
   useUpdateReturnStatusMutation,
   type ReturnStatus,
 } from "@/app/redux/services/returnApi";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 
 const statusOptions: ReturnStatus[] = ["pending", "approved", "rejected", "refunded", "completed"];
 
@@ -13,6 +14,14 @@ export function AdminReturnsContent() {
   const { data: returns = [], isLoading, isError, refetch } = useListAllReturnsQuery();
   const [updateStatus] = useUpdateReturnStatusMutation();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  const returnStats = useMemo(() => {
+    const total = returns.length;
+    const pending = returns.filter((r) => r.status === "pending").length;
+    const approved = returns.filter((r) => r.status === "approved").length;
+    const rejected = returns.filter((r) => r.status === "rejected").length;
+    return { total, pending, approved, rejected };
+  }, [returns]);
 
   const handleStatus = async (id: string, status: ReturnStatus) => {
     setUpdatingId(id);
@@ -25,6 +34,15 @@ export function AdminReturnsContent() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Returns", value: isLoading ? "—" : returnStats.total, icon: "↩️", color: "bg-blue-50 text-blue-600" },
+          { label: "Pending", value: isLoading ? "—" : returnStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700" },
+          { label: "Approved", value: isLoading ? "—" : returnStats.approved, icon: "✅", color: "bg-green-50 text-green-600" },
+          { label: "Rejected", value: isLoading ? "—" : returnStats.rejected, icon: "❌", color: "bg-red-50 text-red-600" },
+        ]}
+      />
+
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">Return Requests</h2>
         <button type="button" onClick={() => refetch()} className="text-sm font-semibold text-brand-orange">

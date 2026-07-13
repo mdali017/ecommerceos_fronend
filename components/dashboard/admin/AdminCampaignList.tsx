@@ -9,6 +9,7 @@ import {
   CAMPAIGN_STATUS_LABELS,
   getCampaignShareUrl,
 } from "@/lib/campaign-utils";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import { syncPublicCampaigns } from "@/lib/campaign-public-storage";
 import Swal from "sweetalert2";
 
@@ -28,6 +29,14 @@ export function AdminCampaignList() {
         : campaigns,
     [campaigns, showRunningOnly]
   );
+
+  const campaignStats = useMemo(() => {
+    const total = campaigns.length;
+    const running = campaigns.filter((c) => c.status === "running").length;
+    const totalLeads = leads.length;
+    const paused = campaigns.filter((c) => c.status === "paused").length;
+    return { total, running, totalLeads, paused };
+  }, [campaigns, leads]);
 
   const copyLink = async (slug: string) => {
     const url = getCampaignShareUrl(slug);
@@ -53,6 +62,15 @@ export function AdminCampaignList() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Campaigns", value: campaignStats.total, icon: "📣", color: "bg-blue-50 text-blue-600" },
+          { label: "Running", value: campaignStats.running, icon: "🟢", color: "bg-green-50 text-green-600" },
+          { label: "Total Leads", value: campaignStats.totalLeads, icon: "🎯", color: "bg-orange-50 text-brand-orange" },
+          { label: "Paused", value: campaignStats.paused, icon: "⏸️", color: "bg-gray-100 text-gray-600" },
+        ]}
+      />
+
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-gray-900">Campaign List</h2>
         <div className="flex flex-wrap items-center gap-3">

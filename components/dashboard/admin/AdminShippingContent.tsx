@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   useDeleteShippingZoneMutation,
   useListAllShippingZonesQuery,
   useCreateShippingZoneMutation,
   type ShippingZone,
 } from "@/app/redux/services/shippingApi";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import Swal from "sweetalert2";
 
 export function AdminShippingContent() {
@@ -19,6 +20,16 @@ export function AdminShippingContent() {
     deliveryFee: 80,
     freeDeliveryThreshold: 2000,
   });
+
+  const shippingStats = useMemo(() => {
+    const totalZones = zones.length;
+    const avgFee =
+      totalZones > 0
+        ? Math.round(zones.reduce((sum, z) => sum + z.deliveryFee, 0) / totalZones)
+        : 0;
+    const freeDeliveryZones = zones.filter((z) => z.freeDeliveryThreshold > 0).length;
+    return { totalZones, avgFee, freeDeliveryZones };
+  }, [zones]);
 
   const handleCreate = async () => {
     if (!form.name.trim()) return;
@@ -44,6 +55,14 @@ export function AdminShippingContent() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Shipping Zones", value: isLoading ? "—" : shippingStats.totalZones, icon: "🚚", color: "bg-blue-50 text-blue-600" },
+          { label: "Avg Delivery Fee", value: isLoading ? "—" : `৳${shippingStats.avgFee}`, icon: "💵", color: "bg-orange-50 text-brand-orange" },
+          { label: "Free Delivery Zones", value: isLoading ? "—" : shippingStats.freeDeliveryZones, icon: "🎁", color: "bg-green-50 text-green-600" },
+        ]}
+      />
+
       <h2 className="text-xl font-bold text-gray-900">Shipping Zones</h2>
 
       {isError && (

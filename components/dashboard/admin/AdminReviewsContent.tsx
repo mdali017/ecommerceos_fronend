@@ -7,6 +7,7 @@ import {
   useListAllReviewsQuery,
   useUpdateReviewStatusMutation,
 } from "@/app/redux/services/reviewApi";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import Swal from "sweetalert2";
 
 type ReviewFilter = "all" | "approved" | "pending";
@@ -46,6 +47,17 @@ export function AdminReviewsContent() {
     return reviews;
   }, [reviews, activeFilter]);
 
+  const reviewStats = useMemo(() => {
+    const total = reviews.length;
+    const pending = reviews.filter((r) => !r.isApproved).length;
+    const approved = reviews.filter((r) => r.isApproved).length;
+    const avgRating =
+      total > 0
+        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / total).toFixed(1)
+        : "0";
+    return { total, pending, approved, avgRating };
+  }, [reviews]);
+
   const handleToggleStatus = async (id: string, isApproved: boolean) => {
     setUpdatingId(id);
     try {
@@ -81,6 +93,15 @@ export function AdminReviewsContent() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Reviews", value: isLoading ? "—" : reviewStats.total, icon: "⭐", color: "bg-blue-50 text-blue-600" },
+          { label: "Pending Approval", value: isLoading ? "—" : reviewStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700" },
+          { label: "Approved", value: isLoading ? "—" : reviewStats.approved, icon: "✅", color: "bg-green-50 text-green-600" },
+          { label: "Avg Rating", value: isLoading ? "—" : reviewStats.avgRating, icon: "📊", color: "bg-orange-50 text-brand-orange" },
+        ]}
+      />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-bold text-gray-900">Product Reviews</h2>
         <button

@@ -1,9 +1,19 @@
 "use client";
 
+import { useMemo } from "react";
 import { useListCustomersQuery } from "@/app/redux/services/adminApi";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 
 export function AdminCustomersContent() {
   const { data: customers = [], isLoading, isError } = useListCustomersQuery();
+
+  const customerStats = useMemo(() => {
+    const total = customers.length;
+    const totalOrders = customers.reduce((sum, c) => sum + c.orderCount, 0);
+    const avgOrders = total > 0 ? (totalOrders / total).toFixed(1) : "0";
+    const withOrders = customers.filter((c) => c.orderCount > 0).length;
+    return { total, totalOrders, avgOrders, withOrders };
+  }, [customers]);
 
   if (isLoading) {
     return (
@@ -23,6 +33,15 @@ export function AdminCustomersContent() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Customers", value: customerStats.total, icon: "👥", color: "bg-blue-50 text-blue-600" },
+          { label: "Total Orders", value: customerStats.totalOrders, icon: "📦", color: "bg-purple-50 text-purple-600" },
+          { label: "Avg Orders / Customer", value: customerStats.avgOrders, icon: "📊", color: "bg-orange-50 text-brand-orange" },
+          { label: "Repeat Customers", value: customerStats.withOrders, icon: "🔁", color: "bg-green-50 text-green-600" },
+        ]}
+      />
+
       <h2 className="text-xl font-bold text-gray-900">Customer List</h2>
 
       {customers.length === 0 ? (

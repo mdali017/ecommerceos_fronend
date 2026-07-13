@@ -7,6 +7,7 @@ import {
   type OrderStatus,
   type PaymentStatus,
 } from "@/app/redux/services/orderApi";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import { statusLabels } from "@/lib/admin-data";
 
 const paymentLabels: Record<PaymentStatus, { label: string; className: string }> = {
@@ -55,6 +56,15 @@ export function AdminOrdersContent() {
     return orders.filter((order) => order.status === activeFilter);
   }, [orders, activeFilter]);
 
+  const orderStats = useMemo(() => {
+    const total = orders.length;
+    const pending = orders.filter((o) => o.status === "pending").length;
+    const processing = orders.filter((o) => o.status === "processing").length;
+    const delivered = orders.filter((o) => ["delivered", "completed"].includes(o.status)).length;
+    const revenue = orders.reduce((sum, o) => sum + o.total, 0);
+    return { total, pending, processing, delivered, revenue };
+  }, [orders]);
+
   const handleStatusChange = async (orderId: string, status: OrderStatus) => {
     setUpdatingId(orderId);
     try {
@@ -66,6 +76,15 @@ export function AdminOrdersContent() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Orders", value: isLoading ? "—" : orderStats.total, icon: "📦", color: "bg-blue-50 text-blue-600" },
+          { label: "Pending", value: isLoading ? "—" : orderStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700" },
+          { label: "Processing", value: isLoading ? "—" : orderStats.processing, icon: "🔄", color: "bg-orange-50 text-brand-orange" },
+          { label: "Total Revenue", value: isLoading ? "—" : formatPrice(orderStats.revenue), icon: "💰", color: "bg-green-50 text-green-600" },
+        ]}
+      />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-bold text-gray-900">Order Management</h2>
         <button

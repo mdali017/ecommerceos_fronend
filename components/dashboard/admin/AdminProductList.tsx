@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAdminToken } from "@/lib/hooks/useAdminToken";
 import { listProducts, type Product } from "@/lib/api/products";
 import { ProductBulkUploadButton } from "@/components/dashboard/admin/ProductBulkUpload";
 import { ProductFormModal } from "@/components/dashboard/admin/forms/ProductFormModal";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import { downloadProductBulkTemplate } from "@/lib/product-bulk-upload";
 import { deleteProduct } from "@/lib/api/products";
 import Swal from "sweetalert2";
@@ -52,6 +53,14 @@ export function AdminProductList() {
     void fetchProducts();
   }, [fetchProducts]);
 
+  const productStats = useMemo(() => {
+    const total = products.length;
+    const active = products.filter((p) => p.status === "active").length;
+    const lowStock = products.filter((p) => p.status === "low_stock").length;
+    const outOfStock = products.filter((p) => p.status === "out_of_stock").length;
+    return { total, active, lowStock, outOfStock };
+  }, [products]);
+
   const openCreate = () => {
     setEditingProduct(null);
     setFormOpen(true);
@@ -92,6 +101,15 @@ export function AdminProductList() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Products", value: loading ? "—" : productStats.total, icon: "🛍️", color: "bg-purple-50 text-purple-600" },
+          { label: "Active", value: loading ? "—" : productStats.active, icon: "✅", color: "bg-green-50 text-green-600" },
+          { label: "Low Stock", value: loading ? "—" : productStats.lowStock, icon: "⚠️", color: "bg-orange-50 text-brand-orange" },
+          { label: "Out of Stock", value: loading ? "—" : productStats.outOfStock, icon: "📭", color: "bg-red-50 text-red-600" },
+        ]}
+      />
+
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-gray-900">Product Management</h2>
         <div className="flex flex-wrap items-center gap-3">

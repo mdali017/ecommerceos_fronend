@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   useDeleteCouponMutation,
   useListCouponsQuery,
   type Coupon,
 } from "@/app/redux/services/couponApi";
 import { CouponFormModal } from "@/components/dashboard/admin/forms/CouponFormModal";
+import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import Swal from "sweetalert2";
 
 function formatValue(coupon: Coupon) {
@@ -20,6 +21,14 @@ export function AdminCouponsContent() {
   const [deleteCoupon] = useDeleteCouponMutation();
   const [formOpen, setFormOpen] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
+
+  const couponStats = useMemo(() => {
+    const total = coupons.length;
+    const active = coupons.filter((c) => c.isActive).length;
+    const inactive = coupons.filter((c) => !c.isActive).length;
+    const totalUsed = coupons.reduce((sum, c) => sum + c.usedCount, 0);
+    return { total, active, inactive, totalUsed };
+  }, [coupons]);
 
   const openCreate = () => {
     setEditingCoupon(null);
@@ -51,6 +60,15 @@ export function AdminCouponsContent() {
 
   return (
     <div className="space-y-6">
+      <AdminStatGrid
+        stats={[
+          { label: "Total Coupons", value: isLoading ? "—" : couponStats.total, icon: "🎟️", color: "bg-blue-50 text-blue-600" },
+          { label: "Active", value: isLoading ? "—" : couponStats.active, icon: "✅", color: "bg-green-50 text-green-600" },
+          { label: "Inactive", value: isLoading ? "—" : couponStats.inactive, icon: "⏸️", color: "bg-gray-100 text-gray-600" },
+          { label: "Total Redemptions", value: isLoading ? "—" : couponStats.totalUsed, icon: "🔥", color: "bg-orange-50 text-brand-orange" },
+        ]}
+      />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-bold text-gray-900">Coupons & Promotions</h2>
         <div className="flex gap-2">
