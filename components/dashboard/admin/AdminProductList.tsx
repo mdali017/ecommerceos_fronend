@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAdminToken } from "@/lib/hooks/useAdminToken";
 import { listProducts, type Product } from "@/lib/api/products";
 import { ProductBulkUploadButton } from "@/components/dashboard/admin/ProductBulkUpload";
+import { ConnectSheetButton } from "@/components/dashboard/admin/ConnectSheetButton";
 import { ProductFormModal } from "@/components/dashboard/admin/forms/ProductFormModal";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import { downloadProductBulkTemplate } from "@/lib/product-bulk-upload";
@@ -121,6 +122,7 @@ export function AdminProductList() {
             Download Template
           </button>
           <ProductBulkUploadButton onSuccess={fetchProducts} />
+          <ConnectSheetButton products={products} />
           <button
             type="button"
             onClick={openCreate}

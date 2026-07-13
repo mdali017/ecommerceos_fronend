@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import { useCreateOrderMutation } from "@/app/redux/services/orderApi";
 import { useListShippingZonesQuery } from "@/app/redux/services/shippingApi";
 import { calculateCheckoutTotals } from "@/components/checkout/CouponInput";
@@ -15,16 +14,8 @@ import {
   isPosSellable,
   matchesPosSearch,
 } from "./AdminPosProductCard";
-
-interface PosCartItem {
-  productId: string;
-  name: string;
-  image: string;
-  slug: string;
-  price: number;
-  quantity: number;
-  stockQty: number;
-}
+import { AdminPosCheckoutDrawer } from "./AdminPosCheckoutDrawer";
+import { AdminPosCheckoutPanel, type PosCartItem } from "./AdminPosCheckoutPanel";
 
 function formatPrice(price: number) {
   return `৳${price.toLocaleString("en-US")}`;
@@ -41,6 +32,7 @@ export function AdminPosContent() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [cart, setCart] = useState<PosCartItem[]>([]);
   const [selectedZoneId, setSelectedZoneId] = useState("");
+  const [checkoutDrawerOpen, setCheckoutDrawerOpen] = useState(false);
 
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -72,6 +64,12 @@ export function AdminPosContent() {
       setSelectedZoneId(shippingZones[0].id);
     }
   }, [shippingZones, selectedZoneId]);
+
+  useEffect(() => {
+    if (cart.length === 0) {
+      setCheckoutDrawerOpen(false);
+    }
+  }, [cart.length]);
 
   const categories = useMemo(() => {
     const unique = new Set(
@@ -198,6 +196,7 @@ export function AdminPosContent() {
 
       clearCart();
       resetCheckoutForm();
+      setCheckoutDrawerOpen(false);
       void loadProducts();
 
       await showPosOrderSuccess(order.orderNumber, order.total);
@@ -218,12 +217,38 @@ export function AdminPosContent() {
     }
   };
 
+  const checkoutPanelProps = {
+    cart,
+    itemCount,
+    subtotal,
+    deliveryCharge,
+    total,
+    submitting,
+    customerName,
+    customerPhone,
+    customerEmail,
+    customerAddress,
+    notes,
+    shippingZones,
+    selectedZoneId,
+    onCustomerNameChange: setCustomerName,
+    onCustomerPhoneChange: setCustomerPhone,
+    onCustomerEmailChange: setCustomerEmail,
+    onCustomerAddressChange: setCustomerAddress,
+    onNotesChange: setNotes,
+    onZoneChange: setSelectedZoneId,
+    onUpdateQuantity: updateCartQuantity,
+    onRemoveItem: removeFromCart,
+    onClearCart: clearCart,
+    onPlaceOrder: () => void handlePlaceOrder(),
+  };
+
   return (
-    <div className="flex h-full flex-col lg:flex-row">
-      <section className="flex min-h-0 flex-1 flex-col border-b border-brand-border lg:border-b-0 lg:border-r">
-        <div className="border-b border-brand-border bg-white p-4 sm:p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="relative flex-1">
+    <div className={`flex min-h-full flex-col lg:h-full lg:flex-row lg:overflow-hidden ${cart.length > 0 && !checkoutDrawerOpen ? "pb-20 lg:pb-0" : ""}`}>
+      <section className="flex flex-col lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:border-r lg:border-brand-border">
+        <div className="sticky top-0 z-10 border-b border-brand-border bg-white p-3 sm:p-5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <div className="relative min-w-0 flex-1">
               <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                 🔍
               </span>
@@ -231,15 +256,15 @@ export function AdminPosContent() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by name, SKU, barcode, category..."
-                className="w-full rounded-xl border border-brand-border py-3 pl-10 pr-4 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                placeholder="Search products..."
+                className="w-full rounded-xl border border-brand-border py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 sm:py-3"
               />
             </div>
 
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="rounded-xl border border-brand-border bg-white px-4 py-3 text-sm outline-none focus:border-brand-orange"
+              className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange sm:w-auto sm:min-w-[160px] sm:px-4 sm:py-3"
             >
               <option value="">All Categories</option>
               {categories.map((category) => (
@@ -257,19 +282,19 @@ export function AdminPosContent() {
           </p>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">
+        <div className="p-3 sm:p-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
           {loadingProducts ? (
-            <div className="flex h-40 items-center justify-center text-sm text-gray-500">
+            <div className="flex h-32 items-center justify-center text-sm text-gray-500 sm:h-40">
               Loading products...
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="flex h-40 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border bg-white text-center">
+            <div className="flex h-32 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border bg-white text-center sm:h-40">
               <p className="text-3xl">📦</p>
               <p className="mt-2 text-sm font-medium text-gray-700">No products found</p>
               <p className="mt-1 text-xs text-gray-500">Try a different search or category</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
               {filteredProducts.map((product) => (
                 <AdminPosProductCard
                   key={product.id}
@@ -282,180 +307,31 @@ export function AdminPosContent() {
         </div>
       </section>
 
-      <aside className="flex w-full flex-shrink-0 flex-col bg-white lg:w-[400px] xl:w-[420px]">
-        <div className="border-b border-brand-border px-4 py-4 sm:px-5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900">Checkout</h2>
-            {cart.length > 0 && (
-              <button
-                type="button"
-                onClick={clearCart}
-                className="text-xs font-semibold text-red-500 hover:text-red-600"
-              >
-                Clear cart
-              </button>
-            )}
-          </div>
-          <p className="mt-1 text-xs text-gray-500">
-            {itemCount} item{itemCount === 1 ? "" : "s"} in cart
-          </p>
-        </div>
+      <aside className="hidden w-full flex-shrink-0 flex-col border-t border-brand-border bg-white lg:flex lg:h-full lg:w-[400px] lg:overflow-hidden lg:border-t-0 xl:w-[420px]">
+        <AdminPosCheckoutPanel {...checkoutPanelProps} />
+      </aside>
 
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4 sm:px-5">
-          {cart.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-brand-border bg-brand-gray/40 px-4 py-10 text-center">
-              <p className="text-2xl">🛒</p>
-              <p className="mt-2 text-sm font-medium text-gray-700">Cart is empty</p>
-              <p className="mt-1 text-xs text-gray-500">Search and add products from the left</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {cart.map((item) => (
-                <article
-                  key={item.productId}
-                  className="flex gap-3 rounded-xl border border-brand-border p-3"
-                >
-                  <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-brand-gray">
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        sizes="56px"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-lg">📦</div>
-                    )}
-                  </div>
+      <AdminPosCheckoutDrawer
+        open={checkoutDrawerOpen}
+        onClose={() => setCheckoutDrawerOpen(false)}
+      >
+        <AdminPosCheckoutPanel {...checkoutPanelProps} />
+      </AdminPosCheckoutDrawer>
 
-                  <div className="min-w-0 flex-1">
-                    <p className="line-clamp-2 text-sm font-semibold text-gray-900">{item.name}</p>
-                    <p className="text-xs font-bold text-brand-orange">
-                      {formatPrice(item.price * item.quantity)}
-                    </p>
-
-                    <div className="mt-2 flex items-center justify-between gap-2">
-                      <div className="flex items-center rounded-lg border border-brand-border">
-                        <button
-                          type="button"
-                          onClick={() => updateCartQuantity(item.productId, item.quantity - 1)}
-                          className="flex h-8 w-8 items-center justify-center text-sm font-semibold text-gray-600 hover:bg-brand-gray"
-                        >
-                          −
-                        </button>
-                        <span className="flex h-8 w-8 items-center justify-center border-x border-brand-border text-xs font-bold">
-                          {item.quantity}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => updateCartQuantity(item.productId, item.quantity + 1)}
-                          disabled={item.quantity >= item.stockQty}
-                          className="flex h-8 w-8 items-center justify-center text-sm font-semibold text-gray-600 hover:bg-brand-gray disabled:opacity-40"
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => removeFromCart(item.productId)}
-                        className="text-xs font-semibold text-red-500 hover:text-red-600"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-
-          <div className="space-y-3 rounded-2xl border border-brand-border bg-brand-cream/40 p-4">
-            <h3 className="text-sm font-bold text-gray-900">Customer Details</h3>
-
-            <input
-              type="text"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="Customer name *"
-              className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange"
-            />
-            <input
-              type="tel"
-              value={customerPhone}
-              onChange={(e) => setCustomerPhone(e.target.value)}
-              placeholder="Phone (01XXXXXXXXX) *"
-              className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange"
-            />
-            <input
-              type="email"
-              value={customerEmail}
-              onChange={(e) => setCustomerEmail(e.target.value)}
-              placeholder="Email *"
-              className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange"
-            />
-            <textarea
-              value={customerAddress}
-              onChange={(e) => setCustomerAddress(e.target.value)}
-              placeholder="Delivery address *"
-              rows={2}
-              className="w-full resize-none rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange"
-            />
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Order notes (optional)"
-              rows={2}
-              className="w-full resize-none rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange"
-            />
-
-            {shippingZones.length > 0 && (
-              <select
-                value={selectedZoneId}
-                onChange={(e) => setSelectedZoneId(e.target.value)}
-                className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange"
-              >
-                {shippingZones.map((zone) => (
-                  <option key={zone.id} value={zone.id}>
-                    {zone.name} — {formatPrice(zone.deliveryFee)} delivery
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-        </div>
-
-        <div className="border-t border-brand-border bg-white p-4 sm:p-5">
-          <dl className="space-y-2 text-sm">
-            <div className="flex justify-between text-gray-600">
-              <dt>Subtotal</dt>
-              <dd className="font-semibold">{formatPrice(subtotal)}</dd>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <dt>Delivery</dt>
-              <dd className="font-semibold">{formatPrice(deliveryCharge)}</dd>
-            </div>
-            <div className="flex justify-between border-t border-brand-border pt-2 text-base font-bold text-gray-900">
-              <dt>Total</dt>
-              <dd className="text-brand-orange">{formatPrice(total)}</dd>
-            </div>
-          </dl>
-
+      {cart.length > 0 && !checkoutDrawerOpen && (
+        <div className="fixed inset-x-0 bottom-0 z-30 p-3 lg:hidden">
           <button
             type="button"
-            disabled={submitting || cart.length === 0}
-            onClick={() => void handlePlaceOrder()}
-            className="mt-4 w-full rounded-xl bg-brand-orange py-3.5 text-sm font-bold text-white transition-colors hover:bg-brand-orange-dark disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => setCheckoutDrawerOpen(true)}
+            className="mx-auto flex w-full max-w-md items-center justify-between rounded-2xl bg-brand-green px-4 py-3 text-white shadow-lg"
           >
-            {submitting ? "Placing order..." : "Place Order"}
+            <span className="text-sm font-semibold">
+              {itemCount} item{itemCount === 1 ? "" : "s"} · Checkout
+            </span>
+            <span className="text-sm font-bold">{formatPrice(total)}</span>
           </button>
-
-          <p className="mt-2 text-center text-[11px] text-gray-500">
-            Order will be created as <span className="font-semibold">Pending</span>
-          </p>
         </div>
-      </aside>
+      )}
     </div>
   );
 }

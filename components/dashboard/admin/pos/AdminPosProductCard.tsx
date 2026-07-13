@@ -47,7 +47,7 @@ export function AdminPosProductCard({
   const outOfStock = product.status === "out_of_stock" || product.stockQty <= 0;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-brand-border bg-white shadow-sm transition-shadow hover:shadow-md">
+    <article className="flex flex-col overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm transition-shadow hover:shadow-md sm:rounded-2xl">
       <div className="relative aspect-square overflow-hidden bg-brand-gray">
         {image ? (
           <Image
@@ -69,18 +69,18 @@ export function AdminPosProductCard({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-3 sm:p-4">
-        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
+      <div className="flex flex-1 flex-col p-2.5 sm:p-4">
+        <h3 className="line-clamp-2 text-xs font-semibold text-gray-900 sm:text-sm">
           {product.productName}
         </h3>
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-0.5 truncate text-[10px] text-gray-500 sm:mt-1 sm:text-xs">
           {product.sku}
           {product.packSize ? ` · ${product.packSize}` : ""}
         </p>
-        <p className="mt-0.5 text-xs text-gray-400">{product.category}</p>
+        <p className="hidden text-xs text-gray-400 sm:block">{product.category}</p>
 
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-base font-bold text-brand-orange">{formatPrice(price)}</span>
+        <div className="mt-1.5 flex items-baseline gap-1.5 sm:mt-2 sm:gap-2">
+          <span className="text-sm font-bold text-brand-orange sm:text-base">{formatPrice(price)}</span>
           {product.offerPrice > 0 && product.offerPrice < product.sellingPrice && (
             <span className="text-xs text-gray-400 line-through">
               {formatPrice(product.sellingPrice)}
@@ -88,13 +88,13 @@ export function AdminPosProductCard({
           )}
         </div>
 
-        <p className="mt-1 text-xs text-gray-500">Stock: {product.stockQty}</p>
+        <p className="mt-0.5 text-[10px] text-gray-500 sm:mt-1 sm:text-xs">Stock: {product.stockQty}</p>
 
         <button
           type="button"
           disabled={outOfStock}
           onClick={() => onAddToCart(product)}
-          className="mt-3 w-full rounded-xl bg-brand-orange py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-2 w-full rounded-lg bg-brand-orange py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:cursor-not-allowed disabled:opacity-50 sm:mt-3 sm:rounded-xl sm:py-2.5 sm:text-sm"
         >
           {outOfStock ? "Out of Stock" : "Add to Cart"}
         </button>

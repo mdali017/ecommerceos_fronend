@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import type { Product } from "@/lib/api/products";
 
 export interface BulkProductRow {
   sku: string;
@@ -221,6 +222,75 @@ export function prepareBulkRowForApi(
     tags,
     featured,
   };
+}
+
+export function getBulkUploadHeaderLabels(): string[] {
+  return BULK_UPLOAD_COLUMNS.map((column) => column.label);
+}
+
+export function productToBulkRow(product: Product): BulkProductRow {
+  const tags = product.tags ?? "";
+  const isBestSeller = tags.toLowerCase().includes("bestseller");
+
+  return {
+    sku: product.sku ?? "",
+    barcode: product.barcode ?? "",
+    productName: product.productName ?? "",
+    genericName: product.genericName ?? "",
+    brand: product.brand ?? "",
+    category: product.category ?? "",
+    subcategory: product.subcategory ?? "",
+    description: product.description ?? "",
+    unit: product.unit ?? "",
+    packSize: product.packSize ?? "",
+    purchasePrice: String(product.purchasePrice ?? ""),
+    costPrice: String(product.costPrice ?? ""),
+    sellingPrice: String(product.sellingPrice ?? ""),
+    offerPrice: String(product.offerPrice ?? ""),
+    taxPercent: String(product.taxPercent ?? ""),
+    discountPercent: String(product.discountPercent ?? ""),
+    stockQty: String(product.stockQty ?? ""),
+    minStock: String(product.minStock ?? ""),
+    maxStock: String(product.maxStock ?? ""),
+    batchNo: product.batchNo ?? "",
+    expiryDate: product.expiryDate ?? "",
+    manufactureDate: product.manufactureDate ?? "",
+    supplier: product.supplier ?? "",
+    manufacturer: product.manufacturer ?? "",
+    weight: product.weight ?? "",
+    color: product.color ?? "",
+    size: product.size ?? "",
+    variant: product.variant ?? "",
+    imageUrl: product.imageUrl || product.images[0] || "",
+    status: product.status ?? "",
+    featured: product.featured ? "yes" : "no",
+    bestSeller: isBestSeller ? "yes" : "no",
+    tags,
+    notes: product.notes ?? "",
+  };
+}
+
+export function productsToSheetValues(products: Product[]): string[][] {
+  const headers = getBulkUploadHeaderLabels();
+  const rows = products.map((product) => rowToValues(productToBulkRow(product)));
+  return [headers, ...rows];
+}
+
+const SAMPLE_SHEET_ROW_LIMIT = 8;
+
+export function productsToSampleSheetValues(products: Product[]): string[][] {
+  const headers = getBulkUploadHeaderLabels();
+  const sampleProducts = products.slice(0, SAMPLE_SHEET_ROW_LIMIT);
+
+  if (sampleProducts.length > 0) {
+    const rows = sampleProducts.map((product) => rowToValues(productToBulkRow(product)));
+    return [headers, ...rows];
+  }
+
+  const rows = getSampleRows()
+    .slice(0, SAMPLE_SHEET_ROW_LIMIT)
+    .map((row) => rowToValues(row));
+  return [headers, ...rows];
 }
 
 function rowToValues(row: BulkProductRow): string[] {
