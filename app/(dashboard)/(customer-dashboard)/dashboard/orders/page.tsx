@@ -61,7 +61,7 @@ function ReturnRequestButton({ orderId, orderStatus }: { orderId: string; orderS
       type="button"
       disabled={isLoading}
       onClick={() => void handleReturn()}
-      className="mt-3 rounded-lg border border-brand-orange px-3 py-1.5 text-xs font-semibold text-brand-orange hover:bg-orange-50"
+      className="mt-3 rounded-lg border border-brand-orange px-3 py-1.5 text-xs font-semibold text-brand-orange hover:bg-orange-50 dark:hover:bg-orange-950/30"
     >
       {t.returnRequest}
     </button>
@@ -75,7 +75,7 @@ function OrderDetail({ orderId }: { orderId: string }) {
 
   if (isLoading) {
     return (
-      <div className="border-t border-brand-border pt-5 text-sm text-gray-500">
+      <div className="border-t border-brand-border pt-5 text-sm text-muted">
         {t.detailsLoading}
       </div>
     );
@@ -94,7 +94,7 @@ function OrderDetail({ orderId }: { orderId: string }) {
       <div className="space-y-3">
         {order.items.map((item) => (
           <div key={item.id} className="flex items-center gap-4 rounded-xl bg-brand-gray/40 p-3">
-            <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-white">
+            <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-card">
               {item.productImage ? (
                 <Image
                   src={item.productImage}
@@ -108,8 +108,8 @@ function OrderDetail({ orderId }: { orderId: string }) {
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-gray-900">{item.productName}</p>
-              <p className="text-sm text-gray-500">
+              <p className="truncate font-semibold text-foreground">{item.productName}</p>
+              <p className="text-sm text-muted">
                 {formatPrice(item.unitPrice)} × {item.quantity}
               </p>
             </div>
@@ -120,11 +120,11 @@ function OrderDetail({ orderId }: { orderId: string }) {
 
       <dl className="mt-5 space-y-2 border-t border-brand-border pt-4 text-sm">
         <div className="flex justify-between">
-          <dt className="text-gray-500">{t.subtotal}</dt>
+          <dt className="text-muted">{t.subtotal}</dt>
           <dd className="font-semibold">{formatPrice(order.subtotal)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-gray-500">{t.deliveryCharge}</dt>
+          <dt className="text-muted">{t.deliveryCharge}</dt>
           <dd className="font-semibold">{formatPrice(order.deliveryCharge)}</dd>
         </div>
         {order.discount > 0 ? (
@@ -134,16 +134,16 @@ function OrderDetail({ orderId }: { orderId: string }) {
           </div>
         ) : null}
         <div className="flex justify-between border-t border-brand-border pt-2 text-base">
-          <dt className="font-bold text-gray-900">{t.total}</dt>
+          <dt className="font-bold text-foreground">{t.total}</dt>
           <dd className="font-bold text-brand-orange">{formatPrice(order.total)}</dd>
         </div>
       </dl>
 
       <div className="mt-4 rounded-xl bg-brand-gray/40 p-4 text-sm">
-        <p className="font-semibold text-gray-900">{t.deliveryAddress}</p>
-        <p className="mt-1 text-gray-600">{order.customerAddress}</p>
-        <p className="mt-2 text-gray-600">{order.customerPhone}</p>
-        <p className="mt-2 text-gray-600">
+        <p className="font-semibold text-foreground">{t.deliveryAddress}</p>
+        <p className="mt-1 text-muted">{order.customerAddress}</p>
+        <p className="mt-2 text-muted">{order.customerPhone}</p>
+        <p className="mt-2 text-muted">
           {t.paymentCod}{" "}
           <span
             className={
@@ -156,13 +156,13 @@ function OrderDetail({ orderId }: { orderId: string }) {
           </span>
         </p>
         {order.trackingNumber ? (
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2 text-muted">
             {t.tracking} <span className="font-semibold">{order.trackingNumber}</span>
             {order.courierName ? ` (${order.courierName})` : ""}
           </p>
         ) : null}
         {order.estimatedDelivery ? (
-          <p className="mt-1 text-gray-600">{t.deliveryEta} {order.estimatedDelivery}</p>
+          <p className="mt-1 text-muted">{t.deliveryEta} {order.estimatedDelivery}</p>
         ) : null}
         <ReturnRequestButton orderId={order.id} orderStatus={order.status} />
       </div>
@@ -187,11 +187,11 @@ function OrderCard({
   const payment = paymentLabels[order.paymentStatus] ?? paymentLabels.pending;
 
   return (
-    <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-brand-border bg-card p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-gray-500">{t.orderId}</p>
-          <p className="text-lg font-bold text-gray-900">{order.orderNumber}</p>
+          <p className="text-sm text-muted">{t.orderId}</p>
+          <p className="text-lg font-bold text-foreground">{order.orderNumber}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <span className={`rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}>
@@ -204,15 +204,15 @@ function OrderCard({
       </div>
       <div className="mt-5 grid grid-cols-1 gap-4 border-t border-brand-border pt-5 sm:grid-cols-3">
         <div>
-          <p className="text-sm text-gray-500">{t.date}</p>
+          <p className="text-sm text-muted">{t.date}</p>
           <p className="font-semibold">{formatDashboardDate(order.createdAt, locale)}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">{t.products}</p>
+          <p className="text-sm text-muted">{t.products}</p>
           <p className="font-semibold">{order.itemCount} {t.itemCountSuffix}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">{t.total}</p>
+          <p className="text-sm text-muted">{t.total}</p>
           <p className="font-bold text-brand-orange">{formatPrice(order.total)}</p>
         </div>
       </div>
@@ -245,8 +245,8 @@ export default function OrdersPage() {
 
   if (accessToken && isLoading) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">{t.ordersLoading}</p>
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center shadow-sm">
+        <p className="text-muted">{t.ordersLoading}</p>
       </div>
     );
   }
@@ -254,7 +254,7 @@ export default function OrdersPage() {
   if (hasApiOrders) {
     return (
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-gray-900">{t.myOrders}</h2>
+        <h2 className="text-xl font-bold text-foreground">{t.myOrders}</h2>
         {orders.map((order) => (
           <OrderCard
             key={order.id}
@@ -273,8 +273,8 @@ export default function OrdersPage() {
 
   if (!lastOrder) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">{t.noOrdersFound}</p>
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center shadow-sm">
+        <p className="text-muted">{t.noOrdersFound}</p>
         <Link href="/" className="mt-4 inline-block text-sm font-semibold text-brand-orange">
           {t.shopNow}
         </Link>
@@ -286,28 +286,28 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-900">{t.myOrders}</h2>
-      <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
+      <h2 className="text-xl font-bold text-foreground">{t.myOrders}</h2>
+      <div className="rounded-2xl border border-brand-border bg-card p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm text-gray-500">{t.orderId}</p>
-            <p className="text-lg font-bold text-gray-900">{lastOrder.orderId}</p>
+            <p className="text-sm text-muted">{t.orderId}</p>
+            <p className="text-lg font-bold text-foreground">{lastOrder.orderId}</p>
           </div>
-          <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-brand-orange">
+          <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-brand-orange dark:bg-orange-950/40">
             {processingLabel}
           </span>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-4 border-t border-brand-border pt-5 sm:grid-cols-3">
           <div>
-            <p className="text-sm text-gray-500">{t.date}</p>
+            <p className="text-sm text-muted">{t.date}</p>
             <p className="font-semibold">{formatDashboardDate(lastOrder.date, locale)}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">{t.products}</p>
+            <p className="text-sm text-muted">{t.products}</p>
             <p className="font-semibold">{lastOrder.itemCount} {t.itemCountSuffix}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">{t.total}</p>
+            <p className="text-sm text-muted">{t.total}</p>
             <p className="font-bold text-brand-orange">{formatPrice(lastOrder.total)}</p>
           </div>
         </div>

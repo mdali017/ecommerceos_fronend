@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
+import { ThemeInitScript } from "@/components/providers/ThemeInitScript";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -41,8 +42,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bn" className={`${hindSiliguri.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white text-foreground">
+    <html lang="bn" className={`${hindSiliguri.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <ThemeInitScript />
+      </head>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>

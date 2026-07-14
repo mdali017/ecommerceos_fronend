@@ -150,13 +150,13 @@ export function UnlockModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
 
-      <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
+      <div className="relative w-full max-w-md rounded-2xl bg-card p-6 shadow-2xl sm:p-8">
         <div className="mb-6 text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-cream text-2xl">
             🔐
           </div>
-          <h2 className="mt-4 text-xl font-bold text-gray-900">{t.unlockTitle}</h2>
-          <p className="mt-2 text-sm text-gray-500">
+          <h2 className="mt-4 text-xl font-bold text-foreground">{t.unlockTitle}</h2>
+          <p className="mt-2 text-sm text-muted">
             {mode === "activate" ? t.unlockActivateSubtitle : t.unlockLoginSubtitle}
           </p>
         </div>
@@ -164,14 +164,14 @@ export function UnlockModal() {
         {mode === "activate" && customer ? (
           <form onSubmit={(e) => void handleActivate(e)} className="space-y-4">
             <div className="rounded-xl border border-brand-border bg-brand-gray/40 p-4 text-sm">
-              <p className="font-semibold text-gray-900">{customer.name}</p>
-              <p className="mt-1 text-gray-600">{customer.phone}</p>
-              <p className="text-gray-600">{customer.email}</p>
-              <p className="mt-1 text-gray-600">{customer.address}</p>
+              <p className="font-semibold text-foreground">{customer.name}</p>
+              <p className="mt-1 text-muted">{customer.phone}</p>
+              <p className="text-muted">{customer.email}</p>
+              <p className="mt-1 text-muted">{customer.address}</p>
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+              <label className="mb-1.5 block text-sm font-semibold text-foreground/80">
                 {t.setPassword}
               </label>
               <input
@@ -179,12 +179,12 @@ export function UnlockModal() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={t.passwordMinPlaceholder}
-                className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
               />
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+              <label className="mb-1.5 block text-sm font-semibold text-foreground/80">
                 {t.confirmPassword}
               </label>
               <input
@@ -192,7 +192,7 @@ export function UnlockModal() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder={t.confirmPasswordPlaceholder}
-                className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
               />
             </div>
 
@@ -227,8 +227,8 @@ export function UnlockModal() {
                 }}
                 className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-colors ${
                   loginMethod === "phone"
-                    ? "bg-white text-brand-orange shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-card text-brand-orange shadow-sm"
+                    : "text-muted hover:text-foreground"
                 }`}
               >
                 📱 {t.phone}
@@ -241,8 +241,8 @@ export function UnlockModal() {
                 }}
                 className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-colors ${
                   loginMethod === "email"
-                    ? "bg-white text-brand-orange shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-card text-brand-orange shadow-sm"
+                    : "text-muted hover:text-foreground"
                 }`}
               >
                 ✉️ {t.email}
@@ -251,7 +251,7 @@ export function UnlockModal() {
 
             <form onSubmit={(e) => void handleLogin(e)} className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+                <label className="mb-1.5 block text-sm font-semibold text-foreground/80">
                   {loginMethod === "phone" ? t.phone : t.email}
                 </label>
                 <input
@@ -263,12 +263,12 @@ export function UnlockModal() {
                       ? "01XXXXXXXXX"
                       : "example@email.com"
                   }
-                  className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                  className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+                <label className="mb-1.5 block text-sm font-semibold text-foreground/80">
                   {t.passwordLabel}
                 </label>
                 <input
@@ -276,7 +276,7 @@ export function UnlockModal() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={t.yourPassword}
-                  className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                  className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
                 />
               </div>
 

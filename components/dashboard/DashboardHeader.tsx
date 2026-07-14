@@ -8,6 +8,7 @@ import { useGetUnreadCountQuery } from "@/app/redux/services/notificationApi";
 import { CartCountBadge } from "@/components/cart/CartCountBadge";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { CartIcon } from "@/components/ui/Icons";
 
 interface DashboardHeaderProps {
@@ -39,12 +40,12 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   };
 
   return (
-    <header className="flex h-16 flex-shrink-0 items-center justify-between border-b border-brand-border bg-white px-4 sm:px-6">
+    <header className="flex h-16 flex-shrink-0 items-center justify-between border-b border-brand-border bg-card px-4 sm:px-6">
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={onMenuClick}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-border text-gray-600 transition-colors hover:bg-brand-gray lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-border text-muted transition-colors hover:bg-brand-gray lg:hidden"
           aria-label="Open menu"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -52,22 +53,23 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           </svg>
         </button>
         <div>
-          <h1 className="text-base font-bold text-gray-900 sm:text-lg">
+          <h1 className="text-base font-bold text-foreground sm:text-lg">
             {customer
               ? t.welcome.replace("{name}", customer.name.split(" ")[0])
               : t.welcomeFallback}
           </h1>
-          <p className="hidden text-xs text-gray-500 sm:block">{t.subtitle}</p>
+          <p className="hidden text-xs text-muted sm:block">{t.subtitle}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
+        <ThemeToggle />
         <LocaleSwitcher currentLocale={locale} />
         {isUnlocked && !isLoggedIn && (
           <button
             type="button"
             onClick={handleLockDashboard}
-            className="hidden rounded-lg border border-brand-border px-3 py-2 text-xs font-semibold text-gray-600 transition-colors hover:bg-brand-gray sm:block"
+            className="hidden rounded-lg border border-brand-border px-3 py-2 text-xs font-semibold text-muted transition-colors hover:bg-brand-gray sm:block"
           >
             {t.lock}
           </button>
@@ -76,14 +78,14 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           <button
             type="button"
             onClick={handleCustomerLogout}
-            className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50 sm:text-sm"
+            className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950/30 sm:text-sm"
           >
             {t.logout}
           </button>
         )}
         <Link
           href="/checkout"
-          className="relative rounded-lg p-2 text-gray-600 transition-colors hover:bg-brand-gray hover:text-brand-orange"
+          className="relative rounded-lg p-2 text-muted transition-colors hover:bg-brand-gray hover:text-brand-orange"
           aria-label="Cart"
         >
           <CartIcon />
@@ -92,7 +94,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
         {isLoggedIn && (
           <Link
             href="/dashboard/notifications"
-            className="relative rounded-lg p-2 text-gray-600 transition-colors hover:bg-brand-gray hover:text-brand-orange"
+            className="relative rounded-lg p-2 text-muted transition-colors hover:bg-brand-gray hover:text-brand-orange"
             aria-label="Notifications"
           >
             <span className="text-lg">🔔</span>

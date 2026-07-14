@@ -218,5 +218,7 @@ export interface Dictionary {
     accountCreateFailed: string;
     loginCredentialsRequired: string;
     loginFailed: string;
+    themeLight: string;
+    themeDark: string;
   };
 }

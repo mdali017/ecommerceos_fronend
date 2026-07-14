@@ -45,20 +45,20 @@ export function DashboardContent() {
 
   if (accessToken && isLoading) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">{t.loading}</p>
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center shadow-sm">
+        <p className="text-muted">{t.loading}</p>
       </div>
     );
   }
 
   if (!displayOrder || !customer) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
+      <div className="flex min-h-[60vh] flex-col items-center justify-center rounded-2xl border border-brand-border bg-card p-8 text-center shadow-sm">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream text-3xl">
           📦
         </div>
-        <h2 className="mt-5 text-xl font-bold text-gray-900">{t.noOrders}</h2>
-        <p className="mt-2 max-w-sm text-gray-500">{t.noOrdersHint}</p>
+        <h2 className="mt-5 text-xl font-bold text-foreground">{t.noOrders}</h2>
+        <p className="mt-2 max-w-sm text-muted">{t.noOrdersHint}</p>
         <Link
           href="/"
           className="mt-6 inline-flex rounded-xl bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark"
@@ -75,27 +75,27 @@ export function DashboardContent() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[
-          { label: t.lastOrder, value: displayOrder.orderId, icon: "📦", color: "bg-blue-50 text-blue-600" },
-          { label: t.orderAmount, value: formatPrice(displayOrder.total), icon: "💰", color: "bg-orange-50 text-brand-orange" },
-          { label: t.itemCount, value: `${displayOrder.itemCount} ${t.itemCountSuffix}`, icon: "🛍️", color: "bg-green-50 text-green-600" },
-          { label: t.orderDate, value: formatDashboardDate(displayOrder.date, locale), icon: "📅", color: "bg-purple-50 text-purple-600" },
+          { label: t.lastOrder, value: displayOrder.orderId, icon: "📦", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: t.orderAmount, value: formatPrice(displayOrder.total), icon: "💰", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
+          { label: t.itemCount, value: `${displayOrder.itemCount} ${t.itemCountSuffix}`, icon: "🛍️", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
+          { label: t.orderDate, value: formatDashboardDate(displayOrder.date, locale), icon: "📅", color: "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400" },
         ].map((stat) => (
           <div
             key={stat.label}
-            className="rounded-2xl border border-brand-border bg-white p-5 shadow-sm"
+            className="rounded-2xl border border-brand-border bg-card p-5 shadow-sm"
           >
             <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl text-lg ${stat.color}`}>
               {stat.icon}
             </div>
-            <p className="mt-4 text-sm text-gray-500">{stat.label}</p>
-            <p className="mt-1 text-lg font-bold text-gray-900">{stat.value}</p>
+            <p className="mt-4 text-sm text-muted">{stat.label}</p>
+            <p className="mt-1 text-lg font-bold text-foreground">{stat.value}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900">{t.deliveryInfo}</h2>
+        <div className="rounded-2xl border border-brand-border bg-card p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-foreground">{t.deliveryInfo}</h2>
           <dl className="mt-5 space-y-4 text-sm">
             {[
               { label: t.name, value: customer.name },
@@ -103,20 +103,20 @@ export function DashboardContent() {
               { label: t.email, value: customer.email },
             ].map((row) => (
               <div key={row.label} className="flex justify-between gap-4 border-b border-brand-border pb-3 last:border-0 last:pb-0">
-                <dt className="text-gray-500">{row.label}</dt>
-                <dd className="font-semibold text-gray-900">{row.value}</dd>
+                <dt className="text-muted">{row.label}</dt>
+                <dd className="font-semibold text-foreground">{row.value}</dd>
               </div>
             ))}
             <div>
-              <dt className="text-gray-500">{t.address}</dt>
-              <dd className="mt-1 font-semibold text-gray-900">{customer.address}</dd>
+              <dt className="text-muted">{t.address}</dt>
+              <dd className="mt-1 font-semibold text-foreground">{customer.address}</dd>
             </div>
           </dl>
         </div>
 
-        <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-brand-border bg-card p-6 shadow-sm">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-lg font-bold text-gray-900">{t.orderStatus}</h2>
+            <h2 className="text-lg font-bold text-foreground">{t.orderStatus}</h2>
             {statusInfo ? (
               <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusInfo.className}`}>
                 {statusInfo.label}
@@ -135,13 +135,13 @@ export function DashboardContent() {
                       className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                         done
                           ? "bg-brand-orange text-white"
-                          : "bg-brand-gray text-gray-400"
+                          : "bg-brand-gray text-muted"
                       }`}
                     >
                       {done ? "✓" : index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className={`text-sm font-semibold ${done ? "text-gray-900" : "text-gray-400"}`}>
+                      <p className={`text-sm font-semibold ${done ? "text-foreground" : "text-muted"}`}>
                         {item.label}
                       </p>
                       {done && (

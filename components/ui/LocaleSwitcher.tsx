@@ -32,7 +32,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: Locale }) {
             className={`rounded-full px-2.5 py-1 transition-colors sm:px-3 ${
               isActive
                 ? "bg-brand-orange text-white"
-                : "text-gray-600 hover:text-brand-orange"
+                : "text-muted hover:text-brand-orange"
             }`}
             aria-current={isActive ? "true" : undefined}
           >

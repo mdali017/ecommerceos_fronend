@@ -40,8 +40,8 @@ export default function ProfilePage() {
 
   if (!customer) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center shadow-sm">
-        <p className="text-gray-500">{t.profileNotFound}</p>
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center shadow-sm">
+        <p className="text-muted">{t.profileNotFound}</p>
       </div>
     );
   }
@@ -121,54 +121,54 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-gray-900">{t.profileTitle}</h2>
+      <h2 className="text-xl font-bold text-foreground">{t.profileTitle}</h2>
 
-      <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-brand-border bg-card p-6 shadow-sm">
         <div className="flex items-center gap-4 border-b border-brand-border pb-5">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-green text-2xl font-bold text-white">
             {customer.name.charAt(0)}
           </div>
           <div>
-            <p className="text-lg font-bold text-gray-900">{customer.name}</p>
-            <p className="text-sm text-gray-500">{t.customerLabel}</p>
+            <p className="text-lg font-bold text-foreground">{customer.name}</p>
+            <p className="text-sm text-muted">{t.customerLabel}</p>
           </div>
         </div>
 
         <form onSubmit={(e) => void handleProfileSave(e)} className="mt-5 space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.name}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.name}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.phone}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.phone}</label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.email}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.email}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.address}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.address}</label>
             <textarea
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               rows={3}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <button
@@ -181,34 +181,34 @@ export default function ProfilePage() {
         </form>
       </div>
 
-      <div className="rounded-2xl border border-brand-border bg-white p-6 shadow-sm">
-        <h3 className="text-lg font-bold text-gray-900">{t.changePassword}</h3>
+      <div className="rounded-2xl border border-brand-border bg-card p-6 shadow-sm">
+        <h3 className="text-lg font-bold text-foreground">{t.changePassword}</h3>
         <form onSubmit={(e) => void handlePasswordSave(e)} className="mt-5 space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.currentPassword}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.currentPassword}</label>
             <input
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.newPassword}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.newPassword}</label>
             <input
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-gray-700">{t.confirmNewPassword}</label>
+            <label className="mb-1.5 block text-sm font-semibold text-foreground/80">{t.confirmNewPassword}</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+              className="w-full rounded-xl border border-brand-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
             />
           </div>
           <button

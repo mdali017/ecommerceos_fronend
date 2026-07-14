@@ -36,7 +36,7 @@ export function NotificationsContent() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-gray-500">
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-muted">
         {t.notificationsLoading}
       </div>
     );
@@ -44,7 +44,7 @@ export function NotificationsContent() {
 
   if (isError) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-red-600">
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-red-600">
         {t.notificationsLoadError}
       </div>
     );
@@ -54,7 +54,7 @@ export function NotificationsContent() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">{t.notificationsTitle}</h2>
+          <h2 className="text-xl font-bold text-foreground">{t.notificationsTitle}</h2>
           {unreadCount > 0 && (
             <p className="text-sm text-brand-orange">
               {t.unread.replace("{count}", String(unreadCount))}
@@ -65,7 +65,7 @@ export function NotificationsContent() {
           <button
             type="button"
             onClick={() => refetch()}
-            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-gray-700"
+            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-foreground"
           >
             {t.refresh}
           </button>
@@ -82,7 +82,7 @@ export function NotificationsContent() {
       </div>
 
       {notifications.length === 0 ? (
-        <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-gray-500">
+        <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-muted">
           {t.noNotifications}
         </div>
       ) : (
@@ -92,15 +92,15 @@ export function NotificationsContent() {
               <div
                 className={`rounded-2xl border p-4 transition-colors ${
                   notification.isRead
-                    ? "border-brand-border bg-white"
-                    : "border-brand-orange/30 bg-orange-50"
+                    ? "border-brand-border bg-card"
+                    : "border-brand-orange/30 bg-orange-50 dark:bg-orange-950/20"
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-bold text-gray-900">{notification.title}</p>
-                    <p className="mt-1 text-sm text-gray-600">{notification.message}</p>
-                    <p className="mt-2 text-xs text-gray-400">
+                    <p className="font-bold text-foreground">{notification.title}</p>
+                    <p className="mt-1 text-sm text-muted">{notification.message}</p>
+                    <p className="mt-2 text-xs text-muted/70">
                       {formatDashboardDateTime(notification.createdAt, locale)}
                     </p>
                   </div>
@@ -111,7 +111,7 @@ export function NotificationsContent() {
                         e.preventDefault();
                         void handleMarkRead(notification.id);
                       }}
-                      className="rounded-lg border border-brand-border px-3 py-1 text-xs font-semibold text-gray-700"
+                      className="rounded-lg border border-brand-border px-3 py-1 text-xs font-semibold text-foreground"
                     >
                       {t.read}
                     </button>

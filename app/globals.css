@@ -1,9 +1,13 @@
 @import "tailwindcss";
 @import "sweetalert2/dist/sweetalert2.min.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #1a1a1a;
+  --muted: #6b7280;
+  --card: #ffffff;
   --brand-orange: #f58220;
   --brand-orange-dark: #e06d0a;
   --brand-green: #1a4d2e;
@@ -13,9 +17,21 @@
   --brand-border: #e5e5e5;
 }
 
+.dark {
+  --background: #0f1419;
+  --foreground: #f3f4f6;
+  --muted: #9ca3af;
+  --card: #1a1f2e;
+  --brand-cream: #2a2418;
+  --brand-gray: #1a1f2e;
+  --brand-border: #2d3748;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
   --color-brand-orange: var(--brand-orange);
   --color-brand-orange-dark: var(--brand-orange-dark);
   --color-brand-green: var(--brand-green);

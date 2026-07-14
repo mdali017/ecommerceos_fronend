@@ -260,6 +260,8 @@ const bn: Dictionary = {
     accountCreateFailed: "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।",
     loginCredentialsRequired: "ফোন/ইমেইল এবং পাসওয়ার্ড দিন।",
     loginFailed: "ভুল তথ্য। আবার চেষ্টা করুন।",
+    themeLight: "লাইট মোডে যান",
+    themeDark: "ডার্ক মোডে যান",
   },
 };
 

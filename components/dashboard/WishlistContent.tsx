@@ -54,7 +54,7 @@ export function WishlistContent() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-gray-500">
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-muted">
         {t.wishlistLoading}
       </div>
     );
@@ -62,7 +62,7 @@ export function WishlistContent() {
 
   if (isError) {
     return (
-      <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-red-600">
+      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-red-600">
         {t.wishlistLoadError}
       </div>
     );
@@ -71,7 +71,7 @@ export function WishlistContent() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-900">{t.wishlistTitle}</h2>
+        <h2 className="text-xl font-bold text-foreground">{t.wishlistTitle}</h2>
         <button
           type="button"
           onClick={() => refetch()}
@@ -82,8 +82,8 @@ export function WishlistContent() {
       </div>
 
       {items.length === 0 ? (
-        <div className="rounded-2xl border border-brand-border bg-white p-8 text-center">
-          <p className="text-gray-500">{t.wishlistEmpty}</p>
+        <div className="rounded-2xl border border-brand-border bg-card p-8 text-center">
+          <p className="text-muted">{t.wishlistEmpty}</p>
           <Link
             href="/"
             className="mt-4 inline-flex rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white"
@@ -96,7 +96,7 @@ export function WishlistContent() {
           {items.map((item) => (
             <article
               key={item.id}
-              className="rounded-2xl border border-brand-border bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-brand-border bg-card p-4 shadow-sm"
             >
               <div className="flex gap-4">
                 <Link
@@ -112,11 +112,11 @@ export function WishlistContent() {
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/products/${item.slug}`}
-                    className="line-clamp-2 font-bold text-gray-900 hover:text-brand-orange"
+                    className="line-clamp-2 font-bold text-foreground hover:text-brand-orange"
                   >
                     {item.productName}
                   </Link>
-                  <p className="mt-1 text-sm text-gray-500">{item.packSize || item.unit}</p>
+                  <p className="mt-1 text-sm text-muted">{item.packSize || item.unit}</p>
                   <p className="mt-2 font-bold text-brand-orange">
                     {formatPrice(resolvePrice(item))}
                   </p>
@@ -137,7 +137,7 @@ export function WishlistContent() {
                 <button
                   type="button"
                   onClick={() => void handleRemove(item.slug)}
-                  className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600"
+                  className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 dark:border-red-800"
                 >
                   {t.remove}
                 </button>

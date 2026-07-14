@@ -260,6 +260,8 @@ const en: Dictionary = {
     accountCreateFailed: "Could not create account. Please try again.",
     loginCredentialsRequired: "Enter phone/email and password.",
     loginFailed: "Invalid credentials. Please try again.",
+    themeLight: "Switch to light mode",
+    themeDark: "Switch to dark mode",
   },
 };
 
