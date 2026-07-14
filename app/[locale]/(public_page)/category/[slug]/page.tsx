@@ -11,7 +11,7 @@ import { localizeHref } from "@/lib/i18n/locale-path";
 import { getCategoryDisplayName } from "@/lib/i18n/product-display";
 import { mapApiProductsToStorefront } from "@/lib/product-mapper";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;

@@ -39,6 +39,7 @@ export function AdminHomepageCategories() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(categories);
 
   return (
@@ -79,6 +80,7 @@ export function AdminHomepageCategories() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Icon</th>
                 <th className="px-6 py-3">Name (BN)</th>
                 <th className="px-6 py-3">Name (EN)</th>
@@ -89,11 +91,12 @@ export function AdminHomepageCategories() {
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((category) => (
+              {pageItems.map((category, index) => (
                 <tr
                   key={category.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
+                  <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                   <td className="px-6 py-4">
                     <AdminCategoryIconCell icon={category.icon} />
                   </td>

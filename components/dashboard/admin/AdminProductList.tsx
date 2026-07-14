@@ -80,6 +80,7 @@ export function AdminProductList() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(products);
 
   const openCreate = () => {
@@ -332,6 +333,7 @@ export function AdminProductList() {
                         />
                       </th>
                     )}
+                    <th className="px-6 py-3">#</th>
                     <th className="px-6 py-3">Product</th>
                     <th className="px-6 py-3">SKU</th>
                     <th className="px-6 py-3">Category</th>
@@ -342,7 +344,7 @@ export function AdminProductList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {pageItems.map((product) => {
+                  {pageItems.map((product, index) => {
                     const status = statusLabels[product.status] ?? statusLabels.active;
                     const isSelected = selectedIds.has(product.id);
                     return (
@@ -363,6 +365,7 @@ export function AdminProductList() {
                             />
                           </td>
                         )}
+                        <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             {(product.imageUrl || product.images[0]) && (

@@ -57,6 +57,7 @@ export function AdminHomepageProductSections() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(sections);
 
   const handleDelete = async (section: HomepageProductSection) => {
@@ -127,6 +128,7 @@ export function AdminHomepageProductSections() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Title</th>
                 <th className="px-6 py-3">Layout</th>
                 <th className="px-6 py-3">Source</th>
@@ -137,11 +139,12 @@ export function AdminHomepageProductSections() {
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((item) => (
+              {pageItems.map((item, index) => (
                 <tr
                   key={item.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
+                  <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                   <td className="px-6 py-4">
                     <p className="font-semibold text-foreground">{item.titleBn}</p>
                     <p className="text-xs text-muted">{item.titleEn || "—"}</p>

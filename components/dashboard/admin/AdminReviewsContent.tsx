@@ -59,6 +59,7 @@ export function AdminReviewsContent() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(filteredReviews);
 
   const reviewStats = useMemo(() => {
@@ -158,6 +159,7 @@ export function AdminReviewsContent() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                  <th className="px-6 py-3">#</th>
                   <th className="px-6 py-3">Product</th>
                   <th className="px-6 py-3">Author</th>
                   <th className="px-6 py-3">Rating</th>
@@ -170,16 +172,17 @@ export function AdminReviewsContent() {
               <tbody>
                 {filteredReviews.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-10 text-center text-muted">
+                    <td colSpan={8} className="px-6 py-10 text-center text-muted">
                       No reviews found.
                     </td>
                   </tr>
                 ) : (
-                  pageItems.map((review) => (
+                  pageItems.map((review, index) => (
                     <tr
                       key={review.id}
                       className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                     >
+                      <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                       <td className="px-6 py-4">
                         {review.productSlug ? (
                           <Link

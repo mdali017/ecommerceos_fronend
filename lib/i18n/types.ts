@@ -85,6 +85,24 @@ export interface Dictionary {
     searchNoResults: string;
     searchHint: string;
   };
+  productsPage: {
+    title: string;
+    subtitle: string;
+    filters: string;
+    search: string;
+    searchPlaceholder: string;
+    categories: string;
+    allCategories: string;
+    priceRange: string;
+    minPrice: string;
+    maxPrice: string;
+    apply: string;
+    applyPrice: string;
+    clearFilters: string;
+    noProducts: string;
+    noProductsHint: string;
+    searchResultsFor: string;
+  };
   badges: {
     new: string;
     sale: string;

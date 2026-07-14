@@ -27,6 +27,7 @@ export function AdminReturnsContent() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(returns);
 
   const returnStats = useMemo(() => {
@@ -75,6 +76,7 @@ export function AdminReturnsContent() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Order</th>
                 <th className="px-6 py-3">Customer</th>
                 <th className="px-6 py-3">Reason</th>
@@ -84,12 +86,13 @@ export function AdminReturnsContent() {
             </thead>
             <tbody>
               {isLoading ? (
-                <tr><td colSpan={5} className="px-6 py-8 text-center">Loading...</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center">Loading...</td></tr>
               ) : returns.length === 0 ? (
-                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No return requests.</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-muted">No return requests.</td></tr>
               ) : (
-                pageItems.map((item) => (
+                pageItems.map((item, index) => (
                   <tr key={item.id} className="border-b last:border-0">
+                    <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                     <td className="px-6 py-4 font-mono font-semibold">{item.orderNumber}</td>
                     <td className="px-6 py-4">{item.customerName}</td>
                     <td className="px-6 py-4 max-w-xs truncate">{item.reason}</td>

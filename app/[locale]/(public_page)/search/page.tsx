@@ -9,7 +9,7 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { localizeHref } from "@/lib/i18n/locale-path";
 import { mapApiProductsToStorefront } from "@/lib/product-mapper";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string }>;

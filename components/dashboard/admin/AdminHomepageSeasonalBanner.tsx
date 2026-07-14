@@ -39,6 +39,7 @@ export function AdminHomepageSeasonalBanner() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(banners);
 
   return (
@@ -79,6 +80,7 @@ export function AdminHomepageSeasonalBanner() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Preview</th>
                 <th className="px-6 py-3">Title (BN)</th>
                 <th className="px-6 py-3">Title (EN)</th>
@@ -89,11 +91,12 @@ export function AdminHomepageSeasonalBanner() {
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((banner) => (
+              {pageItems.map((banner, index) => (
                 <tr
                   key={banner.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
+                  <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                   <td className="px-6 py-4">
                     <div className="relative h-16 w-14 overflow-hidden rounded-lg bg-brand-gray">
                       <Image

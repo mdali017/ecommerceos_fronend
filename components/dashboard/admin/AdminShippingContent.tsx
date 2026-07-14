@@ -33,6 +33,7 @@ export function AdminShippingContent() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(zones);
 
   const shippingStats = useMemo(() => {
@@ -129,6 +130,7 @@ export function AdminShippingContent() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Zone</th>
                 <th className="px-6 py-3">Fee</th>
                 <th className="px-6 py-3">Free over</th>
@@ -138,12 +140,13 @@ export function AdminShippingContent() {
             </thead>
             <tbody>
               {isLoading ? (
-                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">Loading...</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-muted">Loading...</td></tr>
               ) : zones.length === 0 ? (
-                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No zones.</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-muted">No zones.</td></tr>
               ) : (
-                pageItems.map((zone) => (
+                pageItems.map((zone, index) => (
                   <tr key={zone.id} className="border-b last:border-0">
+                    <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                     <td className="px-6 py-4 font-medium">{zone.nameBn || zone.name}</td>
                     <td className="px-6 py-4">৳{zone.deliveryFee}</td>
                     <td className="px-6 py-4">৳{zone.freeDeliveryThreshold}</td>

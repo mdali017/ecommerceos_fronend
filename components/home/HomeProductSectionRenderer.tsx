@@ -18,7 +18,17 @@ export function HomeProductSectionRenderer({
   if (section.products.length === 0) return null;
 
   if (section.sectionType === "grid") {
-    return <TopSellingSection products={section.products} title={section.title} />;
+    return (
+      <TopSellingSection
+        products={section.products}
+        title={section.title}
+        viewAllHref={
+          section.viewAllHref
+            ? localizeHref(section.viewAllHref, locale)
+            : localizeHref("/products", locale)
+        }
+      />
+    );
   }
 
   if (section.sectionType === "flash_sale") {

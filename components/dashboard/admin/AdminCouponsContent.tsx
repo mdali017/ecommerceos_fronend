@@ -34,6 +34,7 @@ export function AdminCouponsContent() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(coupons);
 
   const couponStats = useMemo(() => {
@@ -122,6 +123,7 @@ export function AdminCouponsContent() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                  <th className="px-6 py-3">#</th>
                   <th className="px-6 py-3">Code</th>
                   <th className="px-6 py-3">Discount</th>
                   <th className="px-6 py-3">Min Order</th>
@@ -133,13 +135,14 @@ export function AdminCouponsContent() {
               <tbody>
                 {coupons.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-10 text-center text-muted">
+                    <td colSpan={7} className="px-6 py-10 text-center text-muted">
                       No coupons yet.
                     </td>
                   </tr>
                 ) : (
-                  pageItems.map((coupon) => (
+                  pageItems.map((coupon, index) => (
                     <tr key={coupon.id} className="border-b border-brand-border last:border-0">
+                      <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                       <td className="px-6 py-4 font-mono font-bold text-foreground">{coupon.code}</td>
                       <td className="px-6 py-4">{formatValue(coupon)}</td>
                       <td className="px-6 py-4">৳{coupon.minOrderAmount.toLocaleString("en-US")}</td>

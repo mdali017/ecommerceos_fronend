@@ -37,22 +37,28 @@ export function middleware(request: NextRequest) {
   // Legacy prefixed URLs → clean URL + set locale cookie
   if (pathname === "/bn" || pathname.startsWith("/bn/")) {
     const cleanPath = pathname.replace(/^\/bn/, "") || "/";
-    const response = NextResponse.redirect(new URL(cleanPath, request.url));
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = cleanPath;
+    const response = NextResponse.redirect(redirectUrl);
     setLocaleCookie(response, "bn");
     return response;
   }
 
   if (pathname === "/en" || pathname.startsWith("/en/")) {
     const cleanPath = pathname.replace(/^\/en/, "") || "/";
-    const response = NextResponse.redirect(new URL(cleanPath, request.url));
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = cleanPath;
+    const response = NextResponse.redirect(redirectUrl);
     setLocaleCookie(response, "en");
     return response;
   }
 
   const locale = parseLocaleCookie(request.cookies.get(LOCALE_COOKIE)?.value);
 
-  const rewritePath = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
-  const response = NextResponse.rewrite(new URL(rewritePath, request.url));
+  const rewriteUrl = request.nextUrl.clone();
+  rewriteUrl.pathname = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
+  // Keep search params (q, category, sort, page, etc.) — new URL(path, base) drops them
+  const response = NextResponse.rewrite(rewriteUrl);
 
   if (!request.cookies.get(LOCALE_COOKIE)?.value) {
     setLocaleCookie(response, defaultLocale);

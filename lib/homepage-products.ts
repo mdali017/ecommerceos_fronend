@@ -186,8 +186,8 @@ export async function getHomepageProductSections(
       title: resolveTitle(section, dictionary),
       sectionType: section.sectionType,
       viewAllHref: section.categorySlug
-        ? `/category/${section.categorySlug}`
-        : undefined,
+        ? `/products?category=${section.categorySlug}`
+        : "/products",
       products: resolveProductsForSection(section, apiProducts),
       sortOrder: section.sortOrder,
     }))

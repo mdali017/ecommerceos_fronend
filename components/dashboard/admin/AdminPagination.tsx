@@ -32,6 +32,7 @@ export function useAdminPagination<T>(items: T[], pageSize = ADMIN_DEFAULT_PAGE_
     pageItems,
     showingFrom: total === 0 ? 0 : (page - 1) * pageSize + 1,
     showingTo: Math.min(page * pageSize, total),
+    serialOf: (indexOnPage: number) => (page - 1) * pageSize + indexOnPage + 1,
   };
 }
 

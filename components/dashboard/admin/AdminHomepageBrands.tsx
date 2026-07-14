@@ -38,6 +38,7 @@ export function AdminHomepageBrands() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(brands);
 
   return (
@@ -78,6 +79,7 @@ export function AdminHomepageBrands() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Brand Name</th>
                 <th className="px-6 py-3">Order</th>
                 <th className="px-6 py-3">Status</th>
@@ -85,11 +87,12 @@ export function AdminHomepageBrands() {
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((brand) => (
+              {pageItems.map((brand, index) => (
                 <tr
                   key={brand.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
+                  <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                   <td className="px-6 py-4 font-semibold text-foreground">{brand.name}</td>
                   <td className="px-6 py-4 text-muted">{brand.sortOrder}</td>
                   <td className="px-6 py-4">

@@ -28,6 +28,7 @@ export interface AdminCustomerSummary {
   address: string;
   source: string;
   orderCount: number;
+  completedOrderCount: number;
   createdAt: string;
 }
 

@@ -66,7 +66,7 @@ export function CategoryIcons({
           {items.map((cat) => (
             <Link
               key={cat.slug}
-              href={localizeHref(`/category/${cat.slug}`, locale)}
+              href={localizeHref(`/products?category=${cat.slug}`, locale)}
               className="flex min-w-[72px] flex-col items-center gap-2 transition-transform hover:scale-105 sm:min-w-[80px]"
             >
               <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border-2 border-brand-orange/30 bg-brand-cream text-2xl sm:h-16 sm:w-16 sm:text-3xl">

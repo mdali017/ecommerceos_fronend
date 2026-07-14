@@ -38,6 +38,7 @@ export function AdminHomepageTestimonials() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(testimonials);
 
   return (
@@ -78,6 +79,7 @@ export function AdminHomepageTestimonials() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Customer</th>
                 <th className="px-6 py-3">Review (BN)</th>
                 <th className="px-6 py-3">Rating</th>
@@ -87,11 +89,12 @@ export function AdminHomepageTestimonials() {
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((item) => (
+              {pageItems.map((item, index) => (
                 <tr
                   key={item.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
+                  <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-green text-sm font-bold text-white">

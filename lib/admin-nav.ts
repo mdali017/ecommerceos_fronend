@@ -26,6 +26,7 @@ export const adminNavItems: AdminNavItem[] = [
     icon: "🧾",
     children: [
       { href: "/admin/orders", label: "All Orders", icon: "📋" },
+      { href: "/admin/orders/completed", label: "Completed", icon: "✅" },
       { href: "/admin/shipping", label: "Shipping", icon: "🚚" },
       { href: "/admin/returns", label: "Returns", icon: "↩️" },
     ],
@@ -48,6 +49,10 @@ export const adminNavItems: AdminNavItem[] = [
 export function isAdminNavActive(href: string, pathname: string) {
   if (href === "/admin") return pathname === "/admin";
   if (href === "/admin/pos") return pathname.startsWith("/admin/pos");
+  // Keep "All Orders" from highlighting when on /admin/orders/completed
+  if (href === "/admin/orders") {
+    return pathname === "/admin/orders" || pathname === "/admin/orders/";
+  }
   if (href === "/admin/site-config") {
     return (
       pathname.startsWith("/admin/site-config") || pathname.startsWith("/admin/homepage")

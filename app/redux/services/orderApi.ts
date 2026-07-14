@@ -122,6 +122,7 @@ export const orderApi = baseApi.injectEndpoints({
         { type: "Order", id },
         { type: "Order", id: "LIST" },
         { type: "Order", id: "MY_LIST" },
+        { type: "Return", id: "LIST" },
       ],
     }),
     updateOrderShipping: builder.mutation<

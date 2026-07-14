@@ -42,6 +42,7 @@ export function AdminCampaignList() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(visibleCampaigns);
 
   const campaignStats = useMemo(() => {
@@ -113,6 +114,7 @@ export function AdminCampaignList() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Campaign</th>
                 <th className="px-6 py-3">Product</th>
                 <th className="px-6 py-3">Platform</th>
@@ -125,12 +127,12 @@ export function AdminCampaignList() {
             <tbody>
               {visibleCampaigns.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-10 text-center text-muted">
+                  <td colSpan={8} className="px-6 py-10 text-center text-muted">
                     কোনো campaign নেই। Create Campaign থেকে নতুন তৈরি করুন।
                   </td>
                 </tr>
               ) : (
-                pageItems.map((campaign) => {
+                pageItems.map((campaign, index) => {
                   const status = CAMPAIGN_STATUS_LABELS[campaign.status];
                   const leadCount = leads.filter((lead) => lead.campaignId === campaign.id).length;
 
@@ -139,6 +141,7 @@ export function AdminCampaignList() {
                       key={campaign.id}
                       className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                     >
+                      <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                       <td className="px-6 py-4">
                         <p className="font-semibold text-foreground">{campaign.title}</p>
                         <p className="mt-0.5 max-w-xs truncate text-xs text-muted">

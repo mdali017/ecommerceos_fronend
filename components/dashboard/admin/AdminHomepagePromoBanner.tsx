@@ -39,6 +39,7 @@ export function AdminHomepagePromoBanner() {
     totalPages,
     showingFrom,
     showingTo,
+    serialOf,
   } = useAdminPagination(banners);
 
   return (
@@ -79,6 +80,7 @@ export function AdminHomepagePromoBanner() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3">Preview</th>
                 <th className="px-6 py-3">Title (BN)</th>
                 <th className="px-6 py-3">Subtitle (BN)</th>
@@ -88,11 +90,12 @@ export function AdminHomepagePromoBanner() {
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((banner) => (
+              {pageItems.map((banner, index) => (
                 <tr
                   key={banner.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
+                  <td className="px-6 py-4 text-muted">{serialOf(index)}</td>
                   <td className="px-6 py-4">
                     <div className="relative h-12 w-28 overflow-hidden rounded-lg bg-brand-gray">
                       <Image

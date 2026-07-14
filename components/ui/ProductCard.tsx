@@ -15,7 +15,13 @@ const badgeStyles: Record<string, string> = {
   stock: "bg-blue-600 text-white",
 };
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  fill = false,
+}: {
+  product: Product;
+  fill?: boolean;
+}) {
   const dispatch = useAppDispatch();
   const { dictionary, localizePath, getProductName, formatPrice } = useLocale();
   const detailsHref = localizePath(`/products/${product.slug ?? product.id}`);
@@ -36,7 +42,13 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="group relative flex min-w-[160px] max-w-[200px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-brand-border bg-white transition-shadow hover:shadow-md sm:min-w-[180px]">
+    <div
+      className={
+        fill
+          ? "group relative flex w-full min-w-0 flex-col overflow-hidden rounded-lg border border-brand-border bg-white transition-shadow hover:shadow-md"
+          : "group relative flex min-w-[160px] max-w-[200px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-brand-border bg-white transition-shadow hover:shadow-md sm:min-w-[180px]"
+      }
+    >
       <div className="absolute right-2 top-2 z-20">
         <WishlistButton
           productId={product.slug ?? product.id}
@@ -64,7 +76,7 @@ export function ProductCard({ product }: { product: Product }) {
           alt={displayName}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
-          sizes="200px"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
         />
       </Link>
 

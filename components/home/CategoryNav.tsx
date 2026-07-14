@@ -29,7 +29,7 @@ export async function CategoryNav({
           {items.map((cat, i) => (
             <li key={cat.slug}>
               <Link
-                href={localizeHref(`/category/${cat.slug}`, locale)}
+                href={localizeHref(`/products?category=${cat.slug}`, locale)}
                 className={`block px-3 py-2.5 text-sm text-white transition-colors hover:bg-brand-green-light sm:px-4 sm:py-3 sm:text-[15px] ${
                   i === 0 ? "bg-brand-orange font-medium" : ""
                 }`}
@@ -40,7 +40,7 @@ export async function CategoryNav({
           ))}
           <li>
             <Link
-              href={localizeHref("/", locale)}
+              href={localizeHref("/products", locale)}
               className="ml-1 block rounded bg-brand-orange px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-orange-dark sm:px-4 sm:py-2.5"
             >
               {dictionary.nav.allCategories}
