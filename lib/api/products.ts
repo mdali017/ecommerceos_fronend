@@ -56,6 +56,7 @@ export function listProducts(token: string) {
 export type ProductUpsertInput = {
   sku: string;
   productName: string;
+  barcode?: string;
   genericName?: string;
   brand?: string;
   category?: string;
@@ -67,9 +68,22 @@ export type ProductUpsertInput = {
   costPrice?: number | string;
   sellingPrice?: number | string;
   offerPrice?: number | string;
+  taxPercent?: number | string;
+  discountPercent?: number | string;
   stockQty?: number | string;
   minStock?: number | string;
+  maxStock?: number | string;
+  batchNo?: string;
+  expiryDate?: string;
+  manufactureDate?: string;
+  supplier?: string;
+  manufacturer?: string;
+  weight?: string;
+  color?: string;
+  size?: string;
+  variant?: string;
   imageUrl?: string;
+  imageUrls?: string[];
   status?: string;
   featured?: string;
   tags?: string;

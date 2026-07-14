@@ -29,87 +29,85 @@ export function AdminCustomersContent() {
     return { total: totalCount, totalOrders, avgOrders, withOrders };
   }, [customers]);
 
-  if (isLoading) {
-    return (
-      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-muted">
-        Loading customers...
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-red-600">
-        Failed to load customers.
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Total Customers", value: customerStats.total, icon: "👥", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
-          { label: "Total Orders", value: customerStats.totalOrders, icon: "📦", color: "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400" },
-          { label: "Avg Orders / Customer", value: customerStats.avgOrders, icon: "📊", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
-          { label: "Repeat Customers", value: customerStats.withOrders, icon: "🔁", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
+          { label: "Total Customers", value: isLoading ? "—" : customerStats.total, icon: "👥", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: "Total Orders", value: isLoading ? "—" : customerStats.totalOrders, icon: "📦", color: "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400" },
+          { label: "Avg Orders / Customer", value: isLoading ? "—" : customerStats.avgOrders, icon: "📊", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
+          { label: "Repeat Customers", value: isLoading ? "—" : customerStats.withOrders, icon: "🔁", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
         ]}
       />
 
       <h2 className="text-xl font-bold text-foreground">Customer List</h2>
 
-      {customers.length === 0 ? (
-        <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-muted">
-          No customers yet.
-        </div>
-      ) : (
-        <div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {pageItems.map((customer) => (
-              <div
-                key={customer.id}
-                className="rounded-2xl border border-brand-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green text-lg font-bold text-white">
-                    {customer.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-bold text-foreground">{customer.name}</p>
-                    <p className="text-xs text-muted">{customer.orderCount} orders</p>
-                  </div>
-                </div>
-                <dl className="mt-4 space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <dt className="text-muted">Phone</dt>
-                    <dd className="font-medium">{customer.phone}</dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-muted">Email</dt>
-                    <dd className="truncate font-medium">{customer.email}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-muted">Address</dt>
-                    <dd className="mt-1 font-medium text-foreground">{customer.address}</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted">Source</dt>
-                    <dd className="font-medium capitalize">{customer.source}</dd>
-                  </div>
-                </dl>
-              </div>
-            ))}
-          </div>
-          <AdminPagination
-            page={page}
-            totalPages={totalPages}
-            total={total}
-            showingFrom={showingFrom}
-            showingTo={showingTo}
-            onPageChange={setPage}
-          />
-        </div>
-      )}
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
+        {isLoading ? (
+          <div className="px-6 py-12 text-center text-sm text-muted">Loading customers...</div>
+        ) : isError ? (
+          <div className="px-6 py-12 text-center text-sm text-red-600">Failed to load customers.</div>
+        ) : customers.length === 0 ? (
+          <div className="px-6 py-12 text-center text-sm text-muted">No customers yet.</div>
+        ) : (
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                    <th className="px-6 py-3">Customer</th>
+                    <th className="px-6 py-3">Phone</th>
+                    <th className="px-6 py-3">Email</th>
+                    <th className="px-6 py-3">Address</th>
+                    <th className="px-6 py-3">Orders</th>
+                    <th className="px-6 py-3">Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pageItems.map((customer) => (
+                    <tr
+                      key={customer.id}
+                      className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-green text-sm font-bold text-white">
+                            {customer.name.charAt(0)}
+                          </div>
+                          <span className="font-semibold text-foreground">{customer.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 font-medium text-foreground">{customer.phone || "—"}</td>
+                      <td className="max-w-[220px] truncate px-6 py-4 text-muted">
+                        {customer.email || "—"}
+                      </td>
+                      <td className="max-w-[260px] px-6 py-4 text-muted">
+                        <span className="line-clamp-2">{customer.address || "—"}</span>
+                      </td>
+                      <td className="px-6 py-4 font-semibold text-foreground">
+                        {customer.orderCount}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="rounded-full bg-brand-gray px-2.5 py-1 text-xs font-semibold capitalize text-muted">
+                          {customer.source || "—"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <AdminPagination
+              page={page}
+              totalPages={totalPages}
+              total={total}
+              showingFrom={showingFrom}
+              showingTo={showingTo}
+              onPageChange={setPage}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }
