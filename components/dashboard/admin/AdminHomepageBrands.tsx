@@ -7,6 +7,10 @@ import {
 } from "@/app/redux/services/homepageBrandApi";
 import { useAppSelector } from "@/app/redux/hooks";
 import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
+import {
   AdminHomepageSectionHeader,
   AdminStatusBadge,
   AdminTableShell,
@@ -26,6 +30,16 @@ export function AdminHomepageBrands() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<HomepageBrand | null>(null);
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(brands);
+
   return (
     <div className="space-y-6">
       <AdminHomepageSectionHeader
@@ -38,7 +52,18 @@ export function AdminHomepageBrands() {
         }}
       />
 
-      <AdminTableShell>
+      <AdminTableShell
+        footer={
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
+        }
+      >
         {isLoading ? (
           <div className="px-6 py-12 text-center text-sm text-muted">Loading brands...</div>
         ) : isError ? (
@@ -60,7 +85,7 @@ export function AdminHomepageBrands() {
               </tr>
             </thead>
             <tbody>
-              {brands.map((brand) => (
+              {pageItems.map((brand) => (
                 <tr
                   key={brand.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"

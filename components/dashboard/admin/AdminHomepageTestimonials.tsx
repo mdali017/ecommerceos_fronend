@@ -7,6 +7,10 @@ import {
 } from "@/app/redux/services/testimonialApi";
 import { useAppSelector } from "@/app/redux/hooks";
 import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
+import {
   AdminHomepageSectionHeader,
   AdminStatusBadge,
   AdminTableShell,
@@ -26,6 +30,16 @@ export function AdminHomepageTestimonials() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Testimonial | null>(null);
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(testimonials);
+
   return (
     <div className="space-y-6">
       <AdminHomepageSectionHeader
@@ -38,7 +52,18 @@ export function AdminHomepageTestimonials() {
         }}
       />
 
-      <AdminTableShell>
+      <AdminTableShell
+        footer={
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
+        }
+      >
         {isLoading ? (
           <div className="px-6 py-12 text-center text-sm text-muted">Loading testimonials...</div>
         ) : isError ? (
@@ -62,7 +87,7 @@ export function AdminHomepageTestimonials() {
               </tr>
             </thead>
             <tbody>
-              {testimonials.map((item) => (
+              {pageItems.map((item) => (
                 <tr
                   key={item.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"

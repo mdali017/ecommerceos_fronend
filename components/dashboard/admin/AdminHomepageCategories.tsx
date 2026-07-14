@@ -7,6 +7,10 @@ import {
 } from "@/app/redux/services/categoryApi";
 import { useAppSelector } from "@/app/redux/hooks";
 import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
+import {
   AdminHomepageSectionHeader,
   AdminStatusBadge,
   AdminTableShell,
@@ -27,6 +31,16 @@ export function AdminHomepageCategories() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(categories);
+
   return (
     <div className="space-y-6">
       <AdminHomepageSectionHeader
@@ -39,7 +53,18 @@ export function AdminHomepageCategories() {
         }}
       />
 
-      <AdminTableShell>
+      <AdminTableShell
+        footer={
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
+        }
+      >
         {isLoading ? (
           <div className="px-6 py-12 text-center text-sm text-muted">Loading categories...</div>
         ) : isError ? (
@@ -64,7 +89,7 @@ export function AdminHomepageCategories() {
               </tr>
             </thead>
             <tbody>
-              {categories.map((category) => (
+              {pageItems.map((category) => (
                 <tr
                   key={category.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"

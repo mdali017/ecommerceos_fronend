@@ -8,6 +8,10 @@ import {
 } from "@/app/redux/services/couponApi";
 import { CouponFormModal } from "@/components/dashboard/admin/forms/CouponFormModal";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import Swal from "sweetalert2";
 
 function formatValue(coupon: Coupon) {
@@ -21,6 +25,16 @@ export function AdminCouponsContent() {
   const [deleteCoupon] = useDeleteCouponMutation();
   const [formOpen, setFormOpen] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(coupons);
 
   const couponStats = useMemo(() => {
     const total = coupons.length;
@@ -124,7 +138,7 @@ export function AdminCouponsContent() {
                     </td>
                   </tr>
                 ) : (
-                  coupons.map((coupon) => (
+                  pageItems.map((coupon) => (
                     <tr key={coupon.id} className="border-b border-brand-border last:border-0">
                       <td className="px-6 py-4 font-mono font-bold text-foreground">{coupon.code}</td>
                       <td className="px-6 py-4">{formatValue(coupon)}</td>
@@ -168,6 +182,14 @@ export function AdminCouponsContent() {
               </tbody>
             </table>
           </div>
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
         </div>
       )}
 

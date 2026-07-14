@@ -8,6 +8,10 @@ import {
 } from "@/app/redux/services/heroSlideApi";
 import { useAppSelector } from "@/app/redux/hooks";
 import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
+import {
   AdminHomepageSectionHeader,
   AdminStatusBadge,
   AdminTableShell,
@@ -27,6 +31,16 @@ export function AdminHomepageHeroSlides() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<HeroSlide | null>(null);
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(slides);
+
   return (
     <div className="space-y-6">
       <AdminHomepageSectionHeader
@@ -39,7 +53,18 @@ export function AdminHomepageHeroSlides() {
         }}
       />
 
-      <AdminTableShell>
+      <AdminTableShell
+        footer={
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
+        }
+      >
         {isLoading ? (
           <div className="px-6 py-12 text-center text-sm text-muted">Loading slides...</div>
         ) : isError ? (
@@ -64,7 +89,7 @@ export function AdminHomepageHeroSlides() {
               </tr>
             </thead>
             <tbody>
-              {slides.map((slide) => (
+              {pageItems.map((slide) => (
                 <tr
                   key={slide.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"

@@ -8,6 +8,10 @@ import {
   type ShippingZone,
 } from "@/app/redux/services/shippingApi";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import Swal from "sweetalert2";
 
 export function AdminShippingContent() {
@@ -20,6 +24,16 @@ export function AdminShippingContent() {
     deliveryFee: 80,
     freeDeliveryThreshold: 2000,
   });
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(zones);
 
   const shippingStats = useMemo(() => {
     const totalZones = zones.length;
@@ -111,42 +125,52 @@ export function AdminShippingContent() {
       </div>
 
       <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
-              <th className="px-6 py-3">Zone</th>
-              <th className="px-6 py-3">Fee</th>
-              <th className="px-6 py-3">Free over</th>
-              <th className="px-6 py-3">ETA</th>
-              <th className="px-6 py-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">Loading...</td></tr>
-            ) : zones.length === 0 ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No zones.</td></tr>
-            ) : (
-              zones.map((zone) => (
-                <tr key={zone.id} className="border-b last:border-0">
-                  <td className="px-6 py-4 font-medium">{zone.nameBn || zone.name}</td>
-                  <td className="px-6 py-4">৳{zone.deliveryFee}</td>
-                  <td className="px-6 py-4">৳{zone.freeDeliveryThreshold}</td>
-                  <td className="px-6 py-4">{zone.estimatedDaysMin}-{zone.estimatedDaysMax} days</td>
-                  <td className="px-6 py-4">
-                    <button
-                      type="button"
-                      onClick={() => void handleDelete(zone)}
-                      className="text-xs font-semibold text-red-600"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
+                <th className="px-6 py-3">Zone</th>
+                <th className="px-6 py-3">Fee</th>
+                <th className="px-6 py-3">Free over</th>
+                <th className="px-6 py-3">ETA</th>
+                <th className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">Loading...</td></tr>
+              ) : zones.length === 0 ? (
+                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No zones.</td></tr>
+              ) : (
+                pageItems.map((zone) => (
+                  <tr key={zone.id} className="border-b last:border-0">
+                    <td className="px-6 py-4 font-medium">{zone.nameBn || zone.name}</td>
+                    <td className="px-6 py-4">৳{zone.deliveryFee}</td>
+                    <td className="px-6 py-4">৳{zone.freeDeliveryThreshold}</td>
+                    <td className="px-6 py-4">{zone.estimatedDaysMin}-{zone.estimatedDaysMax} days</td>
+                    <td className="px-6 py-4">
+                      <button
+                        type="button"
+                        onClick={() => void handleDelete(zone)}
+                        className="text-xs font-semibold text-red-600"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          total={total}
+          showingFrom={showingFrom}
+          showingTo={showingTo}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

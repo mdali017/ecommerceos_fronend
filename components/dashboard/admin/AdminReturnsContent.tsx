@@ -7,6 +7,10 @@ import {
   type ReturnStatus,
 } from "@/app/redux/services/returnApi";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 
 const statusOptions: ReturnStatus[] = ["pending", "approved", "rejected", "refunded", "completed"];
 
@@ -15,12 +19,22 @@ export function AdminReturnsContent() {
   const [updateStatus] = useUpdateReturnStatusMutation();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(returns);
+
   const returnStats = useMemo(() => {
-    const total = returns.length;
+    const totalCount = returns.length;
     const pending = returns.filter((r) => r.status === "pending").length;
     const approved = returns.filter((r) => r.status === "approved").length;
     const rejected = returns.filter((r) => r.status === "rejected").length;
-    return { total, pending, approved, rejected };
+    return { total: totalCount, pending, approved, rejected };
   }, [returns]);
 
   const handleStatus = async (id: string, status: ReturnStatus) => {
@@ -56,46 +70,56 @@ export function AdminReturnsContent() {
         </div>
       )}
 
-      <div className="rounded-2xl border border-brand-border bg-card shadow-sm overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
-              <th className="px-6 py-3">Order</th>
-              <th className="px-6 py-3">Customer</th>
-              <th className="px-6 py-3">Reason</th>
-              <th className="px-6 py-3">Status</th>
-              <th className="px-6 py-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center">Loading...</td></tr>
-            ) : returns.length === 0 ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No return requests.</td></tr>
-            ) : (
-              returns.map((item) => (
-                <tr key={item.id} className="border-b last:border-0">
-                  <td className="px-6 py-4 font-mono font-semibold">{item.orderNumber}</td>
-                  <td className="px-6 py-4">{item.customerName}</td>
-                  <td className="px-6 py-4 max-w-xs truncate">{item.reason}</td>
-                  <td className="px-6 py-4 capitalize">{item.status}</td>
-                  <td className="px-6 py-4">
-                    <select
-                      disabled={updatingId === item.id}
-                      value={item.status}
-                      onChange={(e) => void handleStatus(item.id, e.target.value as ReturnStatus)}
-                      className="rounded-lg border border-brand-border px-2 py-1 text-xs"
-                    >
-                      {statusOptions.map((status) => (
-                        <option key={status} value={status}>{status}</option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
+                <th className="px-6 py-3">Order</th>
+                <th className="px-6 py-3">Customer</th>
+                <th className="px-6 py-3">Reason</th>
+                <th className="px-6 py-3">Status</th>
+                <th className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr><td colSpan={5} className="px-6 py-8 text-center">Loading...</td></tr>
+              ) : returns.length === 0 ? (
+                <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No return requests.</td></tr>
+              ) : (
+                pageItems.map((item) => (
+                  <tr key={item.id} className="border-b last:border-0">
+                    <td className="px-6 py-4 font-mono font-semibold">{item.orderNumber}</td>
+                    <td className="px-6 py-4">{item.customerName}</td>
+                    <td className="px-6 py-4 max-w-xs truncate">{item.reason}</td>
+                    <td className="px-6 py-4 capitalize">{item.status}</td>
+                    <td className="px-6 py-4">
+                      <select
+                        disabled={updatingId === item.id}
+                        value={item.status}
+                        onChange={(e) => void handleStatus(item.id, e.target.value as ReturnStatus)}
+                        className="rounded-lg border border-brand-border px-2 py-1 text-xs"
+                      >
+                        {statusOptions.map((status) => (
+                          <option key={status} value={status}>{status}</option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          total={total}
+          showingFrom={showingFrom}
+          showingTo={showingTo}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

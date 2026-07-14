@@ -3,16 +3,30 @@
 import { useMemo } from "react";
 import { useListCustomersQuery } from "@/app/redux/services/adminApi";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 
 export function AdminCustomersContent() {
   const { data: customers = [], isLoading, isError } = useListCustomersQuery();
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(customers);
+
   const customerStats = useMemo(() => {
-    const total = customers.length;
+    const totalCount = customers.length;
     const totalOrders = customers.reduce((sum, c) => sum + c.orderCount, 0);
-    const avgOrders = total > 0 ? (totalOrders / total).toFixed(1) : "0";
+    const avgOrders = totalCount > 0 ? (totalOrders / totalCount).toFixed(1) : "0";
     const withOrders = customers.filter((c) => c.orderCount > 0).length;
-    return { total, totalOrders, avgOrders, withOrders };
+    return { total: totalCount, totalOrders, avgOrders, withOrders };
   }, [customers]);
 
   if (isLoading) {
@@ -49,41 +63,51 @@ export function AdminCustomersContent() {
           No customers yet.
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {customers.map((customer) => (
-            <div
-              key={customer.id}
-              className="rounded-2xl border border-brand-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green text-lg font-bold text-white">
-                  {customer.name.charAt(0)}
+        <div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {pageItems.map((customer) => (
+              <div
+                key={customer.id}
+                className="rounded-2xl border border-brand-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green text-lg font-bold text-white">
+                    {customer.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-bold text-foreground">{customer.name}</p>
+                    <p className="text-xs text-muted">{customer.orderCount} orders</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-foreground">{customer.name}</p>
-                  <p className="text-xs text-muted">{customer.orderCount} orders</p>
-                </div>
+                <dl className="mt-4 space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <dt className="text-muted">Phone</dt>
+                    <dd className="font-medium">{customer.phone}</dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted">Email</dt>
+                    <dd className="truncate font-medium">{customer.email}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted">Address</dt>
+                    <dd className="mt-1 font-medium text-foreground">{customer.address}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-muted">Source</dt>
+                    <dd className="font-medium capitalize">{customer.source}</dd>
+                  </div>
+                </dl>
               </div>
-              <dl className="mt-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <dt className="text-muted">Phone</dt>
-                  <dd className="font-medium">{customer.phone}</dd>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <dt className="text-muted">Email</dt>
-                  <dd className="truncate font-medium">{customer.email}</dd>
-                </div>
-                <div>
-                  <dt className="text-muted">Address</dt>
-                  <dd className="mt-1 font-medium text-foreground">{customer.address}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-muted">Source</dt>
-                  <dd className="font-medium capitalize">{customer.source}</dd>
-                </div>
-              </dl>
-            </div>
-          ))}
+            ))}
+          </div>
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
         </div>
       )}
     </div>

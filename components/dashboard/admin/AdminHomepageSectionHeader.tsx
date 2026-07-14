@@ -52,10 +52,17 @@ export function AdminStatusBadge({ isActive }: { isActive: boolean }) {
   );
 }
 
-export function AdminTableShell({ children }: { children: React.ReactNode }) {
+export function AdminTableShell({
+  children,
+  footer,
+}: {
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
   return (
     <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
       <div className="overflow-x-auto">{children}</div>
+      {footer}
     </div>
   );
 }

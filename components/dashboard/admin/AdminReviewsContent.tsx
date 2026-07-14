@@ -8,6 +8,10 @@ import {
   useUpdateReviewStatusMutation,
 } from "@/app/redux/services/reviewApi";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import Swal from "sweetalert2";
 
 type ReviewFilter = "all" | "approved" | "pending";
@@ -46,6 +50,16 @@ export function AdminReviewsContent() {
     }
     return reviews;
   }, [reviews, activeFilter]);
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(filteredReviews);
 
   const reviewStats = useMemo(() => {
     const total = reviews.length;
@@ -161,7 +175,7 @@ export function AdminReviewsContent() {
                     </td>
                   </tr>
                 ) : (
-                  filteredReviews.map((review) => (
+                  pageItems.map((review) => (
                     <tr
                       key={review.id}
                       className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
@@ -220,6 +234,14 @@ export function AdminReviewsContent() {
               </tbody>
             </table>
           </div>
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
         </div>
       )}
     </div>

@@ -10,6 +10,10 @@ import {
   getCampaignShareUrl,
 } from "@/lib/campaign-utils";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import { syncPublicCampaigns } from "@/lib/campaign-public-storage";
 import Swal from "sweetalert2";
 
@@ -29,6 +33,16 @@ export function AdminCampaignList() {
         : campaigns,
     [campaigns, showRunningOnly]
   );
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(visibleCampaigns);
 
   const campaignStats = useMemo(() => {
     const total = campaigns.length;
@@ -116,7 +130,7 @@ export function AdminCampaignList() {
                   </td>
                 </tr>
               ) : (
-                visibleCampaigns.map((campaign) => {
+                pageItems.map((campaign) => {
                   const status = CAMPAIGN_STATUS_LABELS[campaign.status];
                   const leadCount = leads.filter((lead) => lead.campaignId === campaign.id).length;
 
@@ -171,6 +185,14 @@ export function AdminCampaignList() {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          total={total}
+          showingFrom={showingFrom}
+          showingTo={showingTo}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

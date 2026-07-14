@@ -8,6 +8,10 @@ import {
   type PaymentStatus,
 } from "@/app/redux/services/orderApi";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import { statusLabels } from "@/lib/admin-data";
 
 const paymentLabels: Record<PaymentStatus, { label: string; className: string }> = {
@@ -55,6 +59,16 @@ export function AdminOrdersContent() {
     if (!activeFilter) return orders;
     return orders.filter((order) => order.status === activeFilter);
   }, [orders, activeFilter]);
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(filteredOrders);
 
   const orderStats = useMemo(() => {
     const total = orders.length;
@@ -149,7 +163,7 @@ export function AdminOrdersContent() {
                   </td>
                 </tr>
               )}
-              {filteredOrders.map((order) => {
+              {pageItems.map((order) => {
                 const status = statusLabels[order.status] ?? statusLabels.pending;
                 const payment = paymentLabels[order.paymentStatus] ?? paymentLabels.pending;
                 return (
@@ -206,6 +220,14 @@ export function AdminOrdersContent() {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          total={total}
+          showingFrom={showingFrom}
+          showingTo={showingTo}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

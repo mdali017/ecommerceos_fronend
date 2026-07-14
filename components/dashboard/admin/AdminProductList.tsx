@@ -7,6 +7,10 @@ import { ProductBulkUploadButton } from "@/components/dashboard/admin/ProductBul
 import { ConnectSheetButton } from "@/components/dashboard/admin/ConnectSheetButton";
 import { ProductFormModal } from "@/components/dashboard/admin/forms/ProductFormModal";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import { downloadProductBulkTemplate } from "@/lib/product-bulk-upload";
 import { deleteProduct } from "@/lib/api/products";
 import Swal from "sweetalert2";
@@ -61,6 +65,16 @@ export function AdminProductList() {
     const outOfStock = products.filter((p) => p.status === "out_of_stock").length;
     return { total, active, lowStock, outOfStock };
   }, [products]);
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(products);
 
   const openCreate = () => {
     setEditingProduct(null);
@@ -117,7 +131,7 @@ export function AdminProductList() {
           <button
             type="button"
             onClick={downloadProductBulkTemplate}
-            className="rounded-xl border border-brand-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand-green hover:text-brand-green"
+            className="rounded-xl border border-brand-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand-green hover:text-brand-green dark:hover:border-emerald-400 dark:hover:text-emerald-400"
           >
             Download Template
           </button>
@@ -150,75 +164,85 @@ export function AdminProductList() {
             কোনো প্রোডাক্ট নেই। Bulk Upload দিয়ে প্রোডাক্ট যোগ করুন।
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
-                  <th className="px-6 py-3">Product</th>
-                  <th className="px-6 py-3">SKU</th>
-                  <th className="px-6 py-3">Category</th>
-                  <th className="px-6 py-3">Price</th>
-                  <th className="px-6 py-3">Stock</th>
-                  <th className="px-6 py-3">Status</th>
-                  <th className="px-6 py-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product) => {
-                  const status = statusLabels[product.status] ?? statusLabels.active;
-                  return (
-                    <tr
-                      key={product.id}
-                      className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
-                    >
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          {(product.imageUrl || product.images[0]) && (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={product.imageUrl || product.images[0]}
-                              alt=""
-                              className="h-10 w-10 rounded-lg border border-brand-border object-cover"
-                            />
-                          )}
-                          <span className="font-semibold text-foreground">{product.productName}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 font-mono text-xs text-muted">{product.sku}</td>
-                      <td className="px-6 py-4 text-muted">{product.category || "—"}</td>
-                      <td className="px-6 py-4 font-semibold text-brand-orange">
-                        {formatPrice(product.sellingPrice || product.offerPrice)}
-                      </td>
-                      <td className="px-6 py-4 text-foreground">{product.stockQty}</td>
-                      <td className="px-6 py-4">
-                        <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${status.className}`}>
-                          {status.label}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={() => openEdit(product)}
-                            className="text-sm font-semibold text-brand-green hover:text-brand-orange"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => void handleDelete(product)}
-                            className="text-sm font-semibold text-red-600 hover:text-red-700"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
+                    <th className="px-6 py-3">Product</th>
+                    <th className="px-6 py-3">SKU</th>
+                    <th className="px-6 py-3">Category</th>
+                    <th className="px-6 py-3">Price</th>
+                    <th className="px-6 py-3">Stock</th>
+                    <th className="px-6 py-3">Status</th>
+                    <th className="px-6 py-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pageItems.map((product) => {
+                    const status = statusLabels[product.status] ?? statusLabels.active;
+                    return (
+                      <tr
+                        key={product.id}
+                        className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            {(product.imageUrl || product.images[0]) && (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={product.imageUrl || product.images[0]}
+                                alt=""
+                                className="h-10 w-10 rounded-lg border border-brand-border object-cover"
+                              />
+                            )}
+                            <span className="font-semibold text-foreground">{product.productName}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 font-mono text-xs text-muted">{product.sku}</td>
+                        <td className="px-6 py-4 text-muted">{product.category || "—"}</td>
+                        <td className="px-6 py-4 font-semibold text-brand-orange">
+                          {formatPrice(product.sellingPrice || product.offerPrice)}
+                        </td>
+                        <td className="px-6 py-4 text-foreground">{product.stockQty}</td>
+                        <td className="px-6 py-4">
+                          <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${status.className}`}>
+                            {status.label}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => openEdit(product)}
+                              className="text-sm font-semibold text-brand-green hover:text-brand-orange"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => void handleDelete(product)}
+                              className="text-sm font-semibold text-red-600 hover:text-red-700"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <AdminPagination
+              page={page}
+              totalPages={totalPages}
+              total={total}
+              showingFrom={showingFrom}
+              showingTo={showingTo}
+              onPageChange={setPage}
+            />
+          </>
         )}
       </div>
     </div>

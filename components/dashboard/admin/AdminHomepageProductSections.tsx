@@ -8,6 +8,10 @@ import {
 } from "@/app/redux/services/homepageProductSectionApi";
 import { useAppSelector } from "@/app/redux/hooks";
 import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
+import {
   AdminHomepageSectionHeader,
   AdminStatusBadge,
   AdminTableShell,
@@ -44,6 +48,16 @@ export function AdminHomepageProductSections() {
   const [productsOpen, setProductsOpen] = useState(false);
   const [editing, setEditing] = useState<HomepageProductSection | null>(null);
   const [managingProducts, setManagingProducts] = useState<HomepageProductSection | null>(null);
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(sections);
 
   const handleDelete = async (section: HomepageProductSection) => {
     const result = await Swal.fire({
@@ -87,7 +101,18 @@ export function AdminHomepageProductSections() {
         }}
       />
 
-      <AdminTableShell>
+      <AdminTableShell
+        footer={
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
+        }
+      >
         {isLoading ? (
           <div className="px-6 py-12 text-center text-sm text-muted">Loading sections...</div>
         ) : isError ? (
@@ -112,7 +137,7 @@ export function AdminHomepageProductSections() {
               </tr>
             </thead>
             <tbody>
-              {sections.map((item) => (
+              {pageItems.map((item) => (
                 <tr
                   key={item.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"

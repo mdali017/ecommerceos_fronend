@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useGetDashboardStatsQuery } from "@/app/redux/services/adminApi";
 import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
+import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
 import { statusLabels } from "@/lib/admin-data";
 
 function formatPrice(price: number) {
@@ -19,6 +23,17 @@ function formatDate(iso: string) {
 
 export function AdminDashboardContent() {
   const { data, isLoading, isError } = useGetDashboardStatsQuery();
+  const recentOrders = data?.recentOrders ?? [];
+
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(recentOrders);
 
   if (isLoading) {
     return (
@@ -36,7 +51,7 @@ export function AdminDashboardContent() {
     );
   }
 
-  const { stats, recentOrders } = data;
+  const { stats } = data;
 
   return (
     <div className="space-y-6">
@@ -96,7 +111,7 @@ export function AdminDashboardContent() {
                   </td>
                 </tr>
               ) : (
-                recentOrders.map((order) => {
+                pageItems.map((order) => {
                   const status = statusLabels[order.status] ?? statusLabels.pending;
                   return (
                     <tr key={order.id} className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30">
@@ -116,6 +131,14 @@ export function AdminDashboardContent() {
             </tbody>
           </table>
         </div>
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          total={total}
+          showingFrom={showingFrom}
+          showingTo={showingTo}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

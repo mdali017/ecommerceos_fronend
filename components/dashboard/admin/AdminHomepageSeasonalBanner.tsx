@@ -8,6 +8,10 @@ import {
 } from "@/app/redux/services/seasonalBannerApi";
 import { useAppSelector } from "@/app/redux/hooks";
 import {
+  AdminPagination,
+  useAdminPagination,
+} from "@/components/dashboard/admin/AdminPagination";
+import {
   AdminHomepageSectionHeader,
   AdminStatusBadge,
   AdminTableShell,
@@ -27,6 +31,16 @@ export function AdminHomepageSeasonalBanner() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<SeasonalBanner | null>(null);
 
+  const {
+    page,
+    setPage,
+    pageItems,
+    total,
+    totalPages,
+    showingFrom,
+    showingTo,
+  } = useAdminPagination(banners);
+
   return (
     <div className="space-y-6">
       <AdminHomepageSectionHeader
@@ -39,7 +53,18 @@ export function AdminHomepageSeasonalBanner() {
         }}
       />
 
-      <AdminTableShell>
+      <AdminTableShell
+        footer={
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            onPageChange={setPage}
+          />
+        }
+      >
         {isLoading ? (
           <div className="px-6 py-12 text-center text-sm text-muted">Loading banners...</div>
         ) : isError ? (
@@ -64,7 +89,7 @@ export function AdminHomepageSeasonalBanner() {
               </tr>
             </thead>
             <tbody>
-              {banners.map((banner) => (
+              {pageItems.map((banner) => (
                 <tr
                   key={banner.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
