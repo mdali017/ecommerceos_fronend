@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -66,7 +66,7 @@ export function AdminLogin() {
               🌿
             </div>
             <div>
-              <p className="text-lg font-bold">Khaas Food</p>
+              <p className="text-lg font-bold">Ecommerce OS</p>
               <p className="text-sm text-white/60">Admin Control Panel</p>
             </div>
           </div>
@@ -99,7 +99,7 @@ export function AdminLogin() {
         </div>
         <div className="w-full max-w-md">
           <div className="mb-8 lg:hidden">
-            <p className="text-2xl font-bold text-foreground">Khaas Food Admin</p>
+            <p className="text-2xl font-bold text-foreground">Ecommerce OS Admin</p>
             <p className="text-sm text-muted">Sign in to continue</p>
           </div>
 

@@ -1,16 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SearchIcon, UserIcon, HeartIcon, CartIcon } from "@/components/ui/Icons";
 import { CartCountBadge } from "@/components/cart/CartCountBadge";
 import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { useAppSelector } from "@/app/redux/hooks";
 import { useGetUnreadCountQuery } from "@/app/redux/services/notificationApi";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/types";
 import { localizeHref } from "@/lib/i18n/locale-path";
+import Link from "next/link";
 
 export function Header({
   locale,
@@ -35,15 +36,7 @@ export function Header({
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:gap-6 sm:px-6 sm:py-4">
-        <Link href={localizeHref("/", locale)} className="flex flex-shrink-0 items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-green sm:h-10 sm:w-10">
-            <span className="text-lg sm:text-xl">🌿</span>
-          </div>
-          <div className="hidden sm:block">
-            <span className="text-lg font-bold text-brand-green sm:text-xl">Khaas</span>
-            <span className="text-lg font-bold text-brand-orange sm:text-xl"> Food</span>
-          </div>
-        </Link>
+        <BrandMark href={localizeHref("/", locale)} hideTextOnMobile />
 
         <form onSubmit={handleSearch} className="relative flex-1">
           <input

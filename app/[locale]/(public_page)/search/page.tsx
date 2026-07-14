@@ -27,8 +27,8 @@ export async function generateMetadata({
   const dictionary = await getDictionary(localeParam as Locale);
   return {
     title: q
-      ? `${q} — ${dictionary.pages.searchResults} — Khaas Food`
-      : `${dictionary.pages.searchResults} — Khaas Food`,
+      ? `${q} — ${dictionary.pages.searchResults} — Ecommerce OS`
+      : `${dictionary.pages.searchResults} — Ecommerce OS`,
   };
 }
 

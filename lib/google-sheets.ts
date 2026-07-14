@@ -129,7 +129,7 @@ async function writeSpreadsheetValues(
 }
 
 export async function createGoogleSheetFromValues(accessToken: string, values: string[][]) {
-  const sheetTitle = `Khaas Food Products Sample - ${new Date().toLocaleDateString("en-GB")}`;
+  const sheetTitle = `Ecommerce OS Products Sample - ${new Date().toLocaleDateString("en-GB")}`;
   const { spreadsheetId, spreadsheetUrl } = await createSpreadsheet(accessToken, sheetTitle);
   await writeSpreadsheetValues(accessToken, spreadsheetId, values);
   return spreadsheetUrl;

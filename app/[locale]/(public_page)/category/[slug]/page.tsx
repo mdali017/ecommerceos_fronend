@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const categoryName = getCategoryDisplayName(category, locale);
   return {
-    title: `${categoryName} — Khaas Food`,
-    description: `${categoryName} — Khaas Food`,
+    title: `${categoryName} — Ecommerce OS`,
+    description: `${categoryName} — Ecommerce OS`,
   };
 }
 

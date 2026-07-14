@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Khaas Food">
-  <rect width="512" height="512" fill="#1a4d2e"/>
-  <path fill="#ffffff" d="M256 128c-6 54-36 84-72 96 18 6 36 6 54 0-12 42-42 72-84 84 6-48 30-84 72-102-30-12-54-36-66-72 6 24 24 42 48 54 6-42 30-72 66-84-18 12-30 30-36 54 12-6 24-9 36-9 0-12 6-24 18-30z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Ecommerce OS">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="48" x2="440" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17633f"/>
+      <stop offset="1" stop-color="#0b4329"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <path fill="#fff" d="M256 329c-8-79 34-153 127-177 3 92-37 155-118 180l-9-3z"/>
+  <path fill="#fff" d="M251 337c-66-7-114-55-118-137 82 4 129 53 118 137z"/>
+  <path d="M251 367c6-73 38-132 100-185M250 362c-14-55-42-95-89-132" fill="none" stroke="#0d4e30" stroke-width="11" stroke-linecap="round"/>
+  <path d="M251 362c6-29 10-47 9-65" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="284" cy="363" r="14" fill="#f58220"/>
 </svg>

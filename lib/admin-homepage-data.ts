@@ -126,7 +126,7 @@ export const adminSeasonalBanners: AdminSeasonalBanner[] = [
 ];
 
 export const adminBrands: AdminBrand[] = [
-  { id: "1", name: "Khaas Organic", sortOrder: 1, isActive: true },
+  { id: "1", name: "EOS Organic", sortOrder: 1, isActive: true },
   { id: "2", name: "Farm Fresh", sortOrder: 2, isActive: true },
   { id: "3", name: "Pure Harvest", sortOrder: 3, isActive: true },
   { id: "4", name: "Nature's Best", sortOrder: 4, isActive: true },

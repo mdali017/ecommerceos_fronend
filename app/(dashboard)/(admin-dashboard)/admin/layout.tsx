@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { AdminDashboardShell } from "@/components/dashboard/admin/AdminDashboardShell";
 
 export const metadata: Metadata = {
-  title: "Admin Panel | Khaas Food",
-  description: "Khaas Food store administration panel.",
+  title: "Admin Panel | Ecommerce OS",
+  description: "Ecommerce OS store administration panel.",
   robots: { index: false, follow: false },
 };
 

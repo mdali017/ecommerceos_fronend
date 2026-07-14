@@ -24,7 +24,7 @@ const emptyForm: ProductUpsertInput = {
   productName: "",
   barcode: "",
   genericName: "",
-  brand: "Khaas Food",
+  brand: "Ecommerce OS",
   category: "",
   subcategory: "",
   description: "",

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -122,7 +122,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
               🌿
             </div>
             <div>
-              <p className="text-sm font-bold">Khaas Food</p>
+              <p className="text-sm font-bold">Ecommerce OS</p>
               <p className="text-xs text-white/60">Admin Panel</p>
             </div>
           </div>

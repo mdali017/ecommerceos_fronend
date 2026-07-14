@@ -15,7 +15,7 @@ function withProductFallback(campaign: Campaign): Campaign {
     ...campaign,
     product: campaignProductOptions[0] ?? {
       id: "fallback",
-      name: "Khaas Food Product",
+      name: "Ecommerce OS Product",
       price: 0,
       image:
         "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=600&fit=crop",

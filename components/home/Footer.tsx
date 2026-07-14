@@ -1,4 +1,6 @@
 import type { Dictionary } from "@/lib/i18n/types";
+import { BrandMark } from "@/components/ui/BrandMark";
+import { BRAND } from "@/lib/brand";
 
 export function Footer({ dictionary }: { dictionary: Dictionary }) {
   return (
@@ -6,20 +8,14 @@ export function Footer({ dictionary }: { dictionary: Dictionary }) {
       <div className="border-t border-brand-border">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-green">
-                <span className="text-lg">🌿</span>
-              </div>
-              <span className="text-lg font-bold">
-                <span className="text-brand-green">Khaas</span>
-                <span className="text-brand-orange"> Food</span>
-              </span>
+            <div className="mb-3">
+              <BrandMark />
             </div>
             <p className="text-sm leading-relaxed text-gray-600">{dictionary.footer.about}</p>
             <p className="mt-3 text-sm text-gray-600">
               📞 ০১৭১২-৩৪৫৬৭৮
               <br />
-              ✉️ support@khaasfood.com
+              ✉️ {BRAND.email}
             </p>
           </div>
 

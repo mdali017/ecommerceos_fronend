@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -44,7 +44,7 @@ export function AdminPosShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="min-w-0">
             <h1 className="truncate text-sm font-bold text-foreground sm:text-lg">Point of Sale</h1>
-            <p className="hidden text-xs text-muted sm:block">Khaas Food — Admin POS</p>
+            <p className="hidden text-xs text-muted sm:block">Ecommerce OS — Admin POS</p>
           </div>
         </div>
 

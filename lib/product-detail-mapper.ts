@@ -54,7 +54,7 @@ export function mapApiProductToDetail(
     originalPrice: storefront.originalPrice,
     category: product.category || "Grocery",
     categoryBn: product.category || product.subcategory || "গ্রোসারি",
-    brand: product.brand || "Khaas Food",
+    brand: product.brand || "Ecommerce OS",
     weight: storefront.weight ?? "১ প্যাকেট",
     inStock: product.status !== "out_of_stock" && product.stockQty > 0,
     images: imageUrls.map((url, index) => ({
@@ -64,7 +64,7 @@ export function mapApiProductToDetail(
     })),
     description:
       product.description.trim() ||
-      `${storefront.nameBn} — Khaas Food-এর বাছাই করা মানসম্মত পণ্য।`,
+      `${storefront.nameBn} — Ecommerce OS-এর বাছাই করা মানসম্মত পণ্য।`,
     keyFeatures: getKeyFeatures(product),
     usageAndStorage: getUsageAndStorage(product),
     reviews: [],

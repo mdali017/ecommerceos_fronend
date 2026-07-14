@@ -110,7 +110,7 @@ export function BrandFormModal({
             value={form.name}
             onChange={(e) => update("name", e.target.value)}
             className={formInputClass}
-            placeholder="Khaas Organic"
+            placeholder="EOS Organic"
             required
           />
         </FormField>

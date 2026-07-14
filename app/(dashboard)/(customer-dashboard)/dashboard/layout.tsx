@@ -6,8 +6,8 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { LOCALE_COOKIE, parseLocaleCookie } from "@/lib/i18n/locale-cookie";
 
 export const metadata: Metadata = {
-  title: "My Account | Khaas Food",
-  description: "Manage your orders, wishlist, and profile at Khaas Food.",
+  title: "My Account | Ecommerce OS",
+  description: "Manage your orders, wishlist, and profile at Ecommerce OS.",
   robots: { index: false, follow: false },
 };
 

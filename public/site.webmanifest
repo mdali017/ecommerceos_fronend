@@ -1,7 +1,7 @@
 {
-  "name": "Khaas Food — Pure & Natural Products",
-  "short_name": "Khaas Food",
-  "description": "Pure and natural food products delivered to your doorstep.",
+  "name": "Ecommerce OS",
+  "short_name": "Ecommerce OS",
+  "description": "Complete e-commerce platform — storefront, products, orders, and POS.",
   "start_url": "/",
   "scope": "/",
   "id": "/",
@@ -9,9 +9,9 @@
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#1a4d2e",
-  "lang": "bn",
+  "lang": "en",
   "dir": "ltr",
-  "categories": ["food", "shopping", "lifestyle"],
+  "categories": ["shopping", "business", "productivity"],
   "icons": [
     {
       "src": "/icons/icon.svg",

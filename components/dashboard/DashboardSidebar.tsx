@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -49,7 +49,7 @@ export function DashboardSidebar({
             🌿
           </div>
           <div>
-            <p className="text-sm font-bold leading-tight">Khaas Food</p>
+            <p className="text-sm font-bold leading-tight">Ecommerce OS</p>
             <p className="text-xs text-white/60">{t.customerPanel}</p>
           </div>
         </div>

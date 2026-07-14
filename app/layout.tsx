@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
 import { ThemeInitScript } from "@/components/providers/ThemeInitScript";
 import { Providers } from "./providers";
+import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
 const hindSiliguri = Hind_Siliguri({
@@ -12,10 +13,10 @@ const hindSiliguri = Hind_Siliguri({
 
 export const metadata: Metadata = {
   title: {
-    default: "Khaas Food — Pure & Natural Products",
-    template: "%s | Khaas Food",
+    default: BRAND.metaTitleEn,
+    template: `%s | ${BRAND.name}`,
   },
-  description: "Pure and natural food products delivered to your doorstep.",
+  description: BRAND.metaDescriptionEn,
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : undefined,
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Khaas Food",
+    title: BRAND.name,
   },
   icons: {
     icon: [

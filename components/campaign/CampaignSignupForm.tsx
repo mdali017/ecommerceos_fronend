@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -105,7 +105,7 @@ export function CampaignSignupForm({ campaign }: { campaign: Campaign }) {
           href="/"
           className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-white"
         >
-          🌿 Khaas Food
+          🌿 Ecommerce OS
         </Link>
 
         <div className="mt-6 overflow-hidden rounded-2xl bg-white shadow-2xl">

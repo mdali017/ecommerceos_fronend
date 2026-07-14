@@ -388,7 +388,7 @@ export const flashSaleProducts: Product[] = [
 ];
 
 export const brandLogos = [
-  "Khaas Organic",
+  "EOS Organic",
   "Farm Fresh",
   "Pure Harvest",
   "Nature's Best",

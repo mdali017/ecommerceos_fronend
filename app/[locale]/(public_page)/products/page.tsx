@@ -41,7 +41,7 @@ export async function generateMetadata({
 
   if (q?.trim()) {
     return {
-      title: `${q.trim()} — ${dictionary.productsPage.title} — Khaas Food`,
+      title: `${q.trim()} — ${dictionary.productsPage.title} — Ecommerce OS`,
     };
   }
 
@@ -50,13 +50,13 @@ export async function generateMetadata({
     const match = categories.find((item) => item.slug === category);
     if (match) {
       return {
-        title: `${getCategoryDisplayName(match, locale)} — ${dictionary.productsPage.title} — Khaas Food`,
+        title: `${getCategoryDisplayName(match, locale)} — ${dictionary.productsPage.title} — Ecommerce OS`,
       };
     }
   }
 
   return {
-    title: `${dictionary.productsPage.title} — Khaas Food`,
+    title: `${dictionary.productsPage.title} — Ecommerce OS`,
     description: dictionary.productsPage.subtitle,
   };
 }

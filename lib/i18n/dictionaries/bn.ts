@@ -4,9 +4,9 @@ import { HERO_IMAGES, SEASONAL_BANNER_IMAGE } from "../shared-content";
 const bn: Dictionary = {
   locale: "bn",
   meta: {
-    title: "Khaas Food — খাঁটি ও প্রাকৃতিক খাদ্য পণ্য",
+    title: "Ecommerce OS — সম্পূর্ণ ই-কমার্স প্ল্যাটফর্ম",
     description:
-      "আম, মধু, ঘি, মশলা ও আরও অনেক প্রাকৃতিক পণ্য — সরাসরি আপনার দোরগোড়ায়।",
+      "Ecommerce OS দিয়ে অনলাইনে বিক্রি করুন — পণ্য, অর্ডার, POS ও স্টোরফ্রন্ট এক প্ল্যাটফর্মে।",
   },
   header: {
     searchPlaceholder: "পণ্য খুঁজুন...",
@@ -27,18 +27,18 @@ const bn: Dictionary = {
     minutes: "মিনিট",
     seconds: "সেকেন্ড",
     brands: "আমাদের ব্র্যান্ডসমূহ",
-    promoTitle: "প্রাকৃতিক ও খাঁটি পণ্য",
-    promoSubtitle: "সরাসরি কৃষকের কাছ থেকে আপনার দোরগোড়ায়",
+    promoTitle: "Ecommerce OS দিয়ে স্মার্ট বিক্রি",
+    promoSubtitle: "স্টোরফ্রন্ট, অর্ডার ও POS — সব এক প্ল্যাটফর্মে",
     testimonials: "গ্রাহকদের মতামত",
   },
   footer: {
     about:
-      "আমরা সরবরাহ করি ১০০% খাঁটি ও প্রাকৃতিক খাদ্য পণ্য। সরাসরি কৃষক ও উৎপাদকের কাছ থেকে সংগ্রহ করে আপনার দোরগোড়ায় পৌঁছে দিই।",
+      "Ecommerce OS একটি সম্পূর্ণ ই-কমার্স প্ল্যাটফর্ম — স্টোরফ্রন্ট, পণ্য, অর্ডার ও POS এক জায়গা থেকে ম্যানেজ করুন।",
     info: "তথ্য",
     customerService: "গ্রাহক সেবা",
     myAccount: "আমার অ্যাকাউন্ট",
     appDownload: "অ্যাপ ডাউনলোড",
-    copyright: "© ২০২৬ Khaas Food. সর্বস্বত্ব সংরক্ষিত।",
+    copyright: "© ২০২৬ Ecommerce OS. সর্বস্বত্ব সংরক্ষিত।",
     infoLinks: ["আমাদের সম্পর্কে", "যোগাযোগ", "ব্লগ", "ক্যারিয়ার"],
     serviceLinks: ["অর্ডার ট্র্যাকিং", "রিটার্ন পলিসি", "শিপিং তথ্য", "সাধারণ প্রশ্ন"],
     accountLinks: ["সাইন ইন", "আমার অর্ডার", "উইশলিস্ট", "ঠিকানা"],
@@ -74,7 +74,7 @@ const bn: Dictionary = {
   },
   productsPage: {
     title: "সব পণ্য",
-    subtitle: "খাস ফুডের সব পণ্য এখানে দেখুন",
+    subtitle: "Ecommerce OS-এর সব পণ্য এখানে দেখুন",
     filters: "ফিল্টার",
     search: "সার্চ",
     searchPlaceholder: "পণ্য খুঁজুন...",
@@ -241,7 +241,7 @@ const bn: Dictionary = {
     returnStatus: "Return request:",
     profileTitle: "প্রোফাইল",
     profileNotFound: "প্রোফাইল তথ্য পাওয়া যায়নি।",
-    customerLabel: "Khaas Food Customer",
+    customerLabel: "Ecommerce OS গ্রাহক",
     saveProfile: "প্রোফাইল সংরক্ষণ",
     saving: "সংরক্ষণ হচ্ছে...",
     changePassword: "পাসওয়ার্ড পরিবর্তন",

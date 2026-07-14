@@ -53,7 +53,7 @@ export const productDetails: Record<string, ProductDetail> = {
     price: 1930,
     category: "Oil & Ghee",
     categoryBn: "তেল ও ঘি",
-    brand: "Khaas Food",
+    brand: "Ecommerce OS",
     weight: "১ কেজি",
     inStock: true,
     images: [
@@ -137,7 +137,7 @@ function getGenericProductDetail(product: Product): ProductDetail {
     originalPrice: product.originalPrice,
     category: "Grocery",
     categoryBn: "গ্রোসারি",
-    brand: "Khaas Food",
+    brand: "Ecommerce OS",
     weight: product.weight ?? "১ প্যাকেট",
     inStock: true,
     images: [

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -69,8 +69,8 @@ export function CustomerLoginForm() {
             🌿
           </div>
           <div>
-            <p className="text-lg font-bold">Khaas Food</p>
-            <p className="text-sm text-white/60">খাঁটি ও প্রাকৃতিক পণ্য</p>
+            <p className="text-lg font-bold">Ecommerce OS</p>
+            <p className="text-sm text-white/60">সম্পূর্ণ ই-কমার্স প্ল্যাটফর্ম</p>
           </div>
         </Link>
 
@@ -96,7 +96,7 @@ export function CustomerLoginForm() {
           <div className="mb-8 lg:hidden">
             <Link href="/" className="flex items-center gap-2">
               <span className="text-2xl">🌿</span>
-              <span className="text-xl font-bold text-brand-green">Khaas Food</span>
+              <span className="text-xl font-bold text-brand-green">Ecommerce OS</span>
             </Link>
           </div>
 

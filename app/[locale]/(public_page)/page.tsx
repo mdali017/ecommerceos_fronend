@@ -23,7 +23,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
-  if (!isLocale(localeParam)) return { title: "Khaas Food" };
+  if (!isLocale(localeParam)) return { title: "Ecommerce OS" };
 
   const dictionary = await getDictionary(localeParam as Locale);
   return {

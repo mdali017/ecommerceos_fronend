@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = locale === "en" ? product.name : product.nameBn;
   return {
-    title: `${title} — Khaas Food`,
+    title: `${title} — Ecommerce OS`,
     description: product.description,
   };
 }

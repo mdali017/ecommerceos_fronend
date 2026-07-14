@@ -4,9 +4,9 @@ import { HERO_IMAGES, SEASONAL_BANNER_IMAGE } from "../shared-content";
 const en: Dictionary = {
   locale: "en",
   meta: {
-    title: "Khaas Food — Pure & Natural Food Products",
+    title: "Ecommerce OS — Complete E-commerce Platform",
     description:
-      "Mango, honey, ghee, spices and more natural products — delivered straight to your door.",
+      "Sell online with Ecommerce OS — products, orders, POS, and storefront in one platform.",
   },
   header: {
     searchPlaceholder: "Search products...",
@@ -27,18 +27,18 @@ const en: Dictionary = {
     minutes: "Min",
     seconds: "Sec",
     brands: "Our Brands",
-    promoTitle: "Natural & Pure Products",
-    promoSubtitle: "From farm to your doorstep",
+    promoTitle: "Sell Smarter with Ecommerce OS",
+    promoSubtitle: "Storefront, orders, and POS — all in one platform",
     testimonials: "Customer Reviews",
   },
   footer: {
     about:
-      "We deliver 100% pure and natural food products, sourced directly from farmers and producers to your doorstep.",
+      "Ecommerce OS is a complete e-commerce platform — manage your storefront, products, orders, and POS from one place.",
     info: "Information",
     customerService: "Customer Service",
     myAccount: "My Account",
     appDownload: "Download App",
-    copyright: "© 2026 Khaas Food. All rights reserved.",
+    copyright: "© 2026 Ecommerce OS. All rights reserved.",
     infoLinks: ["About Us", "Contact", "Blog", "Careers"],
     serviceLinks: ["Order Tracking", "Return Policy", "Shipping Info", "FAQ"],
     accountLinks: ["Sign In", "My Orders", "Wishlist", "Addresses"],
@@ -74,7 +74,7 @@ const en: Dictionary = {
   },
   productsPage: {
     title: "All Products",
-    subtitle: "Browse every product from Khaas Food",
+    subtitle: "Browse every product on Ecommerce OS",
     filters: "Filters",
     search: "Search",
     searchPlaceholder: "Search products...",
@@ -241,7 +241,7 @@ const en: Dictionary = {
     returnStatus: "Return request:",
     profileTitle: "Profile",
     profileNotFound: "Profile information not found.",
-    customerLabel: "Khaas Food Customer",
+    customerLabel: "Ecommerce OS Customer",
     saveProfile: "Save Profile",
     saving: "Saving...",
     changePassword: "Change Password",
