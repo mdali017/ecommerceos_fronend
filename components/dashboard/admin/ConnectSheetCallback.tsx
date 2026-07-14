@@ -33,8 +33,8 @@ export function ConnectSheetCallback() {
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
-      <p className="text-lg font-bold text-gray-900">Google Sheet</p>
-      <p className="mt-2 max-w-md text-sm text-gray-500">{message}</p>
+      <p className="text-lg font-bold text-foreground">Google Sheet</p>
+      <p className="mt-2 max-w-md text-sm text-muted">{message}</p>
     </div>
   );
 }

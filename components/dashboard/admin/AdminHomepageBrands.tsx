@@ -40,19 +40,19 @@ export function AdminHomepageBrands() {
 
       <AdminTableShell>
         {isLoading ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">Loading brands...</div>
+          <div className="px-6 py-12 text-center text-sm text-muted">Loading brands...</div>
         ) : isError ? (
           <div className="px-6 py-12 text-center text-sm text-red-600">
             Brands load করতে সমস্যা হয়েছে।
           </div>
         ) : brands.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">
+          <div className="px-6 py-12 text-center text-sm text-muted">
             কোনো brand নেই। Add Brand দিয়ে নতুন যোগ করুন।
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                 <th className="px-6 py-3">Brand Name</th>
                 <th className="px-6 py-3">Order</th>
                 <th className="px-6 py-3">Status</th>
@@ -65,8 +65,8 @@ export function AdminHomepageBrands() {
                   key={brand.id}
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
-                  <td className="px-6 py-4 font-semibold text-gray-900">{brand.name}</td>
-                  <td className="px-6 py-4 text-gray-600">{brand.sortOrder}</td>
+                  <td className="px-6 py-4 font-semibold text-foreground">{brand.name}</td>
+                  <td className="px-6 py-4 text-muted">{brand.sortOrder}</td>
                   <td className="px-6 py-4">
                     <AdminStatusBadge isActive={brand.isActive} />
                   </td>

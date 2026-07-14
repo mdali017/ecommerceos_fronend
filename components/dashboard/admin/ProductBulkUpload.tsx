@@ -261,15 +261,15 @@ export function ProductBulkUploadModal({ isOpen, onClose, onSuccess }: ProductBu
       />
 
       <div
-        className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-white shadow-2xl ${
+        className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-card shadow-2xl ${
           hasPreview ? "max-h-[85vh] max-w-5xl" : "max-w-md"
         }`}
       >
         <div className="flex shrink-0 items-center justify-between border-b border-brand-border px-4 py-3">
           <div>
-            <h2 className="text-base font-bold text-gray-900">Bulk Upload</h2>
+            <h2 className="text-base font-bold text-foreground">Bulk Upload</h2>
             {hasPreview && (
-              <p className="mt-0.5 text-xs text-gray-500">
+              <p className="mt-0.5 text-xs text-muted">
                 {fileName} · {rows.length} products
               </p>
             )}
@@ -300,7 +300,7 @@ export function ProductBulkUploadModal({ isOpen, onClose, onSuccess }: ProductBu
               onDrop={handleDrop}
               className="rounded-xl border border-dashed border-brand-border bg-brand-gray/20 px-4 py-6 text-center"
             >
-              <p className="text-sm text-gray-600">CSV বা XLSX ফাইল আপলোড করুন</p>
+              <p className="text-sm text-muted">CSV বা XLSX ফাইল আপলোড করুন</p>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
@@ -325,7 +325,7 @@ export function ProductBulkUploadModal({ isOpen, onClose, onSuccess }: ProductBu
           <button
             type="button"
             onClick={handleClose}
-            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-brand-gray"
+            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-muted hover:bg-brand-gray"
           >
             বাতিল
           </button>
@@ -353,7 +353,7 @@ export function ProductBulkUploadButton({ onSuccess }: { onSuccess?: () => void 
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-xl border border-brand-green bg-white px-5 py-2.5 text-sm font-semibold text-brand-green transition-colors hover:bg-brand-green hover:text-white"
+        className="rounded-xl border border-brand-green bg-card px-5 py-2.5 text-sm font-semibold text-brand-green transition-colors hover:bg-brand-green hover:text-white"
       >
         Bulk Upload
       </button>

@@ -57,6 +57,18 @@ body {
   display: none;
 }
 
+/* SweetAlert2 — follow app dark mode */
+.dark .swal2-popup {
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.dark .swal2-title,
+.dark .swal2-html-container,
+.dark .swal2-content {
+  color: var(--foreground);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

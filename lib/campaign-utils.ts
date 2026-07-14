@@ -24,7 +24,7 @@ export const CAMPAIGN_PLATFORM_LABELS: Record<string, string> = {
 };
 
 export const CAMPAIGN_STATUS_LABELS: Record<string, { label: string; className: string }> = {
-  running: { label: "Running", className: "bg-green-100 text-green-700" },
-  paused: { label: "Paused", className: "bg-yellow-100 text-yellow-700" },
-  ended: { label: "Ended", className: "bg-gray-100 text-gray-600" },
+  running: { label: "Running", className: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400" },
+  paused: { label: "Paused", className: "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-400" },
+  ended: { label: "Ended", className: "bg-brand-gray text-muted" },
 };

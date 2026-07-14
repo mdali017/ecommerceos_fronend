@@ -89,8 +89,8 @@ export function CreateCampaignForm() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Create Campaign</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h2 className="text-xl font-bold text-foreground">Create Campaign</h2>
+          <p className="mt-1 text-sm text-muted">
             Product select করে social media marketing link তৈরি করুন
           </p>
         </div>
@@ -104,10 +104,10 @@ export function CreateCampaignForm() {
 
       <form
         onSubmit={(e) => void handleSubmit(e)}
-        className="space-y-5 rounded-2xl border border-brand-border bg-white p-6 shadow-sm"
+        className="space-y-5 rounded-2xl border border-brand-border bg-card p-6 shadow-sm"
       >
         <div>
-          <label htmlFor="campaign-product" className="mb-1.5 block text-sm font-semibold text-gray-700">
+          <label htmlFor="campaign-product" className="mb-1.5 block text-sm font-semibold text-foreground">
             Select Product *
           </label>
           <select
@@ -123,14 +123,14 @@ export function CreateCampaignForm() {
             ))}
           </select>
           {selectedProduct && (
-            <p className="mt-2 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-muted">
               Landing page-এ বাম পাশে {selectedProduct.name} এর image ও details দেখাবে
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="campaign-title" className="mb-1.5 block text-sm font-semibold text-gray-700">
+          <label htmlFor="campaign-title" className="mb-1.5 block text-sm font-semibold text-foreground">
             Campaign Title *
           </label>
           <input
@@ -145,7 +145,7 @@ export function CreateCampaignForm() {
         <div>
           <label
             htmlFor="campaign-description"
-            className="mb-1.5 block text-sm font-semibold text-gray-700"
+            className="mb-1.5 block text-sm font-semibold text-foreground"
           >
             Description
           </label>
@@ -160,7 +160,7 @@ export function CreateCampaignForm() {
         </div>
 
         <div>
-          <label htmlFor="campaign-platform" className="mb-1.5 block text-sm font-semibold text-gray-700">
+          <label htmlFor="campaign-platform" className="mb-1.5 block text-sm font-semibold text-foreground">
             Platform
           </label>
           <select
@@ -177,7 +177,7 @@ export function CreateCampaignForm() {
           </select>
         </div>
 
-        <div className="rounded-xl bg-brand-gray/40 px-4 py-3 text-sm text-gray-600">
+        <div className="rounded-xl bg-brand-gray/40 px-4 py-3 text-sm text-muted">
           Generated link-এ বামে product details, ডানে name, phone, email, address form থাকবে।
         </div>
 

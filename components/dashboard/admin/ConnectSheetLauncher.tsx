@@ -23,8 +23,8 @@ export function ConnectSheetLauncher() {
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
-      <p className="text-lg font-bold text-gray-900">Connecting to Google...</p>
-      <p className="mt-2 text-sm text-gray-500">Please complete Google sign-in to create your sheet.</p>
+      <p className="text-lg font-bold text-foreground">Connecting to Google...</p>
+      <p className="mt-2 text-sm text-muted">Please complete Google sign-in to create your sheet.</p>
     </div>
   );
 }

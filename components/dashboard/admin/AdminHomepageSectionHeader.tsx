@@ -20,12 +20,12 @@ export function AdminHomepageSectionHeader({
       <div>
         <Link
           href="/admin/homepage"
-          className="mb-2 inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-brand-orange"
+          className="mb-2 inline-flex items-center gap-1 text-sm font-medium text-muted hover:text-brand-orange"
         >
           ← Back to Homepage
         </Link>
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-        {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
+        <h2 className="text-xl font-bold text-foreground">{title}</h2>
+        {description && <p className="mt-1 text-sm text-muted">{description}</p>}
       </div>
       <button
         type="button"
@@ -42,7 +42,9 @@ export function AdminStatusBadge({ isActive }: { isActive: boolean }) {
   return (
     <span
       className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-        isActive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
+        isActive
+          ? "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400"
+          : "bg-brand-gray text-muted"
       }`}
     >
       {isActive ? "Active" : "Inactive"}
@@ -52,7 +54,7 @@ export function AdminStatusBadge({ isActive }: { isActive: boolean }) {
 
 export function AdminTableShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
+    <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
       <div className="overflow-x-auto">{children}</div>
     </div>
   );

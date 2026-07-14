@@ -23,7 +23,7 @@ export function CategoryIconPreview({
   if (!icon) {
     return (
       <div
-        className={`flex ${boxClass} items-center justify-center rounded-full border-2 border-dashed border-brand-border bg-brand-gray text-gray-400`}
+        className={`flex ${boxClass} items-center justify-center rounded-full border-2 border-dashed border-brand-border bg-brand-gray text-muted`}
       >
         ?
       </div>
@@ -101,7 +101,7 @@ export function IconUploadField({
           <div className="min-w-0 flex-1">
             {value ? (
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-800">
+                <p className="text-sm font-medium text-foreground">
                   {fileName || (isImageUrl(value) ? "Icon ready" : "Emoji icon")}
                 </p>
                 <button
@@ -113,7 +113,7 @@ export function IconUploadField({
                 </button>
               </div>
             ) : (
-              <p className="text-sm text-gray-500">No icon selected yet</p>
+              <p className="text-sm text-muted">No icon selected yet</p>
             )}
           </div>
         </div>
@@ -131,7 +131,7 @@ export function IconUploadField({
           }}
           className={`rounded-xl border-2 border-dashed px-4 py-6 text-center transition-colors ${
             dragOver
-              ? "border-brand-orange bg-orange-50"
+              ? "border-brand-orange bg-orange-50 dark:bg-orange-950/40"
               : "border-brand-border bg-brand-gray/40 hover:border-brand-orange/50"
           }`}
         >
@@ -142,8 +142,8 @@ export function IconUploadField({
             className="hidden"
             onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
           />
-          <p className="text-sm font-semibold text-gray-800">Upload icon image</p>
-          <p className="mt-1 text-xs text-gray-500">Drag & drop or click to browse</p>
+          <p className="text-sm font-semibold text-foreground">Upload icon image</p>
+          <p className="mt-1 text-xs text-muted">Drag & drop or click to browse</p>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -158,7 +158,7 @@ export function IconUploadField({
             <div className="w-full border-t border-brand-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-gray-400">or paste URL</span>
+            <span className="bg-card px-2 text-muted">or paste URL</span>
           </div>
         </div>
 

@@ -57,22 +57,22 @@ export function AdminShippingContent() {
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Shipping Zones", value: isLoading ? "—" : shippingStats.totalZones, icon: "🚚", color: "bg-blue-50 text-blue-600" },
-          { label: "Avg Delivery Fee", value: isLoading ? "—" : `৳${shippingStats.avgFee}`, icon: "💵", color: "bg-orange-50 text-brand-orange" },
-          { label: "Free Delivery Zones", value: isLoading ? "—" : shippingStats.freeDeliveryZones, icon: "🎁", color: "bg-green-50 text-green-600" },
+          { label: "Shipping Zones", value: isLoading ? "—" : shippingStats.totalZones, icon: "🚚", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: "Avg Delivery Fee", value: isLoading ? "—" : `৳${shippingStats.avgFee}`, icon: "💵", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
+          { label: "Free Delivery Zones", value: isLoading ? "—" : shippingStats.freeDeliveryZones, icon: "🎁", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
         ]}
       />
 
-      <h2 className="text-xl font-bold text-gray-900">Shipping Zones</h2>
+      <h2 className="text-xl font-bold text-foreground">Shipping Zones</h2>
 
       {isError && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400">
           Run <code>018_shipping.sql</code> in Supabase, then refresh.
         </div>
       )}
 
-      <div className="rounded-2xl border border-brand-border bg-white p-5">
-        <h3 className="font-semibold text-gray-900">Add Zone</h3>
+      <div className="rounded-2xl border border-brand-border bg-card p-5">
+        <h3 className="font-semibold text-foreground">Add Zone</h3>
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <input
             placeholder="Name (EN)"
@@ -110,10 +110,10 @@ export function AdminShippingContent() {
         </button>
       </div>
 
-      <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-gray-500">
+            <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
               <th className="px-6 py-3">Zone</th>
               <th className="px-6 py-3">Fee</th>
               <th className="px-6 py-3">Free over</th>
@@ -123,9 +123,9 @@ export function AdminShippingContent() {
           </thead>
           <tbody>
             {isLoading ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Loading...</td></tr>
+              <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">Loading...</td></tr>
             ) : zones.length === 0 ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">No zones.</td></tr>
+              <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No zones.</td></tr>
             ) : (
               zones.map((zone) => (
                 <tr key={zone.id} className="border-b last:border-0">

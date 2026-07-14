@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useThemeMode } from "@/components/providers/ThemeProvider";
-import { useLocale } from "@/components/providers/LocaleProvider";
+import { LocaleContext } from "@/components/providers/LocaleProvider";
 
 export function ThemeToggle() {
   const { resolvedTheme, toggleTheme } = useThemeMode();
-  const { dictionary } = useLocale();
-  const t = dictionary.dashboard;
+  const locale = useContext(LocaleContext);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -22,14 +21,17 @@ export function ThemeToggle() {
   }
 
   const isDark = resolvedTheme === "dark";
+  const label = isDark
+    ? (locale?.dictionary.dashboard.themeLight ?? "Switch to light mode")
+    : (locale?.dictionary.dashboard.themeDark ?? "Switch to dark mode");
 
   return (
     <button
       type="button"
       onClick={toggleTheme}
       className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-border bg-brand-gray text-muted transition-colors hover:text-brand-orange"
-      aria-label={isDark ? t.themeLight : t.themeDark}
-      title={isDark ? t.themeLight : t.themeDark}
+      aria-label={label}
+      title={label}
     >
       {isDark ? (
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

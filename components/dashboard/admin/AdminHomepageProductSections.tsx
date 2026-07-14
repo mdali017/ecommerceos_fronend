@@ -89,19 +89,19 @@ export function AdminHomepageProductSections() {
 
       <AdminTableShell>
         {isLoading ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">Loading sections...</div>
+          <div className="px-6 py-12 text-center text-sm text-muted">Loading sections...</div>
         ) : isError ? (
           <div className="px-6 py-12 text-center text-sm text-red-600">
             Sections load করতে সমস্যা হয়েছে। `012_homepage_product_sections.sql` run করুন।
           </div>
         ) : sections.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">
+          <div className="px-6 py-12 text-center text-sm text-muted">
             কোনো section নেই। Add Section দিয়ে নতুন যোগ করুন।
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                 <th className="px-6 py-3">Title</th>
                 <th className="px-6 py-3">Layout</th>
                 <th className="px-6 py-3">Source</th>
@@ -118,12 +118,12 @@ export function AdminHomepageProductSections() {
                   className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                 >
                   <td className="px-6 py-4">
-                    <p className="font-semibold text-gray-900">{item.titleBn}</p>
-                    <p className="text-xs text-gray-500">{item.titleEn || "—"}</p>
+                    <p className="font-semibold text-foreground">{item.titleBn}</p>
+                    <p className="text-xs text-muted">{item.titleEn || "—"}</p>
                   </td>
                   <td className="px-6 py-4">{layoutLabels[item.sectionType]}</td>
                   <td className="px-6 py-4">{sourceLabels[item.productSource]}</td>
-                  <td className="px-6 py-4 font-mono text-xs text-gray-600">
+                  <td className="px-6 py-4 font-mono text-xs text-muted">
                     {item.categorySlug || "—"}
                   </td>
                   <td className="px-6 py-4">{item.sortOrder}</td>

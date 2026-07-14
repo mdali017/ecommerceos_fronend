@@ -13,16 +13,16 @@ export function AdminSitePageEditor({ title, description }: AdminSitePageEditorP
       <div>
         <Link
           href="/admin/site-config"
-          className="mb-2 inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-brand-orange"
+          className="mb-2 inline-flex items-center gap-1 text-sm font-medium text-muted hover:text-brand-orange"
         >
           ← Back to Site Config
         </Link>
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-        <p className="mt-1 text-sm text-gray-500">{description}</p>
+        <h2 className="text-xl font-bold text-foreground">{title}</h2>
+        <p className="mt-1 text-sm text-muted">{description}</p>
       </div>
 
       <div className="rounded-2xl border border-dashed border-brand-border bg-brand-gray/30 px-6 py-10 text-center">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted">
           Page editor coming soon. Content for this page will be manageable from here.
         </p>
       </div>

@@ -198,7 +198,7 @@ export const homepageSections = [
     icon: "📂",
     count: adminNavCategories.length,
     activeCount: adminNavCategories.filter((item) => item.isActive).length,
-    color: "bg-green-50 text-green-600",
+    color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400",
   },
   {
     id: "hero-slides",
@@ -208,7 +208,7 @@ export const homepageSections = [
     icon: "🖼️",
     count: adminHeroSlides.length,
     activeCount: adminHeroSlides.filter((item) => item.isActive).length,
-    color: "bg-blue-50 text-blue-600",
+    color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400",
   },
   {
     id: "seasonal-banner",
@@ -218,7 +218,7 @@ export const homepageSections = [
     icon: "🥭",
     count: adminSeasonalBanners.length,
     activeCount: adminSeasonalBanners.filter((item) => item.isActive).length,
-    color: "bg-orange-50 text-brand-orange",
+    color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40",
   },
   {
     id: "brands",
@@ -228,7 +228,7 @@ export const homepageSections = [
     icon: "🏷️",
     count: adminBrands.length,
     activeCount: adminBrands.filter((item) => item.isActive).length,
-    color: "bg-purple-50 text-purple-600",
+    color: "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400",
   },
   {
     id: "promo-banner",
@@ -238,7 +238,7 @@ export const homepageSections = [
     icon: "📢",
     count: adminPromoBanners.length,
     activeCount: adminPromoBanners.filter((item) => item.isActive).length,
-    color: "bg-teal-50 text-teal-600",
+    color: "bg-teal-50 text-teal-600 dark:bg-teal-950/40 dark:text-teal-400",
   },
   {
     id: "product-sections",
@@ -248,7 +248,7 @@ export const homepageSections = [
     icon: "🛍️",
     count: 5,
     activeCount: 5,
-    color: "bg-rose-50 text-rose-600",
+    color: "bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400",
   },
   {
     id: "testimonials",
@@ -258,6 +258,6 @@ export const homepageSections = [
     icon: "⭐",
     count: adminTestimonials.length,
     activeCount: adminTestimonials.filter((item) => item.isActive).length,
-    color: "bg-yellow-50 text-yellow-600",
+    color: "bg-yellow-50 text-yellow-600 dark:bg-yellow-950/40 dark:text-yellow-400",
   },
 ] as const;

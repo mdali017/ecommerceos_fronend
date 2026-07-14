@@ -64,15 +64,15 @@ export function AdminCampaignList() {
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Total Campaigns", value: campaignStats.total, icon: "📣", color: "bg-blue-50 text-blue-600" },
-          { label: "Running", value: campaignStats.running, icon: "🟢", color: "bg-green-50 text-green-600" },
-          { label: "Total Leads", value: campaignStats.totalLeads, icon: "🎯", color: "bg-orange-50 text-brand-orange" },
-          { label: "Paused", value: campaignStats.paused, icon: "⏸️", color: "bg-gray-100 text-gray-600" },
+          { label: "Total Campaigns", value: campaignStats.total, icon: "📣", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: "Running", value: campaignStats.running, icon: "🟢", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
+          { label: "Total Leads", value: campaignStats.totalLeads, icon: "🎯", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
+          { label: "Paused", value: campaignStats.paused, icon: "⏸️", color: "bg-brand-gray text-muted" },
         ]}
       />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-xl font-bold text-gray-900">Campaign List</h2>
+        <h2 className="text-xl font-bold text-foreground">Campaign List</h2>
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
@@ -80,7 +80,7 @@ export function AdminCampaignList() {
             className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors ${
               showRunningOnly
                 ? "bg-brand-green text-white"
-                : "border border-brand-green bg-white text-brand-green hover:bg-brand-green hover:text-white"
+                : "border border-brand-green bg-card text-brand-green hover:bg-brand-green hover:text-white"
             }`}
           >
             Running Campaign
@@ -94,11 +94,11 @@ export function AdminCampaignList() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                 <th className="px-6 py-3">Campaign</th>
                 <th className="px-6 py-3">Product</th>
                 <th className="px-6 py-3">Platform</th>
@@ -111,7 +111,7 @@ export function AdminCampaignList() {
             <tbody>
               {visibleCampaigns.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-muted">
                     কোনো campaign নেই। Create Campaign থেকে নতুন তৈরি করুন।
                   </td>
                 </tr>
@@ -126,20 +126,20 @@ export function AdminCampaignList() {
                       className="border-b border-brand-border last:border-0 hover:bg-brand-gray/30"
                     >
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-gray-900">{campaign.title}</p>
-                        <p className="mt-0.5 max-w-xs truncate text-xs text-gray-500">
+                        <p className="font-semibold text-foreground">{campaign.title}</p>
+                        <p className="mt-0.5 max-w-xs truncate text-xs text-muted">
                           {campaign.description}
                         </p>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-foreground">
                           {campaign.product?.name ?? "—"}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted">
                           {campaign.product?.category ?? ""}
                         </p>
                       </td>
-                      <td className="px-6 py-4 text-gray-600">
+                      <td className="px-6 py-4 text-muted">
                         {CAMPAIGN_PLATFORM_LABELS[campaign.platform]}
                       </td>
                       <td className="px-6 py-4">
@@ -149,9 +149,9 @@ export function AdminCampaignList() {
                           {status.label}
                         </span>
                       </td>
-                      <td className="px-6 py-4 font-semibold text-gray-700">{leadCount}</td>
+                      <td className="px-6 py-4 font-semibold text-foreground">{leadCount}</td>
                       <td className="px-6 py-4">
-                        <code className="rounded bg-brand-gray px-2 py-1 text-xs text-gray-600">
+                        <code className="rounded bg-brand-gray px-2 py-1 text-xs text-muted">
                           /campaign/{campaign.slug}
                         </code>
                       </td>

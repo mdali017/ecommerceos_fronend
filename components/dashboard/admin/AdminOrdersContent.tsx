@@ -11,8 +11,8 @@ import { AdminStatGrid } from "@/components/dashboard/admin/AdminStatCard";
 import { statusLabels } from "@/lib/admin-data";
 
 const paymentLabels: Record<PaymentStatus, { label: string; className: string }> = {
-  pending: { label: "Pending", className: "bg-yellow-100 text-yellow-700" },
-  paid: { label: "Paid", className: "bg-green-100 text-green-700" },
+  pending: { label: "Pending", className: "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-400" },
+  paid: { label: "Paid", className: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400" },
 };
 
 const filters = [
@@ -78,15 +78,15 @@ export function AdminOrdersContent() {
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Total Orders", value: isLoading ? "—" : orderStats.total, icon: "📦", color: "bg-blue-50 text-blue-600" },
-          { label: "Pending", value: isLoading ? "—" : orderStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700" },
-          { label: "Processing", value: isLoading ? "—" : orderStats.processing, icon: "🔄", color: "bg-orange-50 text-brand-orange" },
-          { label: "Total Revenue", value: isLoading ? "—" : formatPrice(orderStats.revenue), icon: "💰", color: "bg-green-50 text-green-600" },
+          { label: "Total Orders", value: isLoading ? "—" : orderStats.total, icon: "📦", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: "Pending", value: isLoading ? "—" : orderStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-400" },
+          { label: "Processing", value: isLoading ? "—" : orderStats.processing, icon: "🔄", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
+          { label: "Total Revenue", value: isLoading ? "—" : formatPrice(orderStats.revenue), icon: "💰", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
         ]}
       />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-gray-900">Order Management</h2>
+        <h2 className="text-xl font-bold text-foreground">Order Management</h2>
         <button
           type="button"
           onClick={() => refetch()}
@@ -105,7 +105,7 @@ export function AdminOrdersContent() {
             className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
               activeFilter === filter.value
                 ? "bg-brand-orange text-white"
-                : "border border-brand-border bg-white text-gray-600 hover:border-brand-orange hover:text-brand-orange"
+                : "border border-brand-border bg-card text-muted hover:border-brand-orange hover:text-brand-orange"
             }`}
           >
             {filter.label}
@@ -113,11 +113,11 @@ export function AdminOrdersContent() {
         ))}
       </div>
 
-      <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                 <th className="px-6 py-3">Order ID</th>
                 <th className="px-6 py-3">Customer</th>
                 <th className="px-6 py-3">Total</th>
@@ -130,7 +130,7 @@ export function AdminOrdersContent() {
             <tbody>
               {isLoading && (
                 <tr>
-                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-muted">
                     Loading orders...
                   </td>
                 </tr>
@@ -144,7 +144,7 @@ export function AdminOrdersContent() {
               )}
               {!isLoading && !isError && filteredOrders.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-muted">
                     No orders found.
                   </td>
                 </tr>
@@ -162,7 +162,7 @@ export function AdminOrdersContent() {
                     </td>
                     <td className="px-6 py-4">
                       <div>{order.customerName}</div>
-                      <div className="text-xs text-gray-500">{order.customerPhone}</div>
+                      <div className="text-xs text-muted">{order.customerPhone}</div>
                     </td>
                     <td className="px-6 py-4 font-semibold text-brand-orange">
                       {formatPrice(order.total)}
@@ -181,7 +181,7 @@ export function AdminOrdersContent() {
                         {payment.label}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-500">
+                    <td className="px-6 py-4 text-muted">
                       {formatDate(order.createdAt)}
                     </td>
                     <td className="px-6 py-4">
@@ -191,7 +191,7 @@ export function AdminOrdersContent() {
                         onChange={(e) =>
                           handleStatusChange(order.id, e.target.value as OrderStatus)
                         }
-                        className="rounded-lg border border-brand-border bg-white px-2 py-1.5 text-xs font-semibold text-gray-700 outline-none focus:border-brand-orange"
+                        className="rounded-lg border border-brand-border bg-card px-2 py-1.5 text-xs font-semibold text-foreground outline-none focus:border-brand-orange"
                       >
                         {statusOptions.map((option) => (
                           <option key={option} value={option}>

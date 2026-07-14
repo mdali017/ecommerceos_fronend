@@ -45,14 +45,14 @@ export function AdminFormModal({
         aria-label="Close modal"
       />
       <div
-        className={`relative z-10 max-h-[92vh] w-full ${sizeClass} overflow-hidden rounded-2xl bg-white shadow-2xl`}
+        className={`relative z-10 max-h-[92vh] w-full ${sizeClass} overflow-hidden rounded-2xl bg-card shadow-2xl`}
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-brand-border bg-white px-5 py-4 sm:px-6">
-          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-brand-border bg-card px-5 py-4 sm:px-6">
+          <h3 className="text-lg font-bold text-foreground">{title}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-brand-gray hover:text-gray-800"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-brand-gray hover:text-foreground"
             aria-label="Close"
           >
             ✕
@@ -75,18 +75,18 @@ export function FormField({
 }) {
   return (
     <label className="block space-y-1.5">
-      <span className="text-sm font-semibold text-gray-700">{label}</span>
+      <span className="text-sm font-semibold text-foreground">{label}</span>
       {children}
-      {hint && <span className="block text-xs text-gray-400">{hint}</span>}
+      {hint && <span className="block text-xs text-muted">{hint}</span>}
     </label>
   );
 }
 
 export const formInputClass =
-  "w-full rounded-xl border border-brand-border bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-brand-orange";
+  "w-full rounded-xl border border-brand-border bg-card px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-brand-orange";
 
 export const formTextareaClass =
-  "w-full resize-none rounded-xl border border-brand-border bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-brand-orange";
+  "w-full resize-none rounded-xl border border-brand-border bg-card px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-brand-orange";
 
 export function FormActions({
   onCancel,
@@ -102,7 +102,7 @@ export function FormActions({
       <button
         type="button"
         onClick={onCancel}
-        className="rounded-xl border border-brand-border px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-brand-gray"
+        className="rounded-xl border border-brand-border px-5 py-2.5 text-sm font-semibold text-muted transition-colors hover:bg-brand-gray"
       >
         Cancel
       </button>

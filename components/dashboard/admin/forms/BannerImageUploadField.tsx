@@ -11,7 +11,7 @@ function isImageUrl(value: string) {
 export function BannerImagePreview({ imageUrl }: { imageUrl: string }) {
   if (!imageUrl) {
     return (
-      <div className="flex h-28 w-full items-center justify-center rounded-xl border-2 border-dashed border-brand-border bg-brand-gray text-sm text-gray-400">
+      <div className="flex h-28 w-full items-center justify-center rounded-xl border-2 border-dashed border-brand-border bg-brand-gray text-sm text-muted">
         No banner image
       </div>
     );
@@ -81,7 +81,7 @@ export function BannerImageUploadField({
 
         {value ? (
           <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-sm font-medium text-gray-800">
+            <p className="truncate text-sm font-medium text-foreground">
               {fileName || (isImageUrl(value) ? "Banner ready" : "Image selected")}
             </p>
             <button
@@ -107,7 +107,7 @@ export function BannerImageUploadField({
           }}
           className={`rounded-xl border-2 border-dashed px-4 py-6 text-center transition-colors ${
             dragOver
-              ? "border-brand-orange bg-orange-50"
+              ? "border-brand-orange bg-orange-50 dark:bg-orange-950/40"
               : "border-brand-border bg-brand-gray/40 hover:border-brand-orange/50"
           }`}
         >
@@ -118,8 +118,8 @@ export function BannerImageUploadField({
             className="hidden"
             onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
           />
-          <p className="text-sm font-semibold text-gray-800">Upload banner image</p>
-          <p className="mt-1 text-xs text-gray-500">Drag & drop or click to browse (max 5MB)</p>
+          <p className="text-sm font-semibold text-foreground">Upload banner image</p>
+          <p className="mt-1 text-xs text-muted">Drag & drop or click to browse (max 5MB)</p>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -134,7 +134,7 @@ export function BannerImageUploadField({
             <div className="w-full border-t border-brand-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-gray-400">or paste URL</span>
+            <span className="bg-card px-2 text-muted">or paste URL</span>
           </div>
         </div>
 

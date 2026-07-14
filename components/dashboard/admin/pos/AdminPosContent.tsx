@@ -246,10 +246,10 @@ export function AdminPosContent() {
   return (
     <div className={`flex min-h-full flex-col lg:h-full lg:flex-row lg:overflow-hidden ${cart.length > 0 && !checkoutDrawerOpen ? "pb-20 lg:pb-0" : ""}`}>
       <section className="flex flex-col lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:border-r lg:border-brand-border">
-        <div className="sticky top-0 z-10 border-b border-brand-border bg-white p-3 sm:p-5">
+        <div className="sticky top-0 z-10 border-b border-brand-border bg-card p-3 sm:p-5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <div className="relative min-w-0 flex-1">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
                 🔍
               </span>
               <input
@@ -264,7 +264,7 @@ export function AdminPosContent() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-orange sm:w-auto sm:min-w-[160px] sm:px-4 sm:py-3"
+              className="w-full rounded-xl border border-brand-border bg-card px-3 py-2.5 text-sm outline-none focus:border-brand-orange sm:w-auto sm:min-w-[160px] sm:px-4 sm:py-3"
             >
               <option value="">All Categories</option>
               {categories.map((category) => (
@@ -275,7 +275,7 @@ export function AdminPosContent() {
             </select>
           </div>
 
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-muted">
             {loadingProducts
               ? "Loading products..."
               : `${filteredProducts.length} product${filteredProducts.length === 1 ? "" : "s"} found`}
@@ -284,14 +284,14 @@ export function AdminPosContent() {
 
         <div className="p-3 sm:p-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
           {loadingProducts ? (
-            <div className="flex h-32 items-center justify-center text-sm text-gray-500 sm:h-40">
+            <div className="flex h-32 items-center justify-center text-sm text-muted sm:h-40">
               Loading products...
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="flex h-32 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border bg-white text-center sm:h-40">
+            <div className="flex h-32 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border bg-card text-center sm:h-40">
               <p className="text-3xl">📦</p>
-              <p className="mt-2 text-sm font-medium text-gray-700">No products found</p>
-              <p className="mt-1 text-xs text-gray-500">Try a different search or category</p>
+              <p className="mt-2 text-sm font-medium text-foreground">No products found</p>
+              <p className="mt-1 text-xs text-muted">Try a different search or category</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
@@ -307,7 +307,7 @@ export function AdminPosContent() {
         </div>
       </section>
 
-      <aside className="hidden w-full flex-shrink-0 flex-col border-t border-brand-border bg-white lg:flex lg:h-full lg:w-[400px] lg:overflow-hidden lg:border-t-0 xl:w-[420px]">
+      <aside className="hidden w-full flex-shrink-0 flex-col border-t border-brand-border bg-card lg:flex lg:h-full lg:w-[400px] lg:overflow-hidden lg:border-t-0 xl:w-[420px]">
         <AdminPosCheckoutPanel {...checkoutPanelProps} />
       </aside>
 

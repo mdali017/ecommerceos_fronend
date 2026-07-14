@@ -12,10 +12,10 @@ import { deleteProduct } from "@/lib/api/products";
 import Swal from "sweetalert2";
 
 const statusLabels: Record<string, { label: string; className: string }> = {
-  active: { label: "Active", className: "bg-green-100 text-green-700" },
-  low_stock: { label: "Low Stock", className: "bg-orange-100 text-brand-orange" },
-  out_of_stock: { label: "Out of Stock", className: "bg-red-100 text-red-600" },
-  draft: { label: "Draft", className: "bg-gray-100 text-gray-600" },
+  active: { label: "Active", className: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400" },
+  low_stock: { label: "Low Stock", className: "bg-orange-100 text-brand-orange dark:bg-orange-950/40" },
+  out_of_stock: { label: "Out of Stock", className: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400" },
+  draft: { label: "Draft", className: "bg-brand-gray text-muted" },
 };
 
 function formatPrice(price: number) {
@@ -104,20 +104,20 @@ export function AdminProductList() {
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Total Products", value: loading ? "—" : productStats.total, icon: "🛍️", color: "bg-purple-50 text-purple-600" },
-          { label: "Active", value: loading ? "—" : productStats.active, icon: "✅", color: "bg-green-50 text-green-600" },
-          { label: "Low Stock", value: loading ? "—" : productStats.lowStock, icon: "⚠️", color: "bg-orange-50 text-brand-orange" },
-          { label: "Out of Stock", value: loading ? "—" : productStats.outOfStock, icon: "📭", color: "bg-red-50 text-red-600" },
+          { label: "Total Products", value: loading ? "—" : productStats.total, icon: "🛍️", color: "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400" },
+          { label: "Active", value: loading ? "—" : productStats.active, icon: "✅", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
+          { label: "Low Stock", value: loading ? "—" : productStats.lowStock, icon: "⚠️", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
+          { label: "Out of Stock", value: loading ? "—" : productStats.outOfStock, icon: "📭", color: "bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400" },
         ]}
       />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-xl font-bold text-gray-900">Product Management</h2>
+        <h2 className="text-xl font-bold text-foreground">Product Management</h2>
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={downloadProductBulkTemplate}
-            className="rounded-xl border border-brand-border bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:border-brand-green hover:text-brand-green"
+            className="rounded-xl border border-brand-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand-green hover:text-brand-green"
           >
             Download Template
           </button>
@@ -140,20 +140,20 @@ export function AdminProductList() {
         onSuccess={fetchProducts}
       />
 
-      <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
         {loading ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">Loading products...</div>
+          <div className="px-6 py-12 text-center text-sm text-muted">Loading products...</div>
         ) : error ? (
           <div className="px-6 py-12 text-center text-sm text-red-600">{error}</div>
         ) : products.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">
+          <div className="px-6 py-12 text-center text-sm text-muted">
             কোনো প্রোডাক্ট নেই। Bulk Upload দিয়ে প্রোডাক্ট যোগ করুন।
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+                <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                   <th className="px-6 py-3">Product</th>
                   <th className="px-6 py-3">SKU</th>
                   <th className="px-6 py-3">Category</th>
@@ -181,15 +181,15 @@ export function AdminProductList() {
                               className="h-10 w-10 rounded-lg border border-brand-border object-cover"
                             />
                           )}
-                          <span className="font-semibold text-gray-900">{product.productName}</span>
+                          <span className="font-semibold text-foreground">{product.productName}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-mono text-xs text-gray-600">{product.sku}</td>
-                      <td className="px-6 py-4 text-gray-600">{product.category || "—"}</td>
+                      <td className="px-6 py-4 font-mono text-xs text-muted">{product.sku}</td>
+                      <td className="px-6 py-4 text-muted">{product.category || "—"}</td>
                       <td className="px-6 py-4 font-semibold text-brand-orange">
                         {formatPrice(product.sellingPrice || product.offerPrice)}
                       </td>
-                      <td className="px-6 py-4 text-gray-700">{product.stockQty}</td>
+                      <td className="px-6 py-4 text-foreground">{product.stockQty}</td>
                       <td className="px-6 py-4">
                         <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${status.className}`}>
                           {status.label}

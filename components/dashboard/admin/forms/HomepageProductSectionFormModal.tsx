@@ -236,7 +236,7 @@ export function HomepageProductSectionFormModal({
           </FormField>
         </div>
 
-        <p className="rounded-xl bg-brand-cream px-4 py-3 text-xs text-gray-600">
+        <p className="rounded-xl bg-brand-cream px-4 py-3 text-xs text-muted">
           Sort order guide: 10 = before brands, 30-50 = between brands & promo, 70+ = after promo.
         </p>
 

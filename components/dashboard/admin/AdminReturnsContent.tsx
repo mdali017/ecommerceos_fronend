@@ -36,30 +36,30 @@ export function AdminReturnsContent() {
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Total Returns", value: isLoading ? "—" : returnStats.total, icon: "↩️", color: "bg-blue-50 text-blue-600" },
-          { label: "Pending", value: isLoading ? "—" : returnStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700" },
-          { label: "Approved", value: isLoading ? "—" : returnStats.approved, icon: "✅", color: "bg-green-50 text-green-600" },
-          { label: "Rejected", value: isLoading ? "—" : returnStats.rejected, icon: "❌", color: "bg-red-50 text-red-600" },
+          { label: "Total Returns", value: isLoading ? "—" : returnStats.total, icon: "↩️", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: "Pending", value: isLoading ? "—" : returnStats.pending, icon: "⏳", color: "bg-yellow-50 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-400" },
+          { label: "Approved", value: isLoading ? "—" : returnStats.approved, icon: "✅", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
+          { label: "Rejected", value: isLoading ? "—" : returnStats.rejected, icon: "❌", color: "bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400" },
         ]}
       />
 
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-900">Return Requests</h2>
+        <h2 className="text-xl font-bold text-foreground">Return Requests</h2>
         <button type="button" onClick={() => refetch()} className="text-sm font-semibold text-brand-orange">
           Refresh
         </button>
       </div>
 
       {isError && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400">
           Run <code>019_returns.sql</code> in Supabase, then refresh.
         </div>
       )}
 
-      <div className="rounded-2xl border border-brand-border bg-white shadow-sm overflow-x-auto">
+      <div className="rounded-2xl border border-brand-border bg-card shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-gray-500">
+            <tr className="border-b bg-brand-gray/50 text-left text-xs uppercase text-muted">
               <th className="px-6 py-3">Order</th>
               <th className="px-6 py-3">Customer</th>
               <th className="px-6 py-3">Reason</th>
@@ -71,7 +71,7 @@ export function AdminReturnsContent() {
             {isLoading ? (
               <tr><td colSpan={5} className="px-6 py-8 text-center">Loading...</td></tr>
             ) : returns.length === 0 ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">No return requests.</td></tr>
+              <tr><td colSpan={5} className="px-6 py-8 text-center text-muted">No return requests.</td></tr>
             ) : (
               returns.map((item) => (
                 <tr key={item.id} className="border-b last:border-0">

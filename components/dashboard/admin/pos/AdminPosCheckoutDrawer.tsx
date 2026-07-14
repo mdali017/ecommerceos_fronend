@@ -43,16 +43,16 @@ export function AdminPosCheckoutDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Checkout"
-        className="absolute inset-x-0 bottom-0 flex max-h-[92vh] flex-col rounded-t-3xl bg-white shadow-2xl animate-[slideUp_0.25s_ease-out]"
+        className="absolute inset-x-0 bottom-0 flex max-h-[92vh] flex-col rounded-t-3xl bg-card shadow-2xl animate-[slideUp_0.25s_ease-out]"
       >
         <div className="flex flex-shrink-0 justify-center py-3">
-          <div className="h-1.5 w-12 rounded-full bg-gray-300" />
+          <div className="h-1.5 w-12 rounded-full bg-brand-border" />
         </div>
 
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-brand-gray text-sm font-bold text-gray-600"
+          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-brand-gray text-sm font-bold text-muted"
           aria-label="Close"
         >
           ✕

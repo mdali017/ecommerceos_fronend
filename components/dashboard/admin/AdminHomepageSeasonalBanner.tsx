@@ -41,19 +41,19 @@ export function AdminHomepageSeasonalBanner() {
 
       <AdminTableShell>
         {isLoading ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">Loading banners...</div>
+          <div className="px-6 py-12 text-center text-sm text-muted">Loading banners...</div>
         ) : isError ? (
           <div className="px-6 py-12 text-center text-sm text-red-600">
             Seasonal banners load করতে সমস্যা হয়েছে।
           </div>
         ) : banners.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">
+          <div className="px-6 py-12 text-center text-sm text-muted">
             কোনো banner নেই। Add Banner দিয়ে নতুন যোগ করুন।
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                 <th className="px-6 py-3">Preview</th>
                 <th className="px-6 py-3">Title (BN)</th>
                 <th className="px-6 py-3">Title (EN)</th>
@@ -80,14 +80,14 @@ export function AdminHomepageSeasonalBanner() {
                       />
                     </div>
                   </td>
-                  <td className="max-w-xs px-6 py-4 font-semibold text-gray-900">
+                  <td className="max-w-xs px-6 py-4 font-semibold text-foreground">
                     <p className="line-clamp-2">{banner.titleBn}</p>
                   </td>
-                  <td className="max-w-xs px-6 py-4 text-gray-600">
+                  <td className="max-w-xs px-6 py-4 text-muted">
                     <p className="line-clamp-2">{banner.titleEn}</p>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{banner.ctaBn}</td>
-                  <td className="px-6 py-4 text-gray-600">{banner.sortOrder}</td>
+                  <td className="px-6 py-4 text-muted">{banner.ctaBn}</td>
+                  <td className="px-6 py-4 text-muted">{banner.sortOrder}</td>
                   <td className="px-6 py-4">
                     <AdminStatusBadge isActive={banner.isActive} />
                   </td>

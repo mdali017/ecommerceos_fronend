@@ -40,19 +40,19 @@ export function AdminHomepageTestimonials() {
 
       <AdminTableShell>
         {isLoading ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">Loading testimonials...</div>
+          <div className="px-6 py-12 text-center text-sm text-muted">Loading testimonials...</div>
         ) : isError ? (
           <div className="px-6 py-12 text-center text-sm text-red-600">
             Testimonials load করতে সমস্যা হয়েছে।
           </div>
         ) : testimonials.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-gray-500">
+          <div className="px-6 py-12 text-center text-sm text-muted">
             কোনো review নেই। Add Review দিয়ে নতুন যোগ করুন।
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                 <th className="px-6 py-3">Customer</th>
                 <th className="px-6 py-3">Review (BN)</th>
                 <th className="px-6 py-3">Rating</th>
@@ -73,19 +73,19 @@ export function AdminHomepageTestimonials() {
                         {item.avatar}
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">{item.nameBn}</p>
-                        <p className="text-xs text-gray-500">{item.nameEn}</p>
+                        <p className="font-semibold text-foreground">{item.nameBn}</p>
+                        <p className="text-xs text-muted">{item.nameEn}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="max-w-md px-6 py-4 text-gray-600">
+                  <td className="max-w-md px-6 py-4 text-muted">
                     <p className="line-clamp-2">&ldquo;{item.reviewBn}&rdquo;</p>
                   </td>
                   <td className="px-6 py-4 text-yellow-500">
                     {"★".repeat(item.rating)}
                     {"☆".repeat(5 - item.rating)}
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{item.sortOrder}</td>
+                  <td className="px-6 py-4 text-muted">{item.sortOrder}</td>
                   <td className="px-6 py-4">
                     <AdminStatusBadge isActive={item.isActive} />
                   </td>

@@ -62,20 +62,20 @@ export function AdminCouponsContent() {
     <div className="space-y-6">
       <AdminStatGrid
         stats={[
-          { label: "Total Coupons", value: isLoading ? "—" : couponStats.total, icon: "🎟️", color: "bg-blue-50 text-blue-600" },
-          { label: "Active", value: isLoading ? "—" : couponStats.active, icon: "✅", color: "bg-green-50 text-green-600" },
-          { label: "Inactive", value: isLoading ? "—" : couponStats.inactive, icon: "⏸️", color: "bg-gray-100 text-gray-600" },
-          { label: "Total Redemptions", value: isLoading ? "—" : couponStats.totalUsed, icon: "🔥", color: "bg-orange-50 text-brand-orange" },
+          { label: "Total Coupons", value: isLoading ? "—" : couponStats.total, icon: "🎟️", color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
+          { label: "Active", value: isLoading ? "—" : couponStats.active, icon: "✅", color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
+          { label: "Inactive", value: isLoading ? "—" : couponStats.inactive, icon: "⏸️", color: "bg-brand-gray text-muted" },
+          { label: "Total Redemptions", value: isLoading ? "—" : couponStats.totalUsed, icon: "🔥", color: "bg-orange-50 text-brand-orange dark:bg-orange-950/40" },
         ]}
       />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-gray-900">Coupons & Promotions</h2>
+        <h2 className="text-xl font-bold text-foreground">Coupons & Promotions</h2>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={() => refetch()}
-            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-gray-700 hover:border-brand-orange hover:text-brand-orange"
+            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-semibold text-foreground hover:border-brand-orange hover:text-brand-orange"
           >
             Refresh
           </button>
@@ -90,24 +90,24 @@ export function AdminCouponsContent() {
       </div>
 
       {isLoading ? (
-        <div className="rounded-2xl border border-brand-border bg-white p-8 text-center text-sm text-gray-500">
+        <div className="rounded-2xl border border-brand-border bg-card p-8 text-center text-sm text-muted">
           Loading coupons...
         </div>
       ) : isError ? (
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center text-sm text-red-700">
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400">
           <p className="font-semibold">Failed to load coupons.</p>
           <p className="mt-2">
             Supabase SQL Editor-এ{" "}
-            <code className="rounded bg-white px-1.5 py-0.5">015_coupons.sql</code> run করুন,
+            <code className="rounded bg-card px-1.5 py-0.5">015_coupons.sql</code> run করুন,
             তারপর Refresh চাপুন।
           </p>
         </div>
       ) : (
-        <div className="rounded-2xl border border-brand-border bg-white shadow-sm">
+        <div className="rounded-2xl border border-brand-border bg-card shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-gray-500">
+                <tr className="border-b border-brand-border bg-brand-gray/50 text-left text-xs uppercase tracking-wider text-muted">
                   <th className="px-6 py-3">Code</th>
                   <th className="px-6 py-3">Discount</th>
                   <th className="px-6 py-3">Min Order</th>
@@ -119,14 +119,14 @@ export function AdminCouponsContent() {
               <tbody>
                 {coupons.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
+                    <td colSpan={6} className="px-6 py-10 text-center text-muted">
                       No coupons yet.
                     </td>
                   </tr>
                 ) : (
                   coupons.map((coupon) => (
                     <tr key={coupon.id} className="border-b border-brand-border last:border-0">
-                      <td className="px-6 py-4 font-mono font-bold text-gray-900">{coupon.code}</td>
+                      <td className="px-6 py-4 font-mono font-bold text-foreground">{coupon.code}</td>
                       <td className="px-6 py-4">{formatValue(coupon)}</td>
                       <td className="px-6 py-4">৳{coupon.minOrderAmount.toLocaleString("en-US")}</td>
                       <td className="px-6 py-4">
@@ -137,8 +137,8 @@ export function AdminCouponsContent() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                             coupon.isActive
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-100 text-gray-600"
+                              ? "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400"
+                              : "bg-brand-gray text-muted"
                           }`}
                         >
                           {coupon.isActive ? "Active" : "Inactive"}
@@ -156,7 +156,7 @@ export function AdminCouponsContent() {
                           <button
                             type="button"
                             onClick={() => void handleDelete(coupon)}
-                            className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50"
+                            className="rounded-lg border border-red-200 dark:border-red-800 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
                           >
                             Delete
                           </button>

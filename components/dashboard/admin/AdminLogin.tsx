@@ -11,6 +11,7 @@ import {
   showAdminLoginError,
   showAdminValidationError,
 } from "@/lib/admin-swal";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function AdminLogin() {
   const dispatch = useAppDispatch();
@@ -77,7 +78,7 @@ export function AdminLogin() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <div className="rounded-2xl border border-white/10 bg-card/5 p-5">
           <p className="text-xs font-semibold uppercase tracking-wider text-white/50">
             Demo Credentials
           </p>
@@ -92,22 +93,25 @@ export function AdminLogin() {
         </div>
       </div>
 
-      <div className="flex w-full flex-col items-center justify-center bg-slate-50 px-6 py-12 lg:w-1/2">
+      <div className="relative flex w-full flex-col items-center justify-center bg-background px-6 py-12 lg:w-1/2">
+        <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+          <ThemeToggle />
+        </div>
         <div className="w-full max-w-md">
           <div className="mb-8 lg:hidden">
-            <p className="text-2xl font-bold text-gray-900">Khaas Food Admin</p>
-            <p className="text-sm text-gray-500">Sign in to continue</p>
+            <p className="text-2xl font-bold text-foreground">Khaas Food Admin</p>
+            <p className="text-sm text-muted">Sign in to continue</p>
           </div>
 
-          <div className="rounded-2xl border border-brand-border bg-white p-8 shadow-lg">
-            <h2 className="text-xl font-bold text-gray-900">Admin Login</h2>
-            <p className="mt-1 text-sm text-gray-500">
+          <div className="rounded-2xl border border-brand-border bg-card p-8 shadow-lg">
+            <h2 className="text-xl font-bold text-foreground">Admin Login</h2>
+            <p className="mt-1 text-sm text-muted">
               Sign in with your admin account
             </p>
 
             <form onSubmit={(e) => void handleSubmit(e)} className="mt-6 space-y-4">
               <div>
-                <label htmlFor="admin-email" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                <label htmlFor="admin-email" className="mb-1.5 block text-sm font-semibold text-foreground">
                   Email
                 </label>
                 <input
@@ -116,12 +120,12 @@ export function AdminLogin() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@test.com"
-                  className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                  className="w-full rounded-xl border border-brand-border bg-card px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
                 />
               </div>
 
               <div>
-                <label htmlFor="admin-password" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                <label htmlFor="admin-password" className="mb-1.5 block text-sm font-semibold text-foreground">
                   Password
                 </label>
                 <input
@@ -130,7 +134,7 @@ export function AdminLogin() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••"
-                  className="w-full rounded-xl border border-brand-border px-4 py-3 text-sm outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                  className="w-full rounded-xl border border-brand-border bg-card px-4 py-3 text-sm text-foreground outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
                 />
               </div>
 
@@ -143,7 +147,7 @@ export function AdminLogin() {
               </button>
             </form>
 
-            <p className="mt-5 text-center text-sm text-gray-500 lg:hidden">
+            <p className="mt-5 text-center text-sm text-muted lg:hidden">
               Demo: admin@test.com / 123456
             </p>
           </div>

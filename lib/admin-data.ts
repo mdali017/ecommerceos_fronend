@@ -31,15 +31,15 @@ export const adminCustomers = [
 ];
 
 export const statusLabels: Record<string, { label: string; className: string }> = {
-  pending: { label: "Pending", className: "bg-yellow-100 text-yellow-700" },
-  confirmed: { label: "Confirmed", className: "bg-indigo-100 text-indigo-700" },
-  processing: { label: "Processing", className: "bg-blue-100 text-blue-700" },
-  shipped: { label: "Shipped", className: "bg-purple-100 text-purple-700" },
-  delivered: { label: "Delivered", className: "bg-green-100 text-green-700" },
-  completed: { label: "Completed", className: "bg-green-100 text-green-700" },
-  cancelled: { label: "Cancelled", className: "bg-red-100 text-red-600" },
-  returned: { label: "Returned", className: "bg-orange-100 text-brand-orange" },
-  active: { label: "Active", className: "bg-green-100 text-green-700" },
-  low_stock: { label: "Low Stock", className: "bg-orange-100 text-brand-orange" },
-  out_of_stock: { label: "Out of Stock", className: "bg-red-100 text-red-600" },
+  pending: { label: "Pending", className: "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-400" },
+  confirmed: { label: "Confirmed", className: "bg-indigo-100 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400" },
+  processing: { label: "Processing", className: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400" },
+  shipped: { label: "Shipped", className: "bg-purple-100 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400" },
+  delivered: { label: "Delivered", className: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400" },
+  completed: { label: "Completed", className: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400" },
+  cancelled: { label: "Cancelled", className: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400" },
+  returned: { label: "Returned", className: "bg-orange-100 text-brand-orange dark:bg-orange-950/40" },
+  active: { label: "Active", className: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400" },
+  low_stock: { label: "Low Stock", className: "bg-orange-100 text-brand-orange dark:bg-orange-950/40" },
+  out_of_stock: { label: "Out of Stock", className: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400" },
 };

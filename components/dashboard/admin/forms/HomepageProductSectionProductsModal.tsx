@@ -159,12 +159,12 @@ export function HomepageProductSectionProductsModal({
         <div className="rounded-2xl border border-brand-border bg-brand-cream/60 p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold text-gray-900">Add product to this section</p>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="text-sm font-semibold text-foreground">Add product to this section</p>
+              <p className="mt-1 text-xs text-muted">
                 {selectedSkus.length} / {section.maxProducts} products selected
               </p>
             </div>
-            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-orange">
+            <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold text-brand-orange">
               Manual list will be used on homepage
             </span>
           </div>
@@ -185,9 +185,9 @@ export function HomepageProductSectionProductsModal({
               Maximum {section.maxProducts} products reached. Remove one to add another.
             </p>
           ) : loadingProducts ? (
-            <p className="mt-3 text-sm text-gray-500">Loading products...</p>
+            <p className="mt-3 text-sm text-muted">Loading products...</p>
           ) : availableProducts.length === 0 ? (
-            <p className="mt-3 text-sm text-gray-500">No matching products to add.</p>
+            <p className="mt-3 text-sm text-muted">No matching products to add.</p>
           ) : (
             <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {availableProducts.map((product) => (
@@ -195,7 +195,7 @@ export function HomepageProductSectionProductsModal({
                   key={product.id}
                   type="button"
                   onClick={() => handleAddProduct(product)}
-                  className="flex items-center gap-3 rounded-xl border border-brand-border bg-white p-3 text-left transition-colors hover:border-brand-orange hover:bg-orange-50/40"
+                  className="flex items-center gap-3 rounded-xl border border-brand-border bg-card p-3 text-left transition-colors hover:border-brand-orange hover:bg-orange-50 dark:hover:bg-orange-950/30"
                 >
                   <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-brand-gray">
                     {(product.imageUrl || product.images[0]) && (
@@ -209,10 +209,10 @@ export function HomepageProductSectionProductsModal({
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-gray-900">
+                    <p className="truncate text-sm font-semibold text-foreground">
                       {product.productName}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted">
                       {product.sku} · {formatPrice(getDisplayPrice(product))}
                     </p>
                   </div>
@@ -225,20 +225,20 @@ export function HomepageProductSectionProductsModal({
           )}
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-brand-border bg-white">
+        <div className="overflow-hidden rounded-2xl border border-brand-border bg-card">
           <div className="border-b border-brand-border bg-brand-gray/40 px-4 py-3 sm:px-5">
-            <h4 className="text-sm font-bold text-gray-900">Section Products</h4>
+            <h4 className="text-sm font-bold text-foreground">Section Products</h4>
           </div>
 
           {assignedProducts.length === 0 ? (
-            <div className="px-6 py-12 text-center text-sm text-gray-500">
+            <div className="px-6 py-12 text-center text-sm text-muted">
               এই section-এ এখনো কোনো product নেই। উপরে search করে add করুন।
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
-                  <tr className="border-b border-brand-border bg-brand-gray/30 text-left text-xs uppercase tracking-wider text-gray-500">
+                  <tr className="border-b border-brand-border bg-brand-gray/30 text-left text-xs uppercase tracking-wider text-muted">
                     <th className="px-4 py-3 sm:px-5">Product</th>
                     <th className="px-4 py-3 sm:px-5">SKU</th>
                     <th className="px-4 py-3 sm:px-5">Category</th>
@@ -271,10 +271,10 @@ export function HomepageProductSectionProductsModal({
                                 )}
                               </div>
                               <div>
-                                <p className="font-semibold text-gray-900">
+                                <p className="font-semibold text-foreground">
                                   {product.productName}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-muted">
                                   {product.genericName || product.packSize || "—"}
                                 </p>
                               </div>
@@ -282,13 +282,13 @@ export function HomepageProductSectionProductsModal({
                           ) : (
                             <div>
                               <p className="font-semibold text-red-600">Product not found</p>
-                              <p className="text-xs text-gray-500">SKU may be outdated</p>
+                              <p className="text-xs text-muted">SKU may be outdated</p>
                             </div>
                           )}
                         </div>
                       </td>
-                      <td className="px-4 py-3 font-mono text-xs text-gray-600 sm:px-5">{sku}</td>
-                      <td className="px-4 py-3 text-gray-600 sm:px-5">
+                      <td className="px-4 py-3 font-mono text-xs text-muted sm:px-5">{sku}</td>
+                      <td className="px-4 py-3 text-muted sm:px-5">
                         {product?.category || "—"}
                       </td>
                       <td className="px-4 py-3 font-semibold text-brand-orange sm:px-5">
@@ -298,7 +298,7 @@ export function HomepageProductSectionProductsModal({
                         <button
                           type="button"
                           onClick={() => handleRemoveProduct(sku)}
-                          className="rounded-lg border border-red-100 px-3 py-1.5 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50"
+                          className="rounded-lg border border-red-100 px-3 py-1.5 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
                         >
                           Remove
                         </button>

@@ -22,6 +22,8 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
+export { LocaleContext };
+
 export function LocaleProvider({
   locale,
   dictionary,

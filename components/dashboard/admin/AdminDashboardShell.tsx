@@ -12,6 +12,7 @@ import {
   isAdminNavActive,
   type AdminNavGroup,
 } from "@/lib/admin-nav";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AdminLogin } from "./AdminLogin";
 import { AdminPosShell } from "./pos/AdminPosShell";
 
@@ -100,7 +101,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-100">
+    <div className="flex h-screen overflow-hidden bg-background">
       {sidebarOpen && (
         <button
           type="button"
@@ -140,7 +141,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
                     isActive
                       ? "bg-brand-orange text-white"
-                      : "text-white/80 hover:bg-white/10"
+                      : "text-white/80 hover:bg-card/10"
                   }`}
                 >
                   <span>{item.icon}</span>
@@ -157,8 +158,8 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
                 <div
                   className={`flex w-full items-center rounded-xl transition-colors ${
                     isGroupActive
-                      ? "bg-white/10 text-white"
-                      : "text-white/80 hover:bg-white/10"
+                      ? "bg-card/10 text-white"
+                      : "text-white/80 hover:bg-card/10"
                   }`}
                 >
                   <button
@@ -211,7 +212,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
                             } ${
                               isActive
                                 ? "bg-brand-orange text-white"
-                                : "text-white/70 hover:bg-white/10 hover:text-white"
+                                : "text-white/70 hover:bg-card/10 hover:text-white"
                             }`}
                           >
                             <span className="text-base">{child.icon}</span>
@@ -228,7 +229,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="border-t border-white/10 p-4">
-          <div className="flex items-center gap-3 rounded-xl bg-white/10 px-3 py-3">
+          <div className="flex items-center gap-3 rounded-xl bg-card/10 px-3 py-3">
             <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-orange text-sm font-bold">
               A
             </div>
@@ -239,7 +240,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
           </div>
           <Link
             href="/"
-            className="mt-2 flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+            className="mt-2 flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm text-white/70 transition-colors hover:bg-card/10 hover:text-white"
           >
             🌐 View Store
           </Link>
@@ -247,34 +248,35 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-16 flex-shrink-0 items-center justify-between border-b border-brand-border bg-white px-4 sm:px-6">
+        <header className="flex h-16 flex-shrink-0 items-center justify-between border-b border-brand-border bg-card px-4 sm:px-6">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setSidebarOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-border text-gray-600 lg:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-border text-muted transition-colors hover:bg-brand-gray lg:hidden"
               aria-label="Open menu"
             >
               ☰
             </button>
             <div>
-              <h1 className="text-base font-bold text-gray-900 sm:text-lg">
+              <h1 className="text-base font-bold text-foreground sm:text-lg">
                 Admin Dashboard
               </h1>
-              <p className="hidden text-xs text-gray-500 sm:block">
+              <p className="hidden text-xs text-muted sm:block">
                 Store management panel
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <span className="hidden rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-brand-orange sm:block">
+            <ThemeToggle />
+            <span className="hidden rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-brand-orange dark:bg-orange-950/40 sm:block">
               {adminName}
             </span>
             <button
               type="button"
               onClick={handleLogout}
-              className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50 sm:text-sm"
+              className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950/30 sm:text-sm"
             >
               Logout
             </button>
